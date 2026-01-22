@@ -1,4 +1,4 @@
-﻿using Gs1DigitalLink.Core.Resolution;
+﻿using Gs1DigitalLink.Core.Services.Resolution;
 using System.Net.Http.Headers;
 
 namespace Gs1DigitalLink.Api.Services;

@@ -5,7 +5,7 @@
   <Folder Name="/src/">
     <Project Path="src/Gs1DigitalLink.Api/Gs1DigitalLink.Api.csproj" />
     <Project Path="src/Gs1DigitalLink.Core/Gs1DigitalLink.Core.csproj" />
-    <Project Path="src/Gs1DigitalLink.Infrastructure/Gs1DigitalLink.Infrastructure.csproj" />
+    <Project Path="src/Gs1DigitalLink.Migrations/Gs1DigitalLink.Migrations.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/Gs1DigitalLink.Core.Tests/Gs1DigitalLink.Core.Tests.csproj" />

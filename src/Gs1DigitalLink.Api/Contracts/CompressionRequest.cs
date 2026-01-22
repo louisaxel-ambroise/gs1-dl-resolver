@@ -1,13 +1,12 @@
-﻿using Gs1DigitalLink.Core.Conversion;
-using Microsoft.AspNetCore.Mvc;
-
+﻿using Gs1DigitalLink.Core.Services.Conversion;
+using System.Text.Json.Serialization;
 namespace Gs1DigitalLink.Api.Contracts;
 
 public sealed record CompressionRequest
 {
-    [FromHeader(Name = "x-compression-type")] 
-    public DLCompressionType CompressionType { get; init; }
+    public required string DigitalLink { get; init; }
 
-    [FromHeader(Name = "x-compress-querystring")] 
-    public bool CompressQueryString { get; init; }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public required DLCompressionType CompressionType { get; init; }
+    public required bool CompressQueryString { get; init; }
 }

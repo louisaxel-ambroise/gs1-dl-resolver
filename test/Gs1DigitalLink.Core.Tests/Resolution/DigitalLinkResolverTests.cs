@@ -1,7 +1,7 @@
-﻿using Gs1DigitalLink.Core.Conversion;
-using Gs1DigitalLink.Core.Conversion.Utils;
-using Gs1DigitalLink.Core.Registration;
-using Gs1DigitalLink.Core.Resolution;
+﻿using Gs1DigitalLink.Core.Model;
+using Gs1DigitalLink.Core.Services.Conversion;
+using Gs1DigitalLink.Core.Services.Conversion.Utils;
+using Gs1DigitalLink.Core.Services.Resolution;
 
 namespace Gs1DigitalLink.Core.Tests.Resolution;
 
@@ -12,21 +12,21 @@ public sealed class DigitalLinkResolverTests
     {
         return new DigitalLink
         {
-            CompanyPrefix = "123456",
+            CompanyPrefix = "950600",
             Type = DigitalLinkType.Unknown,
             QueryString = [],
             AIs =
             [
                 new KeyValue
                 { 
-                    Key = new Identifier { Code = "01", Type = AIType.PrimaryKey }, 
-                    Components = [ new Component{ Definition = new(){ Length= 14, Type = Charset.Numeric }, Value = "09506000134352" } ],
+                    Key = new Services.Conversion.Utils.Identifier { Code = "01", Type = AIType.PrimaryKey }, 
+                    Components = [ new Component { Definition = new(){ Length= 14, Type = Charset.Numeric }, Value = "09506000134352" } ],
                     Issues = []
                 },
                 new KeyValue
                 {
-                    Key = new Identifier { Code = "10", Type = AIType.Qualifier },
-                    Components = [ new Component{ Definition = new(){ Length= 14, Type = Charset.Alpha }, Value = "ABC123" } ],
+                    Key = new Services.Conversion.Utils.Identifier { Code = "10", Type = AIType.Qualifier },
+                    Components = [ new Component { Definition = new(){ Length= 14, Type = Charset.Alpha }, Value = "ABC123" } ],
                     Issues = []
                 }
             ]
@@ -36,16 +36,32 @@ public sealed class DigitalLinkResolverTests
     [TestMethod]
     public void GetCandidatesTests_ShouldReturnConfiguredLinks()
     {
-        var links = new[]
+        var prefix = new Prefix("950600", "01/09506000134352");
+        prefix.AddLink(new Link
         {
-            new Link { Prefix = "01/09506000134352", Language = null, Title = "test gtin", RedirectUrl = "http://a", LinkType = "gs1:defaultLink", Applicability = new(){ From = TimeProvider.System.GetUtcNow() } }
-        };
+            Title = "test",
+            LinkType = "gs1:defaultLink",
+            Language = "en",
+            RedirectUrl = "http://a.com",
+            Availability = new(DateTimeOffset.MinValue, DateTimeOffset.MaxValue)
+        });
 
-        var resolver = new DigitalLinkResolver(new FakePrefixRegistry(links), new FakeLanguageContext());
+        var context = new DigitalLinkContext(new FakeEventDispatcher(), TimeProvider.System);
+        var resolver = new DigitalLinkResolver(context, new FakeLanguageContext());
+        context.Database.EnsureCreated();
+        context.Prefixes.Add(prefix);
+        context.SaveChanges();
 
-        var result = resolver.GetCandidates(CreateDigitalLink(), TimeProvider.System.GetUtcNow(), null).ToList();
+        var result = resolver.ResolveLinkType(CreateDigitalLink(), TimeProvider.System.GetUtcNow(), null);
 
-        Assert.ContainsSingle(result);
-        Assert.AreEqual("http://a", result[0].RedirectUrl);
+        Assert.ContainsSingle(result.Links);
+        Assert.AreEqual("http://a.com", result.Links.First().RedirectUrl);
+    }
+}
+
+internal class FakeEventDispatcher : IEventDispatcher
+{
+    public void Dispatch(IDomainEvent domainEvent)
+    {
     }
 }

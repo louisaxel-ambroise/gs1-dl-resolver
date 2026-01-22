@@ -1,9 +1,10 @@
-﻿using Gs1DigitalLink.Core.Insights;
+﻿using Gs1DigitalLink.Core;
+using Gs1DigitalLink.Core.Model;
 using System.Threading.Channels;
 
 namespace Gs1DigitalLink.Api.Services;
 
-internal sealed class InsightConsumer(Channel<ScanInsight> channel, IServiceProvider serviceProvider) : BackgroundService
+internal sealed class InsightConsumer(Channel<Insight> channel, IServiceProvider serviceProvider) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -12,9 +13,10 @@ internal sealed class InsightConsumer(Channel<ScanInsight> channel, IServiceProv
             try
             {
                 using var scope = serviceProvider.CreateScope();
-                var sink = scope.ServiceProvider.GetRequiredService<IInsightSink>();
+                using var context = scope.ServiceProvider.GetRequiredService<DigitalLinkContext>();
 
-                sink.Store(insight);
+                context.Insights.Add(insight);
+                context.SaveChanges();
             }
             catch
             {

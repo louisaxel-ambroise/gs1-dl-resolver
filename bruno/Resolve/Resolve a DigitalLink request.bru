@@ -19,7 +19,14 @@ headers {
 }
 
 vars:pre-request {
-  digitalLink: 01/05414195535264
+  digitalLink: 01/05414195535264/21/1234
   linkType: gs1:pip
-  language: fr-FR
+  language: en-US
+}
+
+settings {
+  encodeUrl: false
+  followRedirects: false
+  maxRedirects: 5
+  timeout: inherit
 }

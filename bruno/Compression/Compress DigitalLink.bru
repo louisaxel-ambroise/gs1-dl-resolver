@@ -4,9 +4,9 @@ meta {
   seq: 1
 }
 
-get {
-  url: {{BaseUrl}}/api/compress/{{digitalLink}}
-  body: none
+post {
+  url: {{BaseUrl}}/api/compress
+  body: json
   auth: none
 }
 
@@ -14,7 +14,15 @@ headers {
   x-compression-type: {{compressionType}}
 }
 
+body:json {
+  {
+    "DigitalLink": "{{digitalLink}}",
+    "CompressionType": "{{compressionType}}",
+    "CompressQueryString": true
+  }
+}
+
 vars:pre-request {
-  digitalLink: 01/05414195535264
+  digitalLink: 01/05414195535264/21/1234
   compressionType: Full
 }

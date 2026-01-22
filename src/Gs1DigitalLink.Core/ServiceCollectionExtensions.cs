@@ -1,10 +1,12 @@
 ﻿using DecoratR;
-using Gs1DigitalLink.Core.Conversion;
-using Gs1DigitalLink.Core.Conversion.Utils;
-using Gs1DigitalLink.Core.Conversion.Utils.Validation;
-using Gs1DigitalLink.Core.Insights;
-using Gs1DigitalLink.Core.Registration;
-using Gs1DigitalLink.Core.Resolution;
+using Gs1DigitalLink.Core.Model;
+using Gs1DigitalLink.Core.Services.Conversion;
+using Gs1DigitalLink.Core.Services.Conversion.Utils;
+using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
+using Gs1DigitalLink.Core.Services.Insights;
+using Gs1DigitalLink.Core.Services.Registration;
+using Gs1DigitalLink.Core.Services.Resolution;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using System.Threading.Channels;
@@ -30,16 +32,22 @@ public static class ServiceCollectionExtensions
             services.AddSingleton(JsonSerializer.Deserialize<ApplicationIdentifiers>(file, jsonOptions) ?? new() { Identifiers = [], CodeLength = [] });
         }
         services.AddSingleton(TimeProvider.System);
-        services.AddSingleton(Channel.CreateUnbounded<ScanInsight>());
+        services.AddSingleton(Channel.CreateUnbounded<Insight>());
         services.AddSingleton<IInsightRecorder, InsightRecorder>();
         services.AddSingleton<IDigitalLinkConverter, DigitalLinkConverter>();
+        services.AddSingleton<IDigitalLinkPrefixConverter, DigitalLinkPrefixConverter>();
         services.AddScoped<ILinkRegistrator, LinkRegistrator>();
-        services.AddScoped<IInsightRetriever, InsightRetriever>();
         services.Decorate<IDigitalLinkResolver>()
             .With<InsightDigitalLinkResolver>()
             .Then<DigitalLinkResolver>()
             .AsScoped()
             .Apply();
+
+        services.AddDbContext<DigitalLinkContext>();
+        services.AddScoped<IInsightResolver, InsightResolver>();
+
+        typeof(Aggregate).Assembly.GetTypes().Where(t => t.IsClass && t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDomainEventHandler<>))).ToList()
+            .ForEach(entityType => services.AddScoped(entityType.GetInterfaces()[0], entityType));
     }
 }
 

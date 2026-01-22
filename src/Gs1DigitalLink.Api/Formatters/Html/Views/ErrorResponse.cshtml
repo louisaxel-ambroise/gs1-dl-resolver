@@ -1,0 +1,25 @@
+﻿@using Gs1DigitalLink.Api.Contracts
+@using Microsoft.Extensions.Localization
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Localizer["Error"];
+}
+@model ErrorResponse
+@inject IStringLocalizer<ErrorResponse> Localizer
+
+<h2>@Model.Status - @Localizer[Model.Title]</h2>
+
+<p>@Localizer[Model.Detail]<br /><strong>@Localizer["This request should not be retried."]</strong></p>
+
+@if (Model.Errors.Any())
+{
+    <details>
+        <summary>@Localizer["Details of the error"]</summary>
+        <ul>
+            @foreach (var error in Model.Errors)
+            {
+                <li>@error.Message <em>(@error.Code)</em></li>
+            }
+        </ul>
+    </details>
+}

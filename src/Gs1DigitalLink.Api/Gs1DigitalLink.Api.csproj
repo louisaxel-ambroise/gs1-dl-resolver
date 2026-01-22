@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gs1DigitalLink.Core\Gs1DigitalLink.Core.csproj" />
-    <ProjectReference Include="..\Gs1DigitalLink.Infrastructure\Gs1DigitalLink.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

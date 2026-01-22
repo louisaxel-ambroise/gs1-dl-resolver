@@ -4,14 +4,14 @@ using System.Text.Json.Serialization;
 
 namespace Gs1DigitalLink.Api.Formatters.Json;
 
-public sealed class LinksetJsonConverter : JsonConverter<LinksetResult>
+public sealed class LinksetJsonConverter : JsonConverter<LinksetResponse>
 {
-    public override LinksetResult Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override LinksetResponse Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         throw new NotImplementedException();
     }
 
-    public override void Write(Utf8JsonWriter writer, LinksetResult value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, LinksetResponse value, JsonSerializerOptions options)
     {
         // Custom serialization logic
         writer.WriteStartObject();

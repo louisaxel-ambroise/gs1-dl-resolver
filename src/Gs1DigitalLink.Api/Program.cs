@@ -2,15 +2,14 @@ using Gs1DigitalLink.Api.Contracts;
 using Gs1DigitalLink.Api.Formatters.Html;
 using Gs1DigitalLink.Api.Services;
 using Gs1DigitalLink.Core;
-using Gs1DigitalLink.Core.Resolution;
-using Gs1DigitalLink.Infrastructure;
+using Gs1DigitalLink.Core.Services.Resolution;
 using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDigitalLinkCore();
-builder.Services.AddDigitalLinkInfrastructure();
 builder.Services.AddScoped<ILanguageContext, HttpLanguageContext>();
+builder.Services.AddScoped<IEventDispatcher, HttpContextEventDispatcher>();
 builder.Services.AddHostedService<InsightConsumer>();
 builder.Services.AddAuthentication();
 builder.Services.AddRouting();
@@ -42,6 +41,17 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();
+app.Use(async (req, next) =>
+{
+    var methods = new[] { HttpMethod.Post.Method, HttpMethod.Put.Method, HttpMethod.Patch.Method, HttpMethod.Delete.Method };
+    await next();
+
+    if(methods.Contains(req.Request.Method))
+    {
+        var context = req.RequestServices.GetRequiredService<DigitalLinkContext>();
+        context.SaveChanges();
+    }
+});
 app.UseRequestLocalization();
 app.UseExceptionHandler("/error");
 app.MapControllers();

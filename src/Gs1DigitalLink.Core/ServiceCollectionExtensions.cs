@@ -1,5 +1,6 @@
 ﻿using DecoratR;
 using Gs1DigitalLink.Core.Model;
+using Gs1DigitalLink.Core.Model.Interfaces;
 using Gs1DigitalLink.Core.Services.Conversion;
 using Gs1DigitalLink.Core.Services.Conversion.Utils;
 using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;

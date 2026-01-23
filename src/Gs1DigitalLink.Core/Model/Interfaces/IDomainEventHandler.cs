@@ -1,4 +1,4 @@
-﻿namespace Gs1DigitalLink.Core.Model;
+﻿namespace Gs1DigitalLink.Core.Model.Interfaces;
 
 /* --------------------------- */
 

@@ -1,4 +1,4 @@
-﻿namespace Gs1DigitalLink.Core.Model;
+﻿namespace Gs1DigitalLink.Core.Model.Interfaces;
 
 public abstract class Aggregate
 {
@@ -13,9 +13,4 @@ public abstract class Aggregate
     internal void ClearPendingEvents() => _pendingEvents.Clear();
 
     private readonly IList<IDomainEvent> _pendingEvents = [];
-}
-
-public abstract class Entity<T> where T : Aggregate
-{
-    public int Id { get; internal set; }
 }

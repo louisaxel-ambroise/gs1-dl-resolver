@@ -1,4 +1,6 @@
-﻿namespace Gs1DigitalLink.Core.Model;
+﻿using Gs1DigitalLink.Core.Model.Interfaces;
+
+namespace Gs1DigitalLink.Core.Model;
 
 public record PrefixLinksDeactivatedDomainEvent(Prefix Prefix, Language? Language, IEnumerable<Link> Links) : IDomainEvent
 {

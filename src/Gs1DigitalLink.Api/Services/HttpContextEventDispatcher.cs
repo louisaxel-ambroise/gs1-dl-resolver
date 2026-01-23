@@ -1,5 +1,5 @@
 using Gs1DigitalLink.Core;
-using Gs1DigitalLink.Core.Model;
+using Gs1DigitalLink.Core.Model.Interfaces;
 
 internal class HttpContextEventDispatcher(IHttpContextAccessor contextAccessor) : IEventDispatcher
 {

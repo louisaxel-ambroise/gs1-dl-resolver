@@ -1,6 +1,6 @@
 ﻿using FluentMigrator;
 
-namespace Gs1DigitalLink.Migrations;
+namespace Gs1DigitalLink.Api.Services.Migrations;
 
 [Migration(20260118184700)]
 public class M20260118184700_CreateInsightTable : AutoReversingMigration

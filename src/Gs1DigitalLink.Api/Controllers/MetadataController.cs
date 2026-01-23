@@ -22,7 +22,7 @@ public class MetadataController(IOptions<GS1ResolverOptions> options) : Controll
             resolverRoot = $"{Request.Scheme}://{Request.Host}",
             name = options.Value.Name,
             supportedPrimaryKeys = options.Value.SupportedPrimaryKeys,
-            linkTypeDefaultCanBeLinkset = false,
+            linkTypeDefaultCanBeLinkset = true,
             contact = new
             {
                 fn = options.Value.ContactName

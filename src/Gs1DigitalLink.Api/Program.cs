@@ -1,7 +1,9 @@
+using FluentMigrator.Runner;
 using Gs1DigitalLink.Api;
 using Gs1DigitalLink.Api.Contracts;
 using Gs1DigitalLink.Api.Formatters.Html;
 using Gs1DigitalLink.Api.Services;
+using Gs1DigitalLink.Api.Services.Migrations;
 using Gs1DigitalLink.Core;
 using Gs1DigitalLink.Core.Services.Resolution;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -33,8 +35,17 @@ builder.Services.AddControllersWithViews(options =>
     options.OutputFormatters.Add(new HtmlViewFormatter());
     options.RespectBrowserAcceptHeader = true;
 });
+builder.Services
+    .AddFluentMigratorCore()
+    .ConfigureRunner(rb => rb
+        .AddSQLite()
+        .WithGlobalConnectionString("Data Source=registry.db")
+        .ScanIn(typeof(M20260114183700_CreatePrefixTable).Assembly).For.All());
 
 var app = builder.Build();
+
+// Migrate database - Remove if not needed
+MigrateDatabase(app.Services);
 
 app.UseHttpsRedirection();
 app.UseCors();
@@ -44,3 +55,10 @@ app.UseRequestLocalization();
 app.UseExceptionHandler("/error");
 app.MapControllers();
 app.Run();
+
+static void MigrateDatabase(IServiceProvider services)
+{
+    using var scope = services.CreateScope();
+    var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+    runner.MigrateUp();
+}

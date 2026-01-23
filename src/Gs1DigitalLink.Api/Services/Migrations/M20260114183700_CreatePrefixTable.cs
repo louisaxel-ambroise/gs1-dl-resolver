@@ -1,6 +1,6 @@
 ﻿using FluentMigrator;
 
-namespace Gs1DigitalLink.Migrations;
+namespace Gs1DigitalLink.Api.Services.Migrations;
 
 [Migration(20260114183700)]
 public class M20260114183700_CreatePrefixTable : AutoReversingMigration

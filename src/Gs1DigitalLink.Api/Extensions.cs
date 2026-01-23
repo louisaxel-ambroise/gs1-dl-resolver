@@ -22,12 +22,13 @@ public static class Extensions
 
     public static IApplicationBuilder UseUnitOfWork(this IApplicationBuilder app)
     {
+         string[] AffectedMethods = [HttpMethod.Post.Method, HttpMethod.Put.Method, HttpMethod.Patch.Method, HttpMethod.Delete.Method];
+        
         return app.Use(async (req, next) =>
         {
-            var methods = new[] { HttpMethod.Post.Method, HttpMethod.Put.Method, HttpMethod.Patch.Method, HttpMethod.Delete.Method };
             await next();
 
-            if (methods.Contains(req.Request.Method))
+            if (AffectedMethods.Contains(req.Request.Method))
             {
                 var context = req.RequestServices.GetRequiredService<DigitalLinkContext>();
                 context.SaveChanges();

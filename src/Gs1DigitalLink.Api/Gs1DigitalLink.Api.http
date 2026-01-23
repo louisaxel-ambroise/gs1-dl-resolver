@@ -1,13 +1,24 @@
-@Gs1DigitalLink.Api_HostAddress = http://localhost:5138
+@Gs1DigitalLink.Api_HostAddress = https://localhost:7113
 
 ## Decompress a GS1 DigitalLink
-GET {{Gs1DigitalLink.Api_HostAddress}}/api/decompress/CwnZLmc7QAw8SA
+POST {{Gs1DigitalLink.Api_HostAddress}}/api/decompress
 Accept: application/json
+Content-Type: application/json
+{
+  "DigitalLink": "CwnZLmc7QAw8SA"
+}
 
 ###
 ## Compress a GS1 DigitalLink
-GET {{Gs1DigitalLink.Api_HostAddress}}/api/compress/01/05414195535264/10/123456
+## CompressionType can be set to Full or Partial
+POST {{Gs1DigitalLink.Api_HostAddress}}/api/compress
 Accept: application/json
+Content-Type: application/json
+{
+  "DigitalLink": "01/05414195535264/10/123456",
+  "CompressionType": "Full", 
+  "CompressQueryString": false
+}
 
 ###
 ## Register a link type
@@ -16,9 +27,9 @@ Accept: application/json
 Content-Type: application/json
 {
   "Prefix": "/01/09520123456887",
-  "RedirectUrl": "https://example.com/product{/gtin}?lang=tlh",
+  "RedirectUrl": "https://example.com/product{/gtin}?lang=en",
   "Title": "Example redirection",
-  "Language": "tlh",
+  "Language": "en-GB",
   "LinkTypes": ["gs1:pip"]
 }
 

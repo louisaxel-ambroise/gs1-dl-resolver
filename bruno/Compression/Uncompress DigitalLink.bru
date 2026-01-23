@@ -4,10 +4,16 @@ meta {
   seq: 2
 }
 
-get {
-  url: {{BaseUrl}}/api/decompress/{{compressedLink}}
-  body: none
+post {
+  url: {{BaseUrl}}/api/decompress
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "DigitalLink": "{{compressedLink}}"
+  }
 }
 
 vars:pre-request {

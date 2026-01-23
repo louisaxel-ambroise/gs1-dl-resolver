@@ -5,15 +5,16 @@ meta {
 }
 
 delete {
-  url: {{BaseUrl}}/api/register/{{digitalLink}}
+  url: {{BaseUrl}}/api/register
   body: json
   auth: none
 }
 
 body:json {
   {
-    "linkTypes": ["gs1:pip", "gs1:defaultLink"],
-    "language": null
+    "prefix": "{{digitalLink}}",
+    "linkTypes": ["gs1:pip"],
+    "language": "en-US"
   }
 }
 

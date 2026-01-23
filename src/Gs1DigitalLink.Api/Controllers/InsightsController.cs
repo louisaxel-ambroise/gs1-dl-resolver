@@ -1,6 +1,6 @@
 using Gs1DigitalLink.Api.Contracts;
-using Gs1DigitalLink.Core.Conversion;
-using Gs1DigitalLink.Core.Insights;
+using Gs1DigitalLink.Core.Services.Conversion;
+using Gs1DigitalLink.Core.Services.Insights;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,14 +9,14 @@ namespace Gs1DigitalLink.Api.Controllers;
 [ApiController]
 [Route("api/insights")]
 [Produces("application/json")]
-public sealed class InsightsController(IDigitalLinkConverter converter, IInsightRetriever insightRetriever) : ControllerBase
+public sealed class InsightsController(IDigitalLinkConverter converter, IInsightResolver insightResolver) : ControllerBase
 {
     [HttpGet("{**_}")]
     public IActionResult ListInsights(ListInsightRequest request)
     {
         var digitalLink = converter.Parse(Request.GetDisplayUrl());
         var options = new ListInsightsOptions { Days = request.Days };
-        var result = insightRetriever.ListInsights(digitalLink, options);
+        var result = insightResolver.ListInsights(digitalLink.ToString(false), options);
 
         return new OkObjectResult(new
         {
@@ -26,13 +26,14 @@ public sealed class InsightsController(IDigitalLinkConverter converter, IInsight
         });
     }
 
-    private Insight MapInsight(ScanInsight insight)
+    private Insight MapInsight(Core.Model.Insight insight)
     {
         return new()
         {
             Timestamp = insight.Timestamp,
             LinkType = insight.LinkType,
-            Languages = insight.Languages
+            Languages = insight.Languages,
+            CandidateCount = insight.CandidateCount
         };
     }
 }

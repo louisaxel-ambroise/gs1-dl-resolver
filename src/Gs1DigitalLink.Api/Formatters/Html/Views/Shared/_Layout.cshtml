@@ -12,63 +12,118 @@
         <link rel="icon" type="image/png" href="https://goto.it.com/favicon.png">
         <title>@ViewData["Title"] - Goto.it.com</title>
         <style>
-            /* Reset some default styles */
-            * {
-              margin: 0;
-              padding: 0;
-            }
-            body{background:#eee;color:#111;width:clamp(600px, 60vw, 900px);margin:5vh auto;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif}
-            div{opacity:0.8}
-            a:link,a:visited{color:#004578}
-            h1.logo{direction:ltr}
-            h1.logo span {
-                display: inline-block;
-                background: #111;
-                color: #eee;
-                border-radius: 5px;
-                height: 40px;
-                line-height: 40px;
-                width: 40px;
-                margin-right: 1px;
-                text-align: center;
-            }
+            *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-            h1 {
-                font-weight: 600;
-                font-size: 25px;
-                text-transform: uppercase;
-            }
+  :root {
+    --bg: #f4f4f5;
+    --surface: #ffffff;
+    --text: #141414;
+    --subtle: #666;
+    --primary: #005fcc;
+    --tag-lang: #111;
+    --tag-type: #133c85;
+    --tag-default: #006f24;
+    --radius: 8px;
+    --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
 
-            .content {
-              padding: 20px;
-              margin:20px;
-              background-color: #fefefe;
-              border-radius: 8px;
-              box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            }
-            .content h2 { text-align:center; }
-            .content ul, .content p{ margin:10px; }
-            .content li{ list-style: circle inside; padding:8px 3px; }
-            span.tag{ color:#fefefe; text-transform:uppercase;margin-left:5px;padding:3px 5px; border-radius:5px;font-size:.65rem;letter-spacing:1px;font-weight:700;}
-            span.language{background:#111;}
-            span.linkType{background:#183b80;}
-            span.defaultLink{background:#006218;}
-            footer {
-              margin-top: 20px;
-              font-size: 12px;
-              color: #777;
-              text-align: center;
-            }
+  @@media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0f10;
+      --surface: #1b1b1d;
+      --text: #ededed;
+      --subtle: #aaa;
+      --primary: #7ab8ff;
+      --tag-lang: #ededed;
+      --tag-type: #7ab8ff;
+      --tag-default: #4ad07c;
+      --shadow: 0 4px 12px rgba(255,255,255,0.08);
+    }
+  }
 
-            footer a {
-              color: #777;
-              text-decoration: none;
-              margin-left: 5px;
-            }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    max-width: 750px;
+    padding: 4vh 4vw;
+    margin: auto;
+  }
 
-            footer a:hover {
-              text-decoration: underline;
-            }
+  .logo {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .logo span {
+    display: inline-block;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: var(--radius);
+    padding: 4px;
+    margin-right: 4px;
+  }
+
+  /* Container */
+  .content {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    line-height: 1.55;
+  }
+
+  .content h2 {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .content ul { list-style: none; }
+  .content li {
+    padding: 10px 4px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  @@media (prefers-color-scheme: dark) {
+    .content li { border-bottom: 1px solid rgba(255,255,255,0.08); }
+  }
+
+  .content li:last-child { border-bottom: none; }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  a:hover { text-decoration: underline; }
+
+  .tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: var(--surface);
+  }
+  .language { background: var(--tag-lang); color: var(--bg); }
+  .linkType { background: var(--tag-type); }
+  .defaultLink { background: var(--tag-default); }
+
+  footer {
+    color: var(--subtle);
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+  }
+  footer a {
+    color: var(--subtle);
+    margin-left: 5px;
+  }
+  footer a:hover { color: var(--primary); }
         </style>
     </head>
     <body>

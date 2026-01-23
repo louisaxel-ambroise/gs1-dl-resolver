@@ -5,21 +5,30 @@ meta {
 }
 
 get {
-  url: {{BaseUrl}}/{{digitalLink}}?linkType={{linkType}}
+  url: {{BaseUrl}}/{{digitalLink}}?linkType={{linkType}}&test=true
   body: none
   auth: none
 }
 
 params:query {
   linkType: {{linkType}}
+  test: true
 }
 
 headers {
   accept-language: {{language}}
+  ~Accept: application/linkset+json
 }
 
 vars:pre-request {
-  digitalLink: 01/05414195535264
+  digitalLink: 01/09520123456887/21/0001
   linkType: gs1:pip
-  language: fr-FR
+  language: en-GB
+}
+
+settings {
+  encodeUrl: false
+  timeout: inherit
+  followRedirects: false
+  maxRedirects: 5
 }

@@ -1,5 +1,5 @@
 ﻿using Gs1DigitalLink.Api.Contracts;
-using Gs1DigitalLink.Core.Conversion;
+using Gs1DigitalLink.Core.Services.Conversion;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -15,7 +15,7 @@ public sealed class ErrorController : ControllerBase
     {
         var ex = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
         var problem = ex is null
-            ? new ErrorResult
+            ? new ErrorResponse
             {
                 Type = "InternalError",
                 Title = "Unable to process the request",
@@ -23,7 +23,7 @@ public sealed class ErrorController : ControllerBase
                 Errors = [],
                 Status = (int) HttpStatusCode.InternalServerError
             }
-            : new ErrorResult
+            : new ErrorResponse
             {
                 Type = "InternalError",
                 Title = "Unable to process the request",

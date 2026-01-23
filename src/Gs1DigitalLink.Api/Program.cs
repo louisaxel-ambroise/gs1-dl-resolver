@@ -1,26 +1,23 @@
+using Gs1DigitalLink.Api;
 using Gs1DigitalLink.Api.Contracts;
 using Gs1DigitalLink.Api.Formatters.Html;
 using Gs1DigitalLink.Api.Services;
 using Gs1DigitalLink.Core;
-using Gs1DigitalLink.Core.Resolution;
-using Gs1DigitalLink.Infrastructure;
+using Gs1DigitalLink.Core.Services.Resolution;
 using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDigitalLinkCore();
-builder.Services.AddDigitalLinkInfrastructure();
 builder.Services.AddScoped<ILanguageContext, HttpLanguageContext>();
-builder.Services.AddHostedService<InsightConsumer>();
+builder.Services.AddScoped<IEventDispatcher, HttpContextEventDispatcher>();
 builder.Services.AddAuthentication();
 builder.Services.AddRouting();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHostedService<InsightConsumer>();
 builder.Services.Configure<GS1ResolverOptions>(builder.Configuration.GetSection(GS1ResolverOptions.Key));
 builder.Services.AddLocalization(options => options.ResourcesPath = "Formatters/Html/Views/Resources");
-builder.Services.Configure<RazorViewEngineOptions>(options =>
-{
-    options.ViewLocationFormats.Add("/Formatters/Html/Views/Shared/{1}/{0}.cshtml");
-});
+builder.Services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Formatters/Html/Views/Shared/{1}/{0}.cshtml"));
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     options.AddSupportedUICultures("en", "fr", "nl", "de");
@@ -42,6 +39,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();
+app.UseUnitOfWork();
 app.UseRequestLocalization();
 app.UseExceptionHandler("/error");
 app.MapControllers();

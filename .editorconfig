@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# ASP0018: Unused route parameter
+dotnet_diagnostic.ASP0018.severity = silent

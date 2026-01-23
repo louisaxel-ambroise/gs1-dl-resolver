@@ -1,4 +1,4 @@
-﻿using Gs1DigitalLink.Core.Conversion;
+﻿using Gs1DigitalLink.Core.Services.Conversion;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 

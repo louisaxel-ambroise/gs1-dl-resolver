@@ -12,61 +12,81 @@ namespace Gs1DigitalLink.Api.Controllers;
 [Produces("application/json", "application/linkset+json", "text/html")]
 public sealed class ResolverController(IDigitalLinkConverter converter, IDigitalLinkResolver resolver, TimeProvider timeProvider) : ControllerBase
 {
+    private const string LinkTypeQueryKey = "linkType";
+
     [HttpGet, HttpHead]
     [Route("{**_:minlength(2)}")]
     public IActionResult HandleRequest()
     {
         var digitalLink = converter.Parse(Request.GetDisplayUrl());
-        var applicability = Request.GetTypedHeaders().Date ?? timeProvider.GetUtcNow();
+        var applicability = Request.GetApplicableDate();
+        var queryElements = Request.Query.Where(s => !Equals(LinkTypeQueryKey, s.Key)).ToDictionary(kv => kv.Key, kv => (string?) kv.Value.ToString());
 
-        var result = IsLinksetRequested
+        var result = Request.IsLinksetRequested()
             ? resolver.ResolveLinkSet(digitalLink, applicability)
             : resolver.ResolveLinkType(digitalLink, applicability, Request.Query["linkType"]);
 
         var queryElement = Request.Query.Where(s => s.Key != "linkType"); 
         var formattedLinks = result.Links.Select(l => $"<{QueryHelpers.AddQueryString(l.RedirectUrl, queryElement)}>; rel=\"{l.LinkType}\";{(l.Language is null ? "" : "hreflang=\"" + l.Language + "\"")}").ToList();
         
+        AppendLinkHeaders(digitalLink, result, queryElements);
+
+        return HttpMethods.IsHead(Request.Method)
+            ? Ok()
+            : Format(digitalLink, result, queryElements);
+    }
+
+    #region Util Methods
+
+    private void AppendLinkHeaders(DigitalLink digitalLink, IResolutionResult result, IDictionary<string, string?> queryElements)
+    {
+        var formattedLinks = result.Links
+            .Select(l => $"<{QueryHelpers.AddQueryString(l.RedirectUrl, queryElements)}>; rel=\"{l.LinkType}\";{(l.Language is null ? "" : "hreflang=\"" + l.Language + "\"")}")
+            .ToList();
+
         if (digitalLink.Type is not DigitalLinkType.Uncompressed)
         {
-            var uncompressedUrl = QueryHelpers.AddQueryString($"{Request.Scheme}://{Request.Host}/{digitalLink.ToString(false)}", HttpContext.Request.Query.Where(s => s.Key != "linkType"));
+            var uncompressedUrl = QueryHelpers.AddQueryString($"{Request.Scheme}://{Request.Host}/{digitalLink.ToString(false)}", queryElements);
             Response.Headers.Append("Link", $"<{uncompressedUrl}>; rel=\"owl:sameAs\"");
         }
+
         Response.Headers.AppendList("Link", formattedLinks);
 
-        if((result is Core.Services.Resolution.LinksetResult))
+        if (result is LinksetResult)
         {
             Response.Headers.Append("Link", "<https://ref.gs1.org/standards/resolver/linkset-context>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"");
         }
-
-        return Request.Method == HttpMethod.Head.Method
-            ? Ok()
-            : Format(digitalLink, result);
     }
 
-    private IActionResult Format(DigitalLink digitalLink, IResolutionResult result)
+    private IActionResult Format(DigitalLink digitalLink, IResolutionResult result, IDictionary<string, string?> queryElements)
     {
-        var queryElement = Request.Query.Where(s => s.Key != "linkType");
-
         return result switch
         {
-            LinksetResult => new OkObjectResult(new LinksetResponse($"{Request.Scheme}://{Request.Host}/{digitalLink.ToString(false)}", result.Links.GroupBy(l => l.LinkType).ToDictionary(g => g.Key, g => g.Select(MapLink)))),
-            LinkTypeResult r when r.Links.Count() > 1 => new ObjectResult(new MultipleChoiceResponse(result.Links.Select(MapLink))) { StatusCode = StatusCodes.Status300MultipleChoices },
-            LinkTypeResult r when r.Links.Count() == 1 => new RedirectResult(QueryHelpers.AddQueryString(result.Links.Single().RedirectUrl, queryElement), false, true),
+            LinksetResult => new OkObjectResult(MapLinksetResponse(digitalLink, result, queryElements)),
+            LinkTypeResult r when r.Links.Count() > 1 => new ObjectResult(new MultipleChoiceResponse(result.Links.Select(l => MapLink(l, queryElements)))) { StatusCode = StatusCodes.Status300MultipleChoices },
+            LinkTypeResult r when r.Links.Count() == 1 => new RedirectResult(QueryHelpers.AddQueryString(result.Links.Single().RedirectUrl, queryElements), false, true),
             LinkTypeResult r when r.Links.Count() == 0 => new NotFoundObjectResult(ErrorResponse.NotFound),
             _ => new ObjectResult(ErrorResponse.InternalServerError)
         };
     }
 
-    private bool IsLinksetRequested => Request.GetTypedHeaders().Accept.Any(a => a.MediaType == "application/linkset+json") 
-                                   || Request.Query["linkType"].ToString() is "linkset" or "all";
+    private LinksetResponse MapLinksetResponse(DigitalLink digitalLink, IResolutionResult result, IDictionary<string, string?> queryElements)
+    {
+        var anchor = $"{Request.Scheme}://{Request.Host}/{digitalLink.ToString(false)}";
+        var links = result.Links.GroupBy(l => l.LinkType).ToDictionary(g => g.Key, g => g.Select(l => MapLink(l, queryElements)));
+        
+        return new LinksetResponse(anchor, links);
+    }
 
-    private LinkDefinition MapLink(Link link)
+    private static LinkDefinition MapLink(Link link, IDictionary<string, string?> queryElements)
     {
         return new LinkDefinition
         {
             Hreflang = link.Language is null ? [] : [ link.Language.ToString() ],
-            Href = QueryHelpers.AddQueryString(link.RedirectUrl, HttpContext.Request.Query.Where(s => s.Key != "linkType")),
+            Href = QueryHelpers.AddQueryString(link.RedirectUrl, queryElements),
             Title = link.Title
         };
     }
+
+    #endregion
 }

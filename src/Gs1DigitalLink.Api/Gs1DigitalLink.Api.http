@@ -24,6 +24,7 @@ Content-Type: application/json
 ## Register a link type
 POST {{Gs1DigitalLink.Api_HostAddress}}/api/register
 Accept: application/json
+X-Company-Prefix: 952012
 Content-Type: application/json
 {
   "Prefix": "/01/09520123456887",

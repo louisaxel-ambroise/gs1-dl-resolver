@@ -1,3 +1,4 @@
+using Gs1DigitalLink.Api.Contracts.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Gs1DigitalLink.Api.Contracts;
@@ -25,8 +26,17 @@ public sealed record RegisterLinkDefinitionRequest
     public RegisterLinkApplicability? Applicability { get; init; }
 }
 
-public sealed record RegisterLinkApplicability
+public sealed record RegisterLinkApplicability : IValidatableObject
 {
+    [FutureDate]
     public DateTimeOffset? From { get; set; }
     public DateTimeOffset? To { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if(To is not null && From >= To)
+        {
+            yield return new ValidationResult("'To' must be later than 'From'.", [nameof(To)]);
+        }
+    }
 }

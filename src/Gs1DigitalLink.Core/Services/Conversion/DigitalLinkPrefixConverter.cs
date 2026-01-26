@@ -14,13 +14,12 @@ internal class DigitalLinkPrefixConverter(ApplicationIdentifiers identifiers) : 
     {
         var parts = input.Split('/', StringSplitOptions.RemoveEmptyEntries);
         var key = identifiers.Identifiers.SingleOrDefault(i => i.Code == parts[0] && i.Type == AIType.PrimaryKey);
-        var companyPrefix = string.Empty;
 
         if (key is null)
         {
             throw new InvalidDigitalLinkException([new() { Code = "Invalid prefix", Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
         }
-        if (parts.Length >= 2 && !ValidateKey(key, parts[1], out companyPrefix))
+        if (parts.Length >= 2 && !ValidateKey(key, parts[1]))
         {
             throw new InvalidDigitalLinkException([new() { Code = "Invalid prefix", Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
         }
@@ -34,7 +33,6 @@ internal class DigitalLinkPrefixConverter(ApplicationIdentifiers identifiers) : 
 
         return new()
         {
-            CompanyPrefix = companyPrefix,
             Value = input.Trim('/')
         };
     }
@@ -49,10 +47,8 @@ internal class DigitalLinkPrefixConverter(ApplicationIdentifiers identifiers) : 
         return true;
     }
 
-    private static bool ValidateKey(Utils.Identifier key, string value, out string companyPrefix)
+    private static bool ValidateKey(Utils.Identifier key, string value)
     {
-        companyPrefix = string.Empty;
-
         if (value.Length > key.Components.Sum(c => c.Length)) return false;
 
         var gcpComponent = key.Components[0];
@@ -61,8 +57,6 @@ internal class DigitalLinkPrefixConverter(ApplicationIdentifiers identifiers) : 
 
         if(gcpLength < 0 || trimmedValue.Length < gcpLength) return false;
 
-        companyPrefix = trimmedValue[..gcpLength];
-
         return true;
     }
 }
@@ -70,5 +64,4 @@ internal class DigitalLinkPrefixConverter(ApplicationIdentifiers identifiers) : 
 public record Identifier
 {
     public required string Value { get; init; }
-    public required string CompanyPrefix { get; set; }
 }

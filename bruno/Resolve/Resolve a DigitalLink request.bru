@@ -5,14 +5,13 @@ meta {
 }
 
 get {
-  url: {{BaseUrl}}/{{digitalLink}}?linkType={{linkType}}&test=true
+  url: {{BaseUrl}}/{{digitalLink}}?linkType={{linkType}}
   body: none
   auth: none
 }
 
 params:query {
   linkType: {{linkType}}
-  test: true
 }
 
 headers {

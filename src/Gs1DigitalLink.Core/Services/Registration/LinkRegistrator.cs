@@ -10,18 +10,18 @@ public interface ILinkRegistrator
     void DeleteLink(Identifier prefix, Language? language, IEnumerable<string> linkTypes);
 }
 
-internal sealed class LinkRegistrator(DigitalLinkContext context, TimeProvider timeProvider) : ILinkRegistrator
+internal sealed class LinkRegistrator(IUserContext userContext, DigitalLinkContext context, TimeProvider timeProvider) : ILinkRegistrator
 {
     public void RegisterLink(Identifier identifier, string redirectUrl, string title, Language? language, DateRange applicability, IEnumerable<string> linkTypes)
     {
         var prefix = context.Prefixes
-            .Where(c => c.CompanyPrefix == identifier.CompanyPrefix)
+            .Where(c => c.CompanyPrefix == userContext.CompanyPrefix)
             .Where(p => p.Value == identifier.Value)
             .SingleOrDefault();
 
         if (prefix is null)
         {
-            prefix = new Prefix(identifier.CompanyPrefix, identifier.Value);
+            prefix = new Prefix(userContext.CompanyPrefix, identifier.Value);
             context.Prefixes.Add(prefix);
         }
 
@@ -42,7 +42,7 @@ internal sealed class LinkRegistrator(DigitalLinkContext context, TimeProvider t
     {
         var now = timeProvider.GetUtcNow();
         var prefix = context.Prefixes
-            .Where(c => c.CompanyPrefix == identifier.CompanyPrefix)
+            .Where(c => c.CompanyPrefix == userContext.CompanyPrefix)
             .Where(p => p.Value == identifier.Value)
             .SingleOrDefault();
 

@@ -5,12 +5,14 @@ using Gs1DigitalLink.Api.Formatters.Html;
 using Gs1DigitalLink.Api.Services;
 using Gs1DigitalLink.Api.Services.Migrations;
 using Gs1DigitalLink.Core;
+using Gs1DigitalLink.Core.Services.Registration;
 using Gs1DigitalLink.Core.Services.Resolution;
 using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDigitalLinkCore();
+builder.Services.AddScoped<IUserContext, HttpHeaderUserContext>();
 builder.Services.AddScoped<ILanguageContext, HttpLanguageContext>();
 builder.Services.AddScoped<IEventDispatcher, HttpContextEventDispatcher>();
 builder.Services.AddAuthentication();

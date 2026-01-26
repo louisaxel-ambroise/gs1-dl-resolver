@@ -31,7 +31,8 @@ The resolver contains endpoint to:
 Registeration of a DigitalLink is made by making a POST request on the root path followed by the DigitalLink (compressed or not).
 
 ```sh
-curl -X POST "https://id.goto.it.com/01/09506000134352" -H "Content-Type: application/json" -H "Accept-Language: en-GB" -d '{
+curl -X POST "https://id.goto.it.com/api/register" -H "Content-Type: application/json" -d '{
+  "prefix": "/01/09506000134352",
   "title":"Description",
   "redirectUrl":"https://example.org{?gtin}",
   "linkTypes": ["gs1:pip", "gs1:defaultLink"],
@@ -63,23 +64,31 @@ The days parameter restricts the number of days returned by the endpoint. The de
 
 ### Compress/Uncompress a DigitalLink
 
-You can compress a DigitalLink using the `/api/compress/{digitalLink}` endpoint. You can specify compression type using the `x-compression-type` hreader.  `Partial` and `Full` compression types are supported. Compression of the non-GS1 query strings is also supported by setting the `x-compress-querystring` header set to `true`
+You can compress a DigitalLink using the `/api/compress/{digitalLink}` endpoint:
 
 ```sh
-curl -X GET "https://id.goto.it.com/api/compress/01/09506000134352" -H "Content-Type: application/json" 
+curl -X POST "https://id.goto.it.com/api/compress -H "Content-Type: application/json" -d '{
+	"digitalLink": "/01/09506000134352",
+	"compressionType": "Full",
+	"compressQueryString": false
+}'
 ```
 
-Similarily, decompression is done using the `/api/decompress/{digitalLink}` endpoint. The response include the type of compression used (uncompressed, fully compressed or partially compressed), as well as the canonical URL of the DigitalLink.
+`compressionType` can take the values `Full` or `Partial`. Partial compressed DigitalLink will keep the key AI uncompressed.
+
+Similarily, decompression is done using the `/api/decompres` endpoint. The response include the type of compression used (uncompressed, fully compressed or partially compressed), as well as the canonical URL of the DigitalLink.
 
 Example: 
 
 ```sh
-curl -X GET "https://id.goto.it.com/api/decompress/ARFKk4XBoA" -H "Content-Type: application/json"
+curl -X POST "https://id.goto.it.com/api/decompress" -H "Content-Type: application/json" -d'{
+	"digitalLink": "ARFKk4XBoA"
+}'
 ```
 
 ## Installation
 
-1. CLone the repo: `git clone https://github.com/louisaxel-ambroise/goto`
+1. Clone the repo: `git clone https://github.com/louisaxel-ambroise/goto`
 2. Go to the directory: `cd goto`
 3. Restore nuget packages: `dotnet restore`
 4. Run the project: `dotnet run --project src/Gs1DigitalLink.Api/Gs1DigitalLink.Api.csproj`

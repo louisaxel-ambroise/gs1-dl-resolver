@@ -10,11 +10,15 @@ post {
   auth: none
 }
 
+headers {
+  X-Company-Prefix: 5414195
+}
+
 body:json {
   {
     "prefix":"{{digitalLink}}",
     "title":"Test desc",
-    "redirectUrl":"https://example.org{?gtin}",
+    "redirectUrl":"https://01.org{?gtin,10,21}",
     "linkTypes": ["gs1:pip"],
     "language":"en-US"
   }

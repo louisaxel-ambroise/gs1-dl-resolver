@@ -1,0 +1,139 @@
+﻿@using System.Globalization
+@{
+    var direction = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft
+                ? "rtl"
+                : "ltr";
+}
+<!DOCTYPE html>
+<html dir="@direction">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/png" href="https://goto.it.com/favicon.png">
+        <title>@ViewData["Title"] - Goto.it.com</title>
+        <style>
+            *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --bg: #f4f4f5;
+    --surface: #ffffff;
+    --text: #141414;
+    --subtle: #666;
+    --primary: #005fcc;
+    --tag-lang: #111;
+    --tag-type: #133c85;
+    --tag-default: #006f24;
+    --radius: 8px;
+    --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+
+  @@media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0f10;
+      --surface: #1b1b1d;
+      --text: #ededed;
+      --subtle: #aaa;
+      --primary: #7ab8ff;
+      --tag-lang: #ededed;
+      --tag-type: #7ab8ff;
+      --tag-default: #4ad07c;
+      --shadow: 0 4px 12px rgba(255,255,255,0.08);
+    }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    max-width: 1050px;
+    padding: 4vh 4vw;
+    margin: auto;
+  }
+
+  .logo {
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: inline-block;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 10px;
+    padding: 1px 10px;
+    margin-right: 4px;
+    line-height: 35px;
+    text-transform: uppercase;
+    font-size: 22px;
+    letter-spacing: 0px;
+  }
+
+  /* Container */
+  .content {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    line-height: 1.55;
+  }
+
+  .content h2 {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .content ul { list-style: none; }
+  .content li {
+    padding: 10px 4px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  @@media (prefers-color-scheme: dark) {
+    .content li { border-bottom: 1px solid rgba(255,255,255,0.08); }
+  }
+
+  .content li:last-child { border-bottom: none; }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  a:hover { text-decoration: underline; }
+
+  .tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: var(--surface);
+  }
+  .language { background: var(--tag-lang); color: var(--bg); }
+  .linkType { background: var(--tag-type); }
+  .defaultLink { background: var(--tag-default); }
+
+  footer {
+    color: var(--subtle);
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+  }
+  footer a {
+    color: var(--subtle);
+    margin-left: 5px;
+  }
+  footer a:hover { color: var(--primary); }
+        </style>
+    </head>
+    <body>
+        <h1 class="logo">Goto</h1>
+        <div class="content">
+            @RenderBody()
+        </div>
+        <footer>
+            &copy; @TimeProvider.System.GetUtcNow().Year Goto.it.com
+            <a href="https://goto.it.com/">Home</a>
+        </footer>
+    </body>
+</html>

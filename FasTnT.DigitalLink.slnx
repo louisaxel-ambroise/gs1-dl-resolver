@@ -3,7 +3,7 @@
     <File Path=".editorconfig" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/Gs1DigitalLink.Api/Gs1DigitalLink.Api.csproj" />
+    <Project Path="src/Gs1DigitalLink.Web/Gs1DigitalLink.Web.csproj" />
     <Project Path="src/Gs1DigitalLink.Core/Gs1DigitalLink.Core.csproj" />
   </Folder>
   <Folder Name="/test/">

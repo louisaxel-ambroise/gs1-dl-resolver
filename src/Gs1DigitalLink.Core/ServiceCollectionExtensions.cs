@@ -7,7 +7,6 @@ using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
 using Gs1DigitalLink.Core.Services.Insights;
 using Gs1DigitalLink.Core.Services.Registration;
 using Gs1DigitalLink.Core.Services.Resolution;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using System.Threading.Channels;

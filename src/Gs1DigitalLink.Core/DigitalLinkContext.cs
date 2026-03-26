@@ -1,7 +1,6 @@
 ﻿using Gs1DigitalLink.Core.Model;
 using Gs1DigitalLink.Core.Model.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Gs1DigitalLink.Core;
 

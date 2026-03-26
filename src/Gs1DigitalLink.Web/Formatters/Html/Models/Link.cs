@@ -1,4 +1,4 @@
-﻿namespace Gs1DigitalLink.Web.Formatters.Models;
+﻿namespace Gs1DigitalLink.Web.Formatters.Html.Models;
 
 public record Link
 {

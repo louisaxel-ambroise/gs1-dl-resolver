@@ -3,9 +3,9 @@ using Gs1DigitalLink.Core.Model.Interfaces;
 
 namespace Gs1DigitalLink.Core.Services.Registration;
 
-public class CheckForPrefixDefaultLinkAfterRegistrationDomainEventHandler : IDomainEventHandler<PrefixLinkRegisteredDomainEvent>
+public class CheckForPrefixDefaultLinkAfterUnregistrationDomainEventHandler : IDomainEventHandler<PrefixLinksDeactivatedDomainEvent>
 {
-    public void Handle(PrefixLinkRegisteredDomainEvent domainEvent)
+    public void Handle(PrefixLinksDeactivatedDomainEvent domainEvent)
     {
         var hasDefaultLink = domainEvent.Prefix.Links.Any(l => l.IsApplicableAt(domainEvent.RaisedAt) && l.IsDefaultLink());
 

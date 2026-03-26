@@ -1,5 +1,4 @@
-﻿using Gs1DigitalLink.Core.Services.Conversion;
-using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
+﻿using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
 using System.Globalization;
 using System.Numerics;
 using System.Text;

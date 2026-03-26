@@ -1,6 +1,5 @@
 ﻿using Gs1DigitalLink.Core.Model;
 using Gs1DigitalLink.Core.Services.Conversion;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gs1DigitalLink.Core.Services.Registration;
 

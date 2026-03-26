@@ -1,5 +1,4 @@
-﻿using Gs1DigitalLink.Core.Services.Conversion.Utils;
-using System.Xml;
+﻿using System.Xml;
 
 namespace Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
 

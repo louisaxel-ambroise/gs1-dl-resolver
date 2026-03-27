@@ -13,7 +13,7 @@ internal sealed class InsightConsumer(Channel<Insight> channel, IServiceProvider
             try
             {
                 using var scope = serviceProvider.CreateScope();
-                using var context = scope.ServiceProvider.GetRequiredService<DigitalLinkContext>();
+                using var context = scope.ServiceProvider.GetRequiredService<ResolverContext>();
 
                 context.Insights.Add(insight);
                 context.SaveChanges();

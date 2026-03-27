@@ -10,6 +10,8 @@ public sealed class DateRange : ValueObject
 
     public DateRange(DateTimeOffset from, DateTimeOffset? to)
     {
+        ArgumentOutOfRangeException.ThrowIfLessThan(to ?? DateTimeOffset.MaxValue, from);
+
         From = from;
         To = to;
     }

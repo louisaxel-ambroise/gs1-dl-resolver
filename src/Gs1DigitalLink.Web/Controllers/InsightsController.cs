@@ -16,12 +16,12 @@ public sealed class InsightsController(IDigitalLinkConverter converter, IInsight
     {
         var digitalLink = converter.Parse(Request.GetDisplayUrl());
         var options = new ListInsightsOptions { Days = request.Days };
-        var result = insightResolver.ListInsights(digitalLink.ToString(false), options);
+        var result = insightResolver.ListInsights(digitalLink.ToShortString(), options);
 
         return new OkObjectResult(new
         {
             ScanCount = result.Count(),
-            DigitalLink = digitalLink.ToString(false),
+            DigitalLink = digitalLink.ToShortString(),
             Insights = result.Select(MapInsight)
         });
     }

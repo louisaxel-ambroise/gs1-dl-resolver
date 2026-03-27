@@ -26,8 +26,7 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
             ? resolver.ResolveLinkSet(digitalLink, applicability)
             : resolver.ResolveLinkType(digitalLink, applicability, Request.Query["linkType"]);
 
-        var queryElement = Request.Query.Where(s => s.Key != "linkType"); 
-        var formattedLinks = result.Links.Select(l => $"<{QueryHelpers.AddQueryString(l.RedirectUrl, queryElement)}>; rel=\"{l.LinkType}\";{(l.Language is null ? "" : "hreflang=\"" + l.Language + "\"")}").ToList();
+        var formattedLinks = result.Links.Select(l => $"<{QueryHelpers.AddQueryString(l.RedirectUrl, queryElements)}>; rel=\"{l.LinkType}\";{(l.Language is null ? "" : "hreflang=\"" + l.Language + "\"")}").ToList();
         
         AppendLinkHeaders(digitalLink, result, queryElements);
 
@@ -43,12 +42,6 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
         var formattedLinks = result.Links
             .Select(l => $"<{QueryHelpers.AddQueryString(l.RedirectUrl, queryElements)}>; rel=\"{l.LinkType}\";{(l.Language is null ? "" : "hreflang=\"" + l.Language + "\"")}")
             .ToList();
-
-        if (digitalLink.Type is not DigitalLinkType.Uncompressed)
-        {
-            var uncompressedUrl = QueryHelpers.AddQueryString($"{Request.Scheme}://{Request.Host}/{digitalLink.ToString(false)}", queryElements);
-            Response.Headers.Append("Link", $"<{uncompressedUrl}>; rel=\"owl:sameAs\"");
-        }
 
         Response.Headers.AppendList("Link", formattedLinks);
 
@@ -72,7 +65,7 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
 
     private LinksetResponse MapLinksetResponse(DigitalLink digitalLink, IResolutionResult result, IDictionary<string, string?> queryElements)
     {
-        var anchor = $"{Request.Scheme}://{Request.Host}/{digitalLink.ToString(false)}";
+        var anchor = $"{Request.Scheme}://{Request.Host}/{digitalLink.ToShortString()}";
         var links = result.Links.GroupBy(l => l.LinkType).ToDictionary(g => g.Key, g => g.Select(l => MapLink(l, queryElements)));
         
         return new LinksetResponse(anchor, links);

@@ -1,4 +1,5 @@
-﻿using Gs1DigitalLink.Core.Model.Interfaces;
+﻿using Gs1DigitalLink.Core.Model.Events;
+using Gs1DigitalLink.Core.Model.Interfaces;
 
 namespace Gs1DigitalLink.Core.Model;
 
@@ -20,16 +21,12 @@ public sealed class Prefix : Aggregate
 
     public void AddLink(Link link)
     {
-        foreach(var overlappingLink in Links.Where(l => l.Equals(link) && l.Overlapse(link)))
-        {
-            overlappingLink.EndAvailability(link.Availability.From);
-        }
-
         Links.Add(link);
+
         Raise(new PrefixLinkRegisteredDomainEvent(this, link));
     }
 
-    public void SetLinksetAsDefaultLink(bool value)
+    public void SetLinksetAsDefault(bool value)
     {
         IsLinksetDefault = value;
     }

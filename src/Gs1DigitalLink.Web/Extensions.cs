@@ -30,7 +30,7 @@ public static class Extensions
 
             if (AffectedMethods.Contains(req.Request.Method))
             {
-                var context = req.RequestServices.GetRequiredService<DigitalLinkContext>();
+                var context = req.RequestServices.GetRequiredService<ResolverContext>();
                 context.SaveChanges();
             }
         });

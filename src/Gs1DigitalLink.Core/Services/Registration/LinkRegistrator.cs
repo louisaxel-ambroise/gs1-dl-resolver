@@ -9,7 +9,7 @@ public interface ILinkRegistrator
     void DeleteLink(Identifier prefix, Language? language, IEnumerable<string> linkTypes);
 }
 
-internal sealed class LinkRegistrator(IUserContext userContext, DigitalLinkContext context, TimeProvider timeProvider) : ILinkRegistrator
+internal sealed class LinkRegistrator(IUserContext userContext, ResolverContext context, TimeProvider timeProvider) : ILinkRegistrator
 {
     public void RegisterLink(Identifier identifier, string redirectUrl, string title, Language? language, DateRange applicability, IEnumerable<string> linkTypes)
     {

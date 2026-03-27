@@ -96,7 +96,7 @@ internal static class CompanyPrefix
 
         private static void EnsureInRange(char value)
         {
-            if (!Convert.ToByte(value).IsNumeric())
+            if (value is < '0' or > '9')
             {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }

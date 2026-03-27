@@ -9,7 +9,10 @@
 
 <h2>@Model.Status - @Localizer[Model.Title]</h2>
 
-<p>@Localizer[Model.Detail]<br /><strong>@Localizer["This request should not be retried."]</strong></p>
+@if (Model.Status is >= 400 and <= 499)
+{
+    <p>@Localizer[Model.Detail]<br /><strong>@Localizer["This request should not be retried."]</strong></p>
+}
 
 @if (Model.Errors.Any())
 {
@@ -18,7 +21,7 @@
         <ul>
             @foreach (var error in Model.Errors)
             {
-                <li>@error.Message <em>(@error.Code)</em></li>
+                <li>@Localizer[error.Code]</li>
             }
         </ul>
     </details>

@@ -14,20 +14,19 @@ public sealed class DigitalLinkResolverTests
         return new DigitalLink
         {
             CompanyPrefix = "950600",
-            Type = DigitalLinkType.Unknown,
             QueryString = [],
             AIs =
             [
                 new KeyValue
                 { 
                     Key = new Services.Conversion.Utils.Identifier { Code = "01", Type = AIType.PrimaryKey }, 
-                    Components = [ new Component { Definition = new(){ Length= 14, Type = Charset.Numeric }, Value = "09506000134352" } ],
+                    Value = "09506000134352",
                     Issues = []
                 },
                 new KeyValue
                 {
                     Key = new Services.Conversion.Utils.Identifier { Code = "10", Type = AIType.Qualifier },
-                    Components = [ new Component { Definition = new(){ Length= 14, Type = Charset.Alpha }, Value = "ABC123" } ],
+                    Value = "ABC123",
                     Issues = []
                 }
             ]
@@ -47,7 +46,7 @@ public sealed class DigitalLinkResolverTests
             Availability = new(DateTimeOffset.MinValue, DateTimeOffset.MaxValue)
         });
 
-        var context = new DigitalLinkContext(new FakeEventDispatcher(), TimeProvider.System);
+        var context = new ResolverContext(new FakeEventDispatcher(), TimeProvider.System);
         var resolver = new DigitalLinkResolver(context, new FakeLanguageContext());
         context.Database.EnsureCreated();
         context.Prefixes.Add(prefix);

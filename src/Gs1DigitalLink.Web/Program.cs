@@ -52,6 +52,7 @@ MigrateDatabase(app.Services);
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();
+app.UseStaticFiles();
 app.UseUnitOfWork();
 app.UseRequestLocalization();
 app.UseExceptionHandler("/error");

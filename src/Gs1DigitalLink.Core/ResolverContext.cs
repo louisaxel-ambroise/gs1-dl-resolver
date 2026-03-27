@@ -1,10 +1,11 @@
 ﻿using Gs1DigitalLink.Core.Model;
 using Gs1DigitalLink.Core.Model.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Gs1DigitalLink.Core;
 
-public class DigitalLinkContext : DbContext
+public class ResolverContext : DbContext
 {
     public DbSet<Prefix> Prefixes { get; private set; }
     public DbSet<Insight> Insights { get; private set; }
@@ -12,7 +13,7 @@ public class DigitalLinkContext : DbContext
     private readonly IEventDispatcher _eventDispatcher;
     private readonly TimeProvider _timeProvider;
 
-    public DigitalLinkContext(IEventDispatcher eventDispatcher, TimeProvider timeProvider)
+    public ResolverContext(IEventDispatcher eventDispatcher, TimeProvider timeProvider)
     {
         _eventDispatcher = eventDispatcher;
         _timeProvider = timeProvider;
@@ -21,29 +22,46 @@ public class DigitalLinkContext : DbContext
 
     private void DispatchDomainEvents(object? sender, SavingChangesEventArgs e)
     {
-        ChangeTracker.Entries().Where(e => e.Entity is Aggregate entity).ToList()
-            .ForEach(entry =>
+        var depth = 0;
+        var entries = default(IEnumerable<EntityEntry>);
+
+        do
+        {
+            entries = ChangeTracker.Entries().Where(e => e.Entity is Aggregate aggregate && aggregate.PendingEvents.Any());
+
+            foreach (var entity in entries.Select(entry => (Aggregate)entry.Entity))
             {
-                var entity = (Aggregate)entry.Entity;
-                var events = entity.PendingEvents.ToList();
-                events.ForEach(e =>
-                {
-                    e.RaisedAt = _timeProvider.GetUtcNow();
-                    _eventDispatcher.Dispatch(e);
-                });
+                DispatchDomainEvents(entity);
+
                 entity.ClearPendingEvents();
-            });
+            }
+
+            if(depth++ > MAX_RECURSION)
+            {
+                throw new InvalidOperationException("Reached max recusion for domain events dispatching. Please review architecture.");
+            }
+
+        } while (entries.Any());
+    }
+
+    private void DispatchDomainEvents(Aggregate entity)
+    {
+        foreach (var pendingEvent in entity.PendingEvents)
+        {
+            pendingEvent.RaisedAt = _timeProvider.GetUtcNow();
+            _eventDispatcher.Dispatch(pendingEvent);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var prefix = modelBuilder.Entity<Prefix>().ToTable("Prefix");
+        var prefix = modelBuilder.Entity<Prefix>().ToTable(nameof(Prefix));
         prefix.HasKey(e => e.Id);
         prefix.Property(e => e.Id).UseAutoincrement();
         prefix.HasMany(e => e.Links).WithOne().HasForeignKey("PrefixId");
         prefix.Navigation(e => e.Links).AutoInclude();
 
-        var link = modelBuilder.Entity<Link>().ToTable("Link");
+        var link = modelBuilder.Entity<Link>().ToTable(nameof(Link));
         link.HasKey(e => e.Id);
         link.Property(e => e.Id).UseAutoincrement();
         link.ComplexProperty(l => l.Availability, cfg =>
@@ -51,9 +69,9 @@ public class DigitalLinkContext : DbContext
             cfg.Property(a => a.From).HasConversion(dto => dto.ToUnixTimeSeconds(), s => DateTimeOffset.FromUnixTimeSeconds(s)).HasColumnName("AvailableFrom");
             cfg.Property(a => a.To).HasConversion(dto => dto == null ? default(long?) : dto.Value.ToUnixTimeSeconds(), s => s == null ? default(DateTimeOffset?) : DateTimeOffset.FromUnixTimeSeconds(s.Value)).HasColumnName("AvailableTo");
         });
-        link.Property(e => e.Language).HasConversion(lang => lang.ToString(), s => s);
+        link.Property(e => e.Language).HasConversion(lang => lang == null ? string.Empty : lang.ToString(), s => s);
 
-        var insight = modelBuilder.Entity<Insight>().ToTable("Insight");
+        var insight = modelBuilder.Entity<Insight>().ToTable(nameof(Insight));
         insight.HasKey(e => e.Id);
         insight.Property(e => e.Id).UseAutoincrement();
         insight.Property(e => e.Timestamp).HasConversion(dto => dto.ToUnixTimeSeconds(), s => DateTimeOffset.FromUnixTimeSeconds(s));
@@ -62,5 +80,7 @@ public class DigitalLinkContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite($"Data Source=registry.db");
+
+    const int MAX_RECURSION = 5;
 }
 

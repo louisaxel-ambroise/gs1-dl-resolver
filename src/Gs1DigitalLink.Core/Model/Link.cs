@@ -10,16 +10,11 @@ public sealed class Link : Entity<Prefix>
     public required string LinkType { get; set; }
     public required DateRange Availability { get; set; }
 
-    public bool IsDefaultLink() => LinkType.StartsWith("gs1:defaultLink");
+    public bool IsDefaultLink => LinkType is "gs1:defaultLink" or "gs1:defaultLinkMulti";
 
-    public bool Equals(Link other)
+    public bool IsEquivalentTo(Link other)
     {
         return Equals(other.Language, Language) && other.LinkType.Equals(LinkType);
-    }
-
-    public bool Overlapse(Link other)
-    {
-        return Availability.Overlapse(other.Availability);
     }
 
     internal bool IsApplicableAt(DateTimeOffset applicability)

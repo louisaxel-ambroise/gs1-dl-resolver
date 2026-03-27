@@ -23,10 +23,6 @@ public static class ServiceCollectionExtensions
         {
             CompanyPrefix.Initialize(file);
         }
-        using (var file = File.OpenRead("Documents/OptimizationCodes.json"))
-        {
-            services.AddSingleton(JsonSerializer.Deserialize<OptimizationCodes>(file, jsonOptions) ?? new() { Codes = [] });
-        }
         using (var file = File.OpenRead("Documents/ApplicationIdentifiers.json"))
         {
             services.AddSingleton(JsonSerializer.Deserialize<ApplicationIdentifiers>(file, jsonOptions) ?? new() { Identifiers = [], CodeLength = [] });
@@ -43,7 +39,7 @@ public static class ServiceCollectionExtensions
             .AsScoped()
             .Apply();
 
-        services.AddDbContext<DigitalLinkContext>();
+        services.AddDbContext<ResolverContext>();
         services.AddScoped<IInsightResolver, InsightResolver>();
 
         typeof(Aggregate).Assembly.GetTypes().Where(t => t.IsClass && t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDomainEventHandler<>))).ToList()

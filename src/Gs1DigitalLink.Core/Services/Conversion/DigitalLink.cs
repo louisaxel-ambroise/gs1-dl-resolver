@@ -1,67 +1,41 @@
 ﻿using Gs1DigitalLink.Core.Services.Conversion.Utils;
+using System.Text;
 
 namespace Gs1DigitalLink.Core.Services.Conversion;
-
-public record CompressionResult
-{
-    public required string UncompressedValue { get; init; }
-    public required string CompressedValue { get; init; }
-    public decimal CompressionRate => Math.Round(100 - (100*Convert.ToDecimal(CompressedValue.Length)/Convert.ToDecimal(UncompressedValue.Length)), 2);
-}
 
 public class DigitalLink
 {
     public required string CompanyPrefix { get; init; }
     public required IEnumerable<KeyValue> AIs { get; init; }
     public required IEnumerable<KeyValuePair<string, string>> QueryString { get; init; }
-    public required DigitalLinkType Type { get; init; }
 
-    public override string ToString() => ToString(true);
-
-    public string ToString(bool includeQueryString)
+    public string ToShortString()
     {
-        var pathBuilder = new List<string>();
-        var queryBuilder = new List<string>();
+        var pathBuilder = new StringBuilder();
 
         foreach (var ai in AIs)
         {
             switch (ai.Key.Type)
             {
-                case AIType.DataAttribute:
-                    queryBuilder.Add($"{Uri.EscapeDataString(ai.Code)}={Uri.EscapeDataString(ai.Value)}");
-                    break;
                 case AIType.PrimaryKey:
                 case AIType.Qualifier:
-                    pathBuilder.Add($"{ai.Code}/{Uri.EscapeDataString(ai.Value)}");
+                    pathBuilder.Append(ai.Code).Append('/').Append(Uri.EscapeDataString(ai.Value)).Append('/');
                     break;
             }
         }
-        if (includeQueryString)
-        {
-            foreach (var queryString in QueryString)
-            {
-                queryBuilder.Add($"{Uri.EscapeDataString(queryString.Key)}={Uri.EscapeDataString(queryString.Value)}");
-            }
-        }
 
-        var result = string.Join('/', pathBuilder);
+        pathBuilder = pathBuilder.Remove(pathBuilder.Length - 1, 1);
 
-        if (queryBuilder.Count > 0)
-        {
-            result += "?" + string.Join('&', queryBuilder);
-        }
-
-        return result;
+        return pathBuilder.ToString();
     }
 }
 
 public sealed record KeyValue
 {
     public required Utils.Identifier Key { get; init; }
-    public required IEnumerable<Component> Components { get; init; }
+    public required string Value { get; init; }
     public required IEnumerable<ValidationIssue> Issues { get; init; }
     public string Code => Key.Code;
-    public string Value => string.Concat(Components.Select(c => c.Value));
 }
 
 public sealed record ValidationIssue
@@ -76,12 +50,4 @@ public sealed record Component
 {
     public required AIComponent Definition { get; init; }
     public required string Value { get; init; }
-}
-
-public enum DigitalLinkType
-{
-    Unknown,
-    FullyCompressed,
-    PartiallyCompressed,
-    Uncompressed
 }

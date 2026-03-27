@@ -1,5 +1,4 @@
-﻿using Gs1DigitalLink.Core.Services.Conversion.Utils;
-using System.Xml;
+﻿using System.Xml;
 
 namespace Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
 
@@ -97,7 +96,7 @@ internal static class CompanyPrefix
 
         private static void EnsureInRange(char value)
         {
-            if (!Convert.ToByte(value).IsNumeric())
+            if (value is < '0' or > '9')
             {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }

@@ -1,4 +1,5 @@
-﻿using Gs1DigitalLink.Core.Services.Conversion.Utils;
+﻿using Gs1DigitalLink.Core.Model.Exceptions;
+using Gs1DigitalLink.Core.Services.Conversion.Utils;
 using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
 
 namespace Gs1DigitalLink.Core.Services.Conversion;
@@ -15,19 +16,19 @@ internal class DigitalLinkPrefixConverter(ApplicationIdentifiers identifiers) : 
         var parts = input.Split('/', StringSplitOptions.RemoveEmptyEntries);
         var key = identifiers.Identifiers.SingleOrDefault(i => i.Code == parts[0] && i.Type == AIType.PrimaryKey);
 
-        if (key is null)
+        if (key is null || key == default)
         {
-            throw new InvalidDigitalLinkException([new() { Code = "Invalid prefix", Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
+            throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
         }
         if (parts.Length >= 2 && !ValidateKey(key, parts[1]))
         {
-            throw new InvalidDigitalLinkException([new() { Code = "Invalid prefix", Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
+            throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
         }
         for (var i=2; i<parts.Length-2; i += 2)
         {
             if (!ValidateQualifier(parts[i], parts[i + 1]))
             {
-                throw new InvalidDigitalLinkException([new() { Code = "Invalid prefix", Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
+                throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
             }
         }
 

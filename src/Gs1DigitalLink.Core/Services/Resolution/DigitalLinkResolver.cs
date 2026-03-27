@@ -10,7 +10,7 @@ public interface IDigitalLinkResolver
     IResolutionResult ResolveLinkType(DigitalLink digitalLink, DateTimeOffset applicability, string? linkType);
 }
 
-internal sealed class DigitalLinkResolver(DigitalLinkContext context, ILanguageContext languageContext) : IDigitalLinkResolver
+internal sealed class DigitalLinkResolver(ResolverContext context, ILanguageContext languageContext) : IDigitalLinkResolver
 {
     public IResolutionResult ResolveLinkSet(DigitalLink digitalLink, DateTimeOffset applicability)
     {

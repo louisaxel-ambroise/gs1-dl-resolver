@@ -1,8 +1,8 @@
 ﻿using Gs1DigitalLink.Core.Model.Interfaces;
 
-namespace Gs1DigitalLink.Core.Model;
+namespace Gs1DigitalLink.Core.Model.Events;
 
 public record PrefixLinksDeactivatedDomainEvent(Prefix Prefix, Language? Language, IEnumerable<Link> Links) : IDomainEvent
 {
     public DateTimeOffset RaisedAt { get; set; }
-}
+}   

@@ -8,7 +8,7 @@ public sealed record ErrorResponse
     public IEnumerable<ErrorDetail> Errors { get; init; } = [];
     public int Status { get; init; }
 
-    public static ErrorResponse InternalServerError = new ErrorResponse
+    public static ErrorResponse InternalServerError => new()
     {
         Status = StatusCodes.Status500InternalServerError,
         Type = "InternalServerError",
@@ -16,7 +16,7 @@ public sealed record ErrorResponse
         Detail = "Unable to process the request"
     };
 
-    public static ErrorResponse NotFound = new()
+    public static ErrorResponse NotFound => new()
     {
         Status = StatusCodes.Status404NotFound,
         Type = "NotFound",

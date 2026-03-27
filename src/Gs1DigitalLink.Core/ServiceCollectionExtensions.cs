@@ -7,7 +7,6 @@ using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
 using Gs1DigitalLink.Core.Services.Insights;
 using Gs1DigitalLink.Core.Services.Registration;
 using Gs1DigitalLink.Core.Services.Resolution;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using System.Threading.Channels;
@@ -23,10 +22,6 @@ public static class ServiceCollectionExtensions
         using (var file = File.OpenRead("Documents/gcpprefixformatlist.xml"))
         {
             CompanyPrefix.Initialize(file);
-        }
-        using (var file = File.OpenRead("Documents/OptimizationCodes.json"))
-        {
-            services.AddSingleton(JsonSerializer.Deserialize<OptimizationCodes>(file, jsonOptions) ?? new() { Codes = [] });
         }
         using (var file = File.OpenRead("Documents/ApplicationIdentifiers.json"))
         {
@@ -44,7 +39,7 @@ public static class ServiceCollectionExtensions
             .AsScoped()
             .Apply();
 
-        services.AddDbContext<DigitalLinkContext>();
+        services.AddDbContext<ResolverContext>();
         services.AddScoped<IInsightResolver, InsightResolver>();
 
         typeof(Aggregate).Assembly.GetTypes().Where(t => t.IsClass && t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDomainEventHandler<>))).ToList()

@@ -8,7 +8,7 @@ public interface IInsightResolver
     IEnumerable<Insight> ListInsights(string digitalLink, ListInsightsOptions options);
 }
 
-public class InsightResolver(DigitalLinkContext context, TimeProvider timeProvider) : IInsightResolver
+public class InsightResolver(ResolverContext context, TimeProvider timeProvider) : IInsightResolver
 {
     public IEnumerable<Insight> ListInsights(string digitalLink, ListInsightsOptions options)
     {

@@ -9,10 +9,10 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/png" href="https://goto.it.com/favicon.png">
+        <link rel="icon" type="image/png" href="https://goto.it.com/favicon.ico">
         <title>@ViewData["Title"] - Goto.it.com</title>
         <style>
-            *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
   :root {
     --bg: #f4f4f5;
@@ -112,6 +112,9 @@
   .language { background: var(--tag-lang); color: var(--bg); }
   .linkType { background: var(--tag-type); }
   .defaultLink { background: var(--tag-default); }
+
+  details { margin:20px; }
+  .content details ul li { padding-left:30px; }
 
   footer {
     color: var(--subtle);

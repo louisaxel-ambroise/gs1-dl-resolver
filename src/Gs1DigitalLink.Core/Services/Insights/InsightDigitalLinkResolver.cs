@@ -17,7 +17,7 @@ internal sealed class InsightDigitalLinkResolver(IDigitalLinkResolver resolver, 
 
         var insight = new Insight
         {
-            DigitalLink = digitalLink.ToString(false),
+            DigitalLink = digitalLink.ToShortString(),
             Timestamp = timeProvider.GetUtcNow(),
             LinkType = linkType,
             Languages = languageContext.GetLanguages().Select(language => language.ToString()),

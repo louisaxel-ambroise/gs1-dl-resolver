@@ -1,4 +1,5 @@
-﻿using Gs1DigitalLink.Core.Model;
+﻿using Gs1DigitalLink.Core.Contracts;
+using Gs1DigitalLink.Core.Model;
 using Gs1DigitalLink.Core.Model.Interfaces;
 using Gs1DigitalLink.Core.Services.Conversion;
 using Gs1DigitalLink.Core.Services.Conversion.Utils;

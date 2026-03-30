@@ -17,22 +17,23 @@ public static class Extensions
     public static bool IsLinksetRequested(this HttpRequest request)
     {
         return request.GetTypedHeaders().Accept.Any(a => a.MediaType == "application/linkset+json")
-            || request.Query["linkType"].ToString() is "linkset" or "all";
+            || LinksetLinkTypeValues.Any(x => x.Equals(request.Query["linkType"].ToString(), StringComparison.OrdinalIgnoreCase));
     }
 
     public static IApplicationBuilder UseUnitOfWork(this IApplicationBuilder app)
     {
-         string[] AffectedMethods = [HttpMethod.Post.Method, HttpMethod.Put.Method, HttpMethod.Patch.Method, HttpMethod.Delete.Method];
-        
         return app.Use(async (req, next) =>
         {
             await next();
 
-            if (AffectedMethods.Contains(req.Request.Method))
+            if (CommandHttpMethods.Any(x => x.Equals(req.Request.Method, StringComparison.OrdinalIgnoreCase)))
             {
                 var context = req.RequestServices.GetRequiredService<ResolverContext>();
                 context.SaveChanges();
             }
         });
     }
+
+    static readonly string[] LinksetLinkTypeValues = ["linkset", "all"];
+    static readonly string[] CommandHttpMethods = [HttpMethod.Post.Method, HttpMethod.Put.Method, HttpMethod.Patch.Method, HttpMethod.Delete.Method];
 }

@@ -1,4 +1,4 @@
-﻿namespace Gs1DigitalLink.Core.Services.Registration;
+﻿namespace Gs1DigitalLink.Core.Contracts.Registration;
 
 public interface IUserContext
 {

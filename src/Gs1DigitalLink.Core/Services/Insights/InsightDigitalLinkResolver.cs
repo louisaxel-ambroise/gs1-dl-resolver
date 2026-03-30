@@ -1,4 +1,6 @@
-﻿using Gs1DigitalLink.Core.Model;
+﻿using Gs1DigitalLink.Core.Contracts.Insights;
+using Gs1DigitalLink.Core.Contracts.Resolution;
+using Gs1DigitalLink.Core.Model;
 using Gs1DigitalLink.Core.Services.Conversion;
 using Gs1DigitalLink.Core.Services.Resolution;
 

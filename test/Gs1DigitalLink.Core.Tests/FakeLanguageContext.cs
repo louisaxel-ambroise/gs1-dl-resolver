@@ -1,4 +1,5 @@
-﻿using Gs1DigitalLink.Core.Services.Resolution;
+﻿using Gs1DigitalLink.Core.Contracts.Resolution;
+using Gs1DigitalLink.Core.Services.Resolution;
 
 namespace Gs1DigitalLink.Core.Tests;
 

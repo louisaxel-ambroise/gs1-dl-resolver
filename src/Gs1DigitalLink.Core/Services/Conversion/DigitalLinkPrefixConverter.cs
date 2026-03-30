@@ -1,15 +1,11 @@
-﻿using Gs1DigitalLink.Core.Model.Exceptions;
+﻿using Gs1DigitalLink.Core.Contracts.Conversion;
+using Gs1DigitalLink.Core.Model.Exceptions;
 using Gs1DigitalLink.Core.Services.Conversion.Utils;
 using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
 
 namespace Gs1DigitalLink.Core.Services.Conversion;
 
-public interface IDigitalLinkPrefixConverter
-{
-    Identifier Parse(string input);
-}
-
-internal class DigitalLinkPrefixConverter(ApplicationIdentifiers identifiers) : IDigitalLinkPrefixConverter
+internal sealed class DigitalLinkPrefixConverter(ApplicationIdentifiers identifiers) : IDigitalLinkPrefixConverter
 {
     public Identifier Parse(string input)
     {

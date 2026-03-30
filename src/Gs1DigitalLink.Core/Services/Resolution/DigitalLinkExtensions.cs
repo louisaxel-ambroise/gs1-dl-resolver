@@ -5,9 +5,9 @@ using Tavis.UriTemplates;
 
 namespace Gs1DigitalLink.Core.Services.Resolution;
 
-public static class DigitalLinkExtensions
+internal static class DigitalLinkExtensions
 {
-    public static List<string> GetPrefixValues(this DigitalLink digitalLink)
+    internal static List<string> GetPrefixValues(this DigitalLink digitalLink)
     {
         var key = digitalLink.AIs.Single(ai => ai.Key.Type is AIType.PrimaryKey);
         var prefixes = new List<string>([key.Code]);
@@ -30,7 +30,7 @@ public static class DigitalLinkExtensions
         return prefixes;
     }
 
-    public static IEnumerable<Link> FormatUriTemplates(this DigitalLink digitalLink, IEnumerable<Link> linkset)
+    internal static IEnumerable<Link> FormatUriTemplates(this DigitalLink digitalLink, IEnumerable<Link> linkset)
     {
         var parameters = GetDigitalLinkParameters(digitalLink);
 

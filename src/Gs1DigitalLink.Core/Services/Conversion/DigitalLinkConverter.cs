@@ -1,14 +1,10 @@
-﻿using Gs1DigitalLink.Core.Model.Exceptions;
+﻿using Gs1DigitalLink.Core.Contracts.Conversion;
+using Gs1DigitalLink.Core.Model.Exceptions;
 using Gs1DigitalLink.Core.Services.Conversion.Utils;
 using Gs1DigitalLink.Core.Services.Conversion.Utils.Validation;
 using System.Web;
 
 namespace Gs1DigitalLink.Core.Services.Conversion;
-
-public interface IDigitalLinkConverter
-{
-    DigitalLink Parse(string digitalLink);
-}
 
 internal sealed class DigitalLinkConverter(ApplicationIdentifiers identifiers) : IDigitalLinkConverter
 {

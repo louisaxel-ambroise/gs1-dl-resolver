@@ -1,8 +1,8 @@
-﻿using Gs1DigitalLink.Core.Services.Registration;
+﻿using Gs1DigitalLink.Core.Contracts.Registration;
 
 namespace Gs1DigitalLink.Web.Services;
 
-public class HttpHeaderUserContext(IHttpContextAccessor contextAccessor) : IUserContext
+internal sealed class HttpHeaderUserContext(IHttpContextAccessor contextAccessor) : IUserContext
 {
     public string Name => "HTTP Header User";
     public string CompanyPrefix => contextAccessor.HttpContext?.Request.Headers["X-Company-Prefix"].FirstOrDefault() 

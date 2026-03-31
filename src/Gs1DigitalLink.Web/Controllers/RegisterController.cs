@@ -1,6 +1,6 @@
+using Gs1DigitalLink.Core.Contracts.Conversion;
+using Gs1DigitalLink.Core.Contracts.Registration;
 using Gs1DigitalLink.Core.Model;
-using Gs1DigitalLink.Core.Services.Conversion;
-using Gs1DigitalLink.Core.Services.Registration;
 using Gs1DigitalLink.Web.Contracts;
 using Microsoft.AspNetCore.Mvc;
 

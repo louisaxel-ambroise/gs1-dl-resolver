@@ -1,14 +1,10 @@
-﻿using Gs1DigitalLink.Core.Model;
+﻿using Gs1DigitalLink.Core.Contracts.Resolution;
+using Gs1DigitalLink.Core.Model;
 using Gs1DigitalLink.Core.Services.Conversion;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gs1DigitalLink.Core.Services.Resolution;
 
-public interface IDigitalLinkResolver
-{
-    IResolutionResult ResolveLinkSet(DigitalLink digitalLink, DateTimeOffset applicability);
-    IResolutionResult ResolveLinkType(DigitalLink digitalLink, DateTimeOffset applicability, string? linkType);
-}
 
 internal sealed class DigitalLinkResolver(ResolverContext context, ILanguageContext languageContext) : IDigitalLinkResolver
 {

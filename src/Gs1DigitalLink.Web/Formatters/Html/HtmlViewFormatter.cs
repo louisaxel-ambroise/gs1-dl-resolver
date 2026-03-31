@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Gs1DigitalLink.Web.Formatters.Html;
 
-public class HtmlViewFormatter : TextOutputFormatter
+internal sealed class HtmlViewFormatter : TextOutputFormatter
 {
     public HtmlViewFormatter()
     {

@@ -4,7 +4,7 @@ using System.Threading.Channels;
 
 namespace Gs1DigitalLink.Web.Services;
 
-internal sealed class InsightConsumer(Channel<Insight> channel, IServiceProvider serviceProvider) : BackgroundService
+internal sealed class InsightConsumer(Channel<Insight> channel, IServiceProvider serviceProvider, ILogger<InsightConsumer> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -18,9 +18,9 @@ internal sealed class InsightConsumer(Channel<Insight> channel, IServiceProvider
                 context.Insights.Add(insight);
                 context.SaveChanges();
             }
-            catch
+            catch(Exception ex)
             {
-                // log + continue
+                logger.LogError(ex, "Unable to process Insight channel message");
             }
         }
     }

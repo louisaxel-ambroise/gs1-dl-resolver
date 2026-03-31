@@ -1,4 +1,8 @@
 ﻿using DecoratR;
+using Gs1DigitalLink.Core.Contracts.Conversion;
+using Gs1DigitalLink.Core.Contracts.Insights;
+using Gs1DigitalLink.Core.Contracts.Registration;
+using Gs1DigitalLink.Core.Contracts.Resolution;
 using Gs1DigitalLink.Core.Model;
 using Gs1DigitalLink.Core.Model.Interfaces;
 using Gs1DigitalLink.Core.Services.Conversion;

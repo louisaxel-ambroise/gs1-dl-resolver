@@ -1,23 +1,24 @@
 using FluentMigrator.Runner;
 using Gs1DigitalLink.Web.Formatters.Html;
 using Gs1DigitalLink.Core;
-using Gs1DigitalLink.Core.Services.Registration;
-using Gs1DigitalLink.Core.Services.Resolution;
 using Gs1DigitalLink.Web;
 using Gs1DigitalLink.Web.Contracts;
 using Gs1DigitalLink.Web.Services;
 using Gs1DigitalLink.Web.Services.Migrations;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Gs1DigitalLink.Core.Contracts;
+using Gs1DigitalLink.Core.Contracts.Registration;
+using Gs1DigitalLink.Core.Contracts.Resolution;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDigitalLinkCore();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContext, HttpHeaderUserContext>();
 builder.Services.AddScoped<ILanguageContext, HttpLanguageContext>();
 builder.Services.AddScoped<IEventDispatcher, HttpContextEventDispatcher>();
 builder.Services.AddAuthentication();
 builder.Services.AddRouting();
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddHostedService<InsightConsumer>();
 builder.Services.Configure<GS1ResolverOptions>(builder.Configuration.GetSection(GS1ResolverOptions.Key));
 builder.Services.AddLocalization(options => options.ResourcesPath = "Formatters/Html/Views/Resources");

@@ -1,14 +1,11 @@
-﻿using Gs1DigitalLink.Core.Model;
+﻿using Gs1DigitalLink.Core.Contracts.Insights;
+using Gs1DigitalLink.Core.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gs1DigitalLink.Core.Services.Insights;
 
-public interface IInsightResolver
-{
-    IEnumerable<Insight> ListInsights(string digitalLink, ListInsightsOptions options);
-}
 
-public class InsightResolver(ResolverContext context, TimeProvider timeProvider) : IInsightResolver
+internal sealed class InsightResolver(ResolverContext context, TimeProvider timeProvider) : IInsightResolver
 {
     public IEnumerable<Insight> ListInsights(string digitalLink, ListInsightsOptions options)
     {

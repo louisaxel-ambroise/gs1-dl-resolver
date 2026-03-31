@@ -6,7 +6,7 @@ namespace Gs1DigitalLink.Web.Controllers;
 
 [ApiController]
 [Route("/")]
-public class MetadataController(IOptions<GS1ResolverOptions> options) : ControllerBase
+public sealed class MetadataController(IOptions<GS1ResolverOptions> options) : ControllerBase
 {
     [HttpGet]
     public IActionResult Root()

@@ -1,7 +1,7 @@
-using Gs1DigitalLink.Core;
+using Gs1DigitalLink.Core.Contracts;
 using Gs1DigitalLink.Core.Model.Interfaces;
 
-internal class HttpContextEventDispatcher(IHttpContextAccessor contextAccessor) : IEventDispatcher
+internal sealed class HttpContextEventDispatcher(IHttpContextAccessor contextAccessor) : IEventDispatcher
 {
     public void Dispatch(IDomainEvent domainEvent)
     {

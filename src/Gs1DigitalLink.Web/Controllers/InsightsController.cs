@@ -1,4 +1,5 @@
-using Gs1DigitalLink.Core.Services.Conversion;
+using Gs1DigitalLink.Core.Contracts.Conversion;
+using Gs1DigitalLink.Core.Contracts.Insights;
 using Gs1DigitalLink.Core.Services.Insights;
 using Gs1DigitalLink.Web.Contracts;
 using Microsoft.AspNetCore.Http.Extensions;

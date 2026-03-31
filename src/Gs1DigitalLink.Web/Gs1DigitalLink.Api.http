@@ -1,25 +1,5 @@
 @Gs1DigitalLink.Web_HostAddress = https://localhost:7113
 
-## Decompress a GS1 DigitalLink
-POST {{Gs1DigitalLink.Web_HostAddress}}/api/decompress
-Accept: application/json
-Content-Type: application/json
-{
-  "DigitalLink": "CwnZLmc7QAw8SA"
-}
-
-###
-## Compress a GS1 DigitalLink
-## CompressionType can be set to Full or Partial
-POST {{Gs1DigitalLink.Web_HostAddress}}/api/compress
-Accept: application/json
-Content-Type: application/json
-{
-  "DigitalLink": "01/05414195535264/10/123456",
-  "CompressionType": "Full", 
-  "CompressQueryString": false
-}
-
 ###
 ## Register a link type
 POST {{Gs1DigitalLink.Web_HostAddress}}/api/register

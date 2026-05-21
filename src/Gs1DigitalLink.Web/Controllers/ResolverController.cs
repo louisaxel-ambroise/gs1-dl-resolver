@@ -67,10 +67,11 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
 
     private LinksetResponse MapLinksetResponse(DigitalLink digitalLink, IResolutionResult result, IDictionary<string, string?> queryElements)
     {
-        var anchor = $"{Request.Scheme}://{Request.Host}/{digitalLink.ToShortString()}";
+        var resolverRoot = $"{Request.Scheme}://{Request.Host}";
+        var anchor = $"{resolverRoot}/{digitalLink.ToShortString()}";
         var links = result.Links.GroupBy(l => l.LinkType).ToDictionary(g => g.Key, g => g.Select(l => MapLink(l, queryElements)));
         
-        return new LinksetResponse(anchor, links);
+        return new LinksetResponse(resolverRoot, anchor, links);
     }
 
     private static LinkDefinition MapLink(Link link, IDictionary<string, string?> queryElements)

@@ -16,13 +16,6 @@ public sealed class LinksetJsonConverter : JsonConverter<LinksetResponse>
         // Custom serialization logic
         writer.WriteStartObject();
 
-        writer.WritePropertyName("resolverRoot");
-        writer.WriteStringValue(value.ResolverRoot);
-        writer.WritePropertyName("supportedPrimaryKeys");
-        writer.WriteStartArray();
-        writer.WriteStringValue("all");
-        writer.WriteEndArray();
-
         writer.WritePropertyName("linkset");
         writer.WriteStartArray();
         writer.WriteStartObject();

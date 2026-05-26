@@ -20,18 +20,17 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
     [Route("{**_:minlength(2)}")]
     public IActionResult HandleRequest()
     {
-        
         var digitalLink = converter.Parse(Request.GetDisplayUrl());
         var applicability = Request.GetApplicableDate();
         var queryElements = Request.Query.Where(s => !Equals(LinkTypeQueryKey, s.Key)).ToDictionary(kv => kv.Key, kv => (string?) kv.Value.ToString());
 
         var result = Request.IsLinksetRequested()
             ? resolver.ResolveLinkSet(digitalLink, applicability)
-            : resolver.ResolveLinkType(digitalLink, applicability, Request.Query["linkType"]);
+            : resolver.ResolveLinkType(digitalLink, applicability, Request.Query[LinkTypeQueryKey]);
 
         var formattedLinks = result.Links.Select(l => $"<{QueryHelpers.AddQueryString(l.RedirectUrl, queryElements)}>; rel=\"{l.LinkType}\";{(l.Language is null ? "" : "hreflang=\"" + l.Language + "\"")}").ToList();
         
-        AppendLinkHeaders(digitalLink, result, queryElements);
+        AppendLinkHeaders(digitalLink, result);
 
         return HttpMethods.IsHead(Request.Method)
             ? Ok()
@@ -40,17 +39,15 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
 
     #region Util Methods
 
-    private void AppendLinkHeaders(DigitalLink digitalLink, IResolutionResult result, IDictionary<string, string?> queryElements)
+    private void AppendLinkHeaders(DigitalLink digitalLink, IResolutionResult result)
     {
-        var formattedLinks = result.Links
-            .Select(l => $"<{QueryHelpers.AddQueryString(l.RedirectUrl, queryElements)}>; rel=\"{l.LinkType}\";{(l.Language is null ? "" : "hreflang=\"" + l.Language + "\"")}")
-            .ToList();
-
-        Response.Headers.AppendList("Link", formattedLinks);
-
         if (result is LinksetResult)
         {
             Response.Headers.Append("Link", "<https://ref.gs1.org/standards/resolver/linkset-context>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"");
+        }
+        else
+        {
+            Response.Headers.Append("Link", $"<{Request.Scheme}://{Request.Host}/{digitalLink.ToShortString()}>; rel=\"linkset\"; type=\"application/linkset+json\"");
         }
     }
 
@@ -59,7 +56,7 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
         return result switch
         {
             LinksetResult => new OkObjectResult(MapLinksetResponse(digitalLink, result, queryElements)),
-            LinkTypeResult r when r.Links.Count() > 1 => new ObjectResult(new MultipleChoiceResponse(result.Links.Select(l => MapLink(l, queryElements)))) { StatusCode = StatusCodes.Status300MultipleChoices },
+            LinkTypeResult r when r.Links.Count() > 1 => new ObjectResult(new MultipleChoiceResponse(MapLink(result.Links, queryElements))) { StatusCode = StatusCodes.Status300MultipleChoices },
             LinkTypeResult r when r.Links.Count() == 1 => new RedirectResult(QueryHelpers.AddQueryString(result.Links.Single().RedirectUrl, queryElements), false, true),
             LinkTypeResult r when !r.Links.Any() => new NotFoundObjectResult(ErrorResponse.NotFound),
             _ => new ObjectResult(ErrorResponse.InternalServerError)
@@ -69,19 +66,20 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
     private LinksetResponse MapLinksetResponse(DigitalLink digitalLink, IResolutionResult result, IDictionary<string, string?> queryElements)
     {
         var anchor = $"{Request.Scheme}://{Request.Host}/{digitalLink.ToShortString()}";
-        var links = result.Links.GroupBy(l => l.LinkType).ToDictionary(g => g.Key, g => g.Select(l => MapLink(l, queryElements)));
+        var links = result.Links.GroupBy(l => l.LinkType).ToDictionary(g => g.Key, g => MapLink(g, queryElements));
         
         return new LinksetResponse(anchor, links);
     }
 
-    private static LinkDefinition MapLink(Link link, IDictionary<string, string?> queryElements)
+    private static IEnumerable<LinkDefinition> MapLink(IEnumerable<Link> links, IDictionary<string, string?> queryElements)
     {
-        return new LinkDefinition
-        {
-            Hreflang = link.Language is null ? [] : [ link.Language.ToString() ],
-            Href = QueryHelpers.AddQueryString(link.RedirectUrl, queryElements),
-            Title = link.Title
-        };
+        return links.GroupBy(l => new { l.LinkType, l.RedirectUrl, l.Title })
+            .Select(g => new LinkDefinition
+            {
+                Hreflang = [.. g.Where(l => l.Language is not null).Select(l => l.Language!.ToString())],
+                Href = QueryHelpers.AddQueryString(g.Key.RedirectUrl, queryElements),
+                Title = g.Key.Title
+            });
     }
 
     #endregion

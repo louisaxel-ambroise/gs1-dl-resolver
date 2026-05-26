@@ -12,7 +12,7 @@ namespace Gs1DigitalLink.Web.Controllers;
 [Produces("application/json")]
 public sealed class InsightsController(IDigitalLinkConverter converter, IInsightResolver insightResolver) : ControllerBase
 {
-    [HttpGet("{**_}")]
+    [HttpGet("{**_:minlength(2)}")]
     public IActionResult ListInsights(ListInsightRequest request)
     {
         var digitalLink = converter.Parse(Request.GetDisplayUrl());

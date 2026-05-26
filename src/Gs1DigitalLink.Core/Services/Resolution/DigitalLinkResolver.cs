@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Gs1DigitalLink.Core.Services.Resolution;
 
-
 internal sealed class DigitalLinkResolver(ResolverContext context, ILanguageContext languageContext) : IDigitalLinkResolver
 {
     public IResolutionResult ResolveLinkSet(DigitalLink digitalLink, DateTimeOffset applicability)
@@ -60,18 +59,15 @@ internal sealed class DigitalLinkResolver(ResolverContext context, ILanguageCont
         return new LinksetResult(formattedLinks);
     }
 
-    private static IEnumerable<Link> FindMatchingLinks(IEnumerable<Prefix> candidates, DateTimeOffset applicability, params string?[] linkTypes)
+    private static IEnumerable<Link> FindMatchingLinks(IEnumerable<Prefix> candidates, DateTimeOffset applicability, params string[] linkTypes)
     {
         foreach(var candidate in candidates.OrderByDescending(c => c.Value.Length))
         {
-            foreach(var linkType in linkTypes)
-            {
-                var links = candidate.Links.Where(l => l.IsApplicableAt(applicability) && l.LinkType == linkType);
+            var links = candidate.Links.Where(l => l.IsApplicableAt(applicability) && linkTypes.Contains(l.LinkType));
 
-                if (links.Any())
-                {
-                    return links;
-                }
+            if (links.Any())
+            {
+                return links;
             }
         }
 
@@ -92,7 +88,9 @@ internal sealed class DigitalLinkResolver(ResolverContext context, ILanguageCont
             }
         }
 
-        return matchingLinks;
+        return matchingLinks.Any(l => l.LinkType == "gs1:defaultLink")
+            ? matchingLinks.Where(l => l.LinkType == "gs1:defaultLink")
+            : matchingLinks;
     }
 
     private static bool RegionMatches(Link link, LanguagePreference language)

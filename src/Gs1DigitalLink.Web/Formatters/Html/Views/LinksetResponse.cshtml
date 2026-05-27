@@ -47,22 +47,12 @@ else
 
     IEnumerable<Link> ParseLinkset(LinksetResponse linkset)
     {
-        var links = linkset.Links.SelectMany(grp => grp.Value.Select(link => new Link
+        return linkset.Links.SelectMany(grp => grp.Value.Select(link => new Link
         {
             LinkTypes = [grp.Key],
             Href = link.Href,
             Hreflang = link.Hreflang,
             Title = link.Title
         }));
-
-        return links
-            .GroupBy(l => new { l.Href, Hreflang = l.Hreflang.SingleOrDefault(), l.Title })
-            .Select(grp => new Link
-                {
-                    Href = grp.Key.Href,
-                    Hreflang = grp.Key.Hreflang is null ? [] : [ grp.Key.Hreflang ],
-                    LinkTypes = grp.SelectMany(l => l.LinkTypes),
-                    Title = grp.Key.Title
-                });
     }
 }

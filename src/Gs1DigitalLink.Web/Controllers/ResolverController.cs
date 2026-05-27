@@ -18,6 +18,7 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
 
     [HttpGet, HttpHead]
     [Route("{**_:minlength(2)}")]
+    [ResponseCache(NoStore = true)]
     public IActionResult HandleRequest()
     {
         var digitalLink = converter.Parse(Request.GetDisplayUrl());

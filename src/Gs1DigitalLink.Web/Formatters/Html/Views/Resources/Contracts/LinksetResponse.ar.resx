@@ -118,192 +118,192 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gs1:activityIdeas" xml:space="preserve">
-    <value>Idées d'activité</value>
+    <value>أفكار للأنشطة</value>
   </data>
   <data name="gs1:allergenInfo" xml:space="preserve">
-    <value>Infos sur les allergènes</value>
+    <value>معلومات عن مسببات الحساسية</value>
   </data>
   <data name="gs1:appDownload" xml:space="preserve">
-    <value>Télécharger l'app</value>
+    <value>App herunterladen</value>
   </data>
   <data name="gs1:backgroundInfo" xml:space="preserve">
-    <value>Infos générales</value>
+    <value>معلومات أساسية</value>
   </data>
   <data name="gs1:brandHomepageClinical" xml:space="preserve">
-    <value>Infos sur la marque (professionnels)</value>
+    <value>معلومات عن العلامة التجارية (للمتخصصين)</value>
   </data>
   <data name="gs1:brandHomepagePatient" xml:space="preserve">
-    <value>Infos sur la marque (patients)</value>
+    <value>معلومات عن العلامة التجارية (للمرضى)</value>
   </data>
   <data name="gs1:careersInfo" xml:space="preserve">
-    <value>Infos sur les carrières</value>
+    <value>معلومات عن فرص العمل</value>
   </data>
   <data name="gs1:certificationInfo" xml:space="preserve">
-    <value>Infos relatives à la certification</value>
+    <value>معلومات عن الشهادات</value>
   </data>
   <data name="gs1:consumerHandlingStorageInfo" xml:space="preserve">
-    <value>Infos manipulation/stockage (consommateur)</value>
+    <value>معلومات للمستهلك حول الاستخدام والتخزين</value>
   </data>
   <data name="gs1:defaultLink" xml:space="preserve">
-    <value>Lien par défaut</value>
+    <value>رابط افتراضي</value>
   </data>
   <data name="gs1:defaultLinkMulti" xml:space="preserve">
-    <value>Lien par défaut</value>
+    <value>رابط افتراضي</value>
   </data>
   <data name="gs1:dpp" xml:space="preserve">
-    <value>Passeport Numérique</value>
+    <value>منتج ”جواز السفر الرقمي“</value>
   </data>
   <data name="gs1:eifu" xml:space="preserve">
-    <value>Mode d'emploi électronique</value>
+    <value>تعليمات الاستخدام الإلكترونية</value>
   </data>
   <data name="gs1:epcis" xml:space="preserve">
     <value>EPCIS</value>
   </data>
   <data name="gs1:epil" xml:space="preserve">
-    <value>Notice d'information électronique (patient)</value>
+    <value>نشرة معلومات المريض الإلكترونية</value>
   </data>
   <data name="gs1:eventsInfo" xml:space="preserve">
-    <value>Infos sur les événements</value>
+    <value>معلومات عن الفعاليات</value>
   </data>
   <data name="gs1:faqs" xml:space="preserve">
-    <value>Foire aux questions</value>
+    <value>الأسئلة المتكررة</value>
   </data>
   <data name="gs1:handledBy" xml:space="preserve">
-    <value>Géré par</value>
+    <value>تتولى إدارته</value>
   </data>
   <data name="gs1:hasRetailers" xml:space="preserve">
-    <value>A des détaillants</value>
+    <value>لديه بائعون تجزئة</value>
   </data>
   <data name="gs1:homepage" xml:space="preserve">
-    <value>Infos sur l'organisation</value>
+    <value>صفحة معلومات المؤسسة</value>
   </data>
   <data name="gs1:ingredientsInfo" xml:space="preserve">
-    <value>Infos sur les ingrédients</value>
+    <value>معلومات عن المكونات</value>
   </data>
   <data name="gs1:instructions" xml:space="preserve">
-    <value>Instructions</value>
+    <value>التعليمات</value>
   </data>
   <data name="gs1:jws" xml:space="preserve">
-    <value>Signature Web JSON</value>
+    <value>JSON-Websignatur</value>
   </data>
   <data name="gs1:leaveReview" xml:space="preserve">
-    <value>Laisser un avis</value>
+    <value>اترك تعليقًا</value>
   </data>
   <data name="gs1:locationInfo" xml:space="preserve">
-    <value>Infos sur l'emplacement</value>
+    <value>معلومات عن الموقع</value>
   </data>
   <data name="gs1:logisticsInfo" xml:space="preserve">
-    <value>Infos logistiques</value>
+    <value>معلومات لوجستية</value>
   </data>
   <data name="gs1:loyaltyProgram" xml:space="preserve">
-    <value>Programme de fidélité</value>
+    <value>Treueprogramm</value>
   </data>
   <data name="gs1:masterData" xml:space="preserve">
-    <value>Données de base</value>
+    <value>البيانات الرئيسية</value>
   </data>
   <data name="gs1:menuInfo" xml:space="preserve">
-    <value>Infos sur le menu</value>
+    <value>معلومات عن قائمة الطعام</value>
   </data>
   <data name="gs1:nutritionalInfo" xml:space="preserve">
-    <value>Infos nutritionnelles</value>
+    <value>معلومات غذائية</value>
   </data>
   <data name="gs1:openingHoursInfo" xml:space="preserve">
-    <value>Infos sur les heures d'ouverture</value>
+    <value>معلومات عن ساعات العمل</value>
   </data>
   <data name="gs1:paymentLink" xml:space="preserve">
-    <value>Effectuer un paiement</value>
+    <value>إجراء الدفع</value>
   </data>
   <data name="gs1:pip" xml:space="preserve">
-    <value>Infos sur le produit</value>
+    <value>معلومات عن المنتج</value>
   </data>
   <data name="gs1:productSustainabilityInfo" xml:space="preserve">
-    <value>Durabilité et recyclage</value>
+    <value>الاستدامة وإعادة التدوير</value>
   </data>
   <data name="gs1:promotion" xml:space="preserve">
-    <value>Promotion</value>
+    <value>Werbeaktion</value>
   </data>
   <data name="gs1:purchaseSuppliesOrAccessories" xml:space="preserve">
-    <value>Acheter des fournitures/accessoires</value>
+    <value>شراء المستلزمات أو الملحقات</value>
   </data>
   <data name="gs1:quickStartGuide" xml:space="preserve">
-    <value>Guide de démarrage rapide</value>
+    <value>دليل البدء السريع</value>
   </data>
   <data name="gs1:recallStatus" xml:space="preserve">
-    <value>Statut de rappel</value>
+    <value>Rückrufstatus</value>
   </data>
   <data name="gs1:recipeInfo" xml:space="preserve">
-    <value>Site de recettes</value>
+    <value>Rezept-Website</value>
   </data>
   <data name="gs1:registerProduct" xml:space="preserve">
-    <value>Enregistrer l'achat</value>
+    <value>تسجيل الشراء</value>
   </data>
   <data name="gs1:registryEntry" xml:space="preserve">
-    <value>Inscription dans un registre</value>
+    <value>تسجيل في السجل</value>
   </data>
   <data name="gs1:relatedImage" xml:space="preserve">
-    <value>Image associée</value>
+    <value>صورة ذات صلة</value>
   </data>
   <data name="gs1:relatedVideo" xml:space="preserve">
-    <value>Vidéo connexe</value>
+    <value>Verwandtes Video</value>
   </data>
   <data name="gs1:reportFound" xml:space="preserve">
-    <value>Signaler trouvé</value>
+    <value>Fundmeldung</value>
   </data>
   <data name="gs1:review" xml:space="preserve">
-    <value>Avis</value>
+    <value>التعليقات</value>
   </data>
   <data name="gs1:safetyInfo" xml:space="preserve">
-    <value>Infos sur la sécurité</value>
+    <value>معلومات عن السلامة</value>
   </data>
   <data name="gs1:scheduleTime" xml:space="preserve">
-    <value>Planification/Réservation</value>
+    <value>Terminplanung/Reservierung</value>
   </data>
   <data name="gs1:serviceInfo" xml:space="preserve">
-    <value>Infos de service</value>
+    <value>معلومات عن الخدمة</value>
   </data>
   <data name="gs1:smartLabel" xml:space="preserve">
-    <value>Étiquette intelligente</value>
+    <value>Smart Label</value>
   </data>
   <data name="gs1:smpc" xml:space="preserve">
-    <value>Caractéristiques du produit</value>
+    <value>ملخص خصائص المنتج</value>
   </data>
   <data name="gs1:socialMedia" xml:space="preserve">
-    <value>Réseaux sociaux</value>
+    <value>Soziale Medien</value>
   </data>
   <data name="gs1:statisticInfo" xml:space="preserve">
-    <value>Statistiques</value>
+    <value>Statistiken</value>
   </data>
   <data name="gs1:subscribe" xml:space="preserve">
-    <value>S'abonner</value>
+    <value>Abonnieren</value>
   </data>
   <data name="gs1:support" xml:space="preserve">
-    <value>Assistance</value>
+    <value>الدعم</value>
   </data>
   <data name="gs1:sustainabilityInfo" xml:space="preserve">
-    <value>Durabilité et recyclage</value>
+    <value>الاستدامة وإعادة التدوير</value>
   </data>
   <data name="gs1:traceability" xml:space="preserve">
-    <value>Informations de traçabilité</value>
+    <value>معلومات عن التتبع</value>
   </data>
   <data name="gs1:tutorial" xml:space="preserve">
-    <value>Tutoriel</value>
+    <value>Anleitung</value>
   </data>
   <data name="gs1:userAgreement" xml:space="preserve">
-    <value>Signer renonciation/accord/document</value>
+    <value>Verzichtserklärung/Vereinbarung/Dokument unterzeichnen</value>
   </data>
   <data name="gs1:verificationService" xml:space="preserve">
-    <value>Service de vérification</value>
+    <value>Verifizierungsdienst</value>
   </data>
   <data name="gs1:whatsInTheBox" xml:space="preserve">
-    <value>Que contient la boîte ?</value>
+    <value>Was ist im Lieferumfang enthalten?</value>
   </data>
   <data name="Linkset" xml:space="preserve">
-    <value>Ensemble de liens</value>
+    <value>مجموعة الروابط</value>
   </data>
   <data name="Linkset for this resource" xml:space="preserve">
-    <value>Ensemble de liens pour cette resource</value>
+    <value>مجموعة الروابط لهذا المورد</value>
   </data>
   <data name="No links configured for this resource" xml:space="preserve">
-    <value>Aucun lien configuré pour cette resource</value>
+    <value>لا توجد روابط مكونة لهذا المورد</value>
   </data>
 </root>

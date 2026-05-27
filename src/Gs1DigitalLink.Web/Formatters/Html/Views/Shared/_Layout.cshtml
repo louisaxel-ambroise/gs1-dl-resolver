@@ -1,4 +1,6 @@
 ﻿@using System.Globalization
+@using Gs1DigitalLink.Web.Services
+@inject CommonLocalizationService localizer
 @{
     var direction = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft
                 ? "rtl"
@@ -135,8 +137,8 @@
             @RenderBody()
         </div>
         <footer>
-            &copy; @TimeProvider.System.GetUtcNow().Year Goto.it.com
-            <a href="https://goto.it.com/">Home</a>
+            <p>&copy; @TimeProvider.System.GetUtcNow().Year Goto.it.com</p>
+            <a href="https://goto.it.com/">@localizer["Home"]</a>
         </footer>
     </body>
 </html>

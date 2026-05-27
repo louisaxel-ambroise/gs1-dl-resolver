@@ -118,192 +118,192 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="gs1:activityIdeas" xml:space="preserve">
-    <value>Idées d'activité</value>
+    <value>Ideeën voor activiteiten</value>
   </data>
   <data name="gs1:allergenInfo" xml:space="preserve">
-    <value>Infos sur les allergènes</value>
+    <value>Allergeneninformatie</value>
   </data>
   <data name="gs1:appDownload" xml:space="preserve">
-    <value>Télécharger l'app</value>
+    <value>App downloaden</value>
   </data>
   <data name="gs1:backgroundInfo" xml:space="preserve">
-    <value>Infos générales</value>
+    <value>Achtergrondinformatie</value>
   </data>
   <data name="gs1:brandHomepageClinical" xml:space="preserve">
-    <value>Infos sur la marque (professionnels)</value>
+    <value>Merkinformatie (professionals)</value>
   </data>
   <data name="gs1:brandHomepagePatient" xml:space="preserve">
-    <value>Infos sur la marque (patients)</value>
+    <value>Merkinformatie (patiënten)</value>
   </data>
   <data name="gs1:careersInfo" xml:space="preserve">
-    <value>Infos sur les carrières</value>
+    <value>Carrière-informatie</value>
   </data>
   <data name="gs1:certificationInfo" xml:space="preserve">
-    <value>Infos relatives à la certification</value>
+    <value>Certificeringsinformatie</value>
   </data>
   <data name="gs1:consumerHandlingStorageInfo" xml:space="preserve">
-    <value>Infos manipulation/stockage (consommateur)</value>
+    <value>Informatie voor consumenten over gebruik en opslag</value>
   </data>
   <data name="gs1:defaultLink" xml:space="preserve">
-    <value>Lien par défaut</value>
+    <value>Standaardlink</value>
   </data>
   <data name="gs1:defaultLinkMulti" xml:space="preserve">
-    <value>Lien par défaut</value>
+    <value>Standaardlink</value>
   </data>
   <data name="gs1:dpp" xml:space="preserve">
-    <value>Passeport Numérique</value>
+    <value>Digitaal paspoortproduct</value>
   </data>
   <data name="gs1:eifu" xml:space="preserve">
-    <value>Mode d'emploi électronique</value>
+    <value>Elektronische gebruiksaanwijzing</value>
   </data>
   <data name="gs1:epcis" xml:space="preserve">
     <value>EPCIS</value>
   </data>
   <data name="gs1:epil" xml:space="preserve">
-    <value>Notice d'information électronique (patient)</value>
+    <value>Elektronische bijsluiter</value>
   </data>
   <data name="gs1:eventsInfo" xml:space="preserve">
-    <value>Infos sur les événements</value>
+    <value>Evenementeninformatie</value>
   </data>
   <data name="gs1:faqs" xml:space="preserve">
-    <value>Foire aux questions</value>
+    <value>Veelgestelde vragen</value>
   </data>
   <data name="gs1:handledBy" xml:space="preserve">
-    <value>Géré par</value>
+    <value>Verwerkt door</value>
   </data>
   <data name="gs1:hasRetailers" xml:space="preserve">
-    <value>A des détaillants</value>
+    <value>Heeft retailers</value>
   </data>
   <data name="gs1:homepage" xml:space="preserve">
-    <value>Infos sur l'organisation</value>
+    <value>Organisatie-informatiepagina</value>
   </data>
   <data name="gs1:ingredientsInfo" xml:space="preserve">
-    <value>Infos sur les ingrédients</value>
+    <value>Ingrediënteninformatie</value>
   </data>
   <data name="gs1:instructions" xml:space="preserve">
-    <value>Instructions</value>
+    <value>Instructies</value>
   </data>
   <data name="gs1:jws" xml:space="preserve">
-    <value>Signature Web JSON</value>
+    <value>JSON Web Signature</value>
   </data>
   <data name="gs1:leaveReview" xml:space="preserve">
-    <value>Laisser un avis</value>
+    <value>Een beoordeling achterlaten</value>
   </data>
   <data name="gs1:locationInfo" xml:space="preserve">
-    <value>Infos sur l'emplacement</value>
+    <value>Locatie-informatie</value>
   </data>
   <data name="gs1:logisticsInfo" xml:space="preserve">
-    <value>Infos logistiques</value>
+    <value>Logistieke informatie</value>
   </data>
   <data name="gs1:loyaltyProgram" xml:space="preserve">
-    <value>Programme de fidélité</value>
+    <value>Loyaliteitsprogramma</value>
   </data>
   <data name="gs1:masterData" xml:space="preserve">
-    <value>Données de base</value>
+    <value>Stamgegevens</value>
   </data>
   <data name="gs1:menuInfo" xml:space="preserve">
-    <value>Infos sur le menu</value>
+    <value>Menu-informatie</value>
   </data>
   <data name="gs1:nutritionalInfo" xml:space="preserve">
-    <value>Infos nutritionnelles</value>
+    <value>Voedingsinformatie</value>
   </data>
   <data name="gs1:openingHoursInfo" xml:space="preserve">
-    <value>Infos sur les heures d'ouverture</value>
+    <value>Openingstijdeninformatie</value>
   </data>
   <data name="gs1:paymentLink" xml:space="preserve">
-    <value>Effectuer un paiement</value>
+    <value>Betaling uitvoeren</value>
   </data>
   <data name="gs1:pip" xml:space="preserve">
-    <value>Infos sur le produit</value>
+    <value>Productinformatie</value>
   </data>
   <data name="gs1:productSustainabilityInfo" xml:space="preserve">
-    <value>Durabilité et recyclage</value>
+    <value>Duurzaamheid en recycling</value>
   </data>
   <data name="gs1:promotion" xml:space="preserve">
-    <value>Promotion</value>
+    <value>Promotie</value>
   </data>
   <data name="gs1:purchaseSuppliesOrAccessories" xml:space="preserve">
-    <value>Acheter des fournitures/accessoires</value>
+    <value>Benodigdheden of accessoires kopen</value>
   </data>
   <data name="gs1:quickStartGuide" xml:space="preserve">
-    <value>Guide de démarrage rapide</value>
+    <value>Snelstartgids</value>
   </data>
   <data name="gs1:recallStatus" xml:space="preserve">
-    <value>Statut de rappel</value>
+    <value>Status van terugroepactie</value>
   </data>
   <data name="gs1:recipeInfo" xml:space="preserve">
-    <value>Site de recettes</value>
+    <value>Receptenwebsite</value>
   </data>
   <data name="gs1:registerProduct" xml:space="preserve">
-    <value>Enregistrer l'achat</value>
+    <value>Aankoop registreren</value>
   </data>
   <data name="gs1:registryEntry" xml:space="preserve">
-    <value>Inscription dans un registre</value>
+    <value>Vermelding in een register</value>
   </data>
   <data name="gs1:relatedImage" xml:space="preserve">
-    <value>Image associée</value>
+    <value>Gerelateerde afbeelding</value>
   </data>
   <data name="gs1:relatedVideo" xml:space="preserve">
-    <value>Vidéo connexe</value>
+    <value>Gerelateerde video</value>
   </data>
   <data name="gs1:reportFound" xml:space="preserve">
-    <value>Signaler trouvé</value>
+    <value>Vondst melden</value>
   </data>
   <data name="gs1:review" xml:space="preserve">
-    <value>Avis</value>
+    <value>Beoordelingen</value>
   </data>
   <data name="gs1:safetyInfo" xml:space="preserve">
-    <value>Infos sur la sécurité</value>
+    <value>Veiligheidsinformatie</value>
   </data>
   <data name="gs1:scheduleTime" xml:space="preserve">
-    <value>Planification/Réservation</value>
+    <value>Planning/Reservering</value>
   </data>
   <data name="gs1:serviceInfo" xml:space="preserve">
-    <value>Infos de service</value>
+    <value>Service-informatie</value>
   </data>
   <data name="gs1:smartLabel" xml:space="preserve">
-    <value>Étiquette intelligente</value>
+    <value>SmartLabel</value>
   </data>
   <data name="gs1:smpc" xml:space="preserve">
-    <value>Caractéristiques du produit</value>
+    <value>Samenvatting van de productkenmerken</value>
   </data>
   <data name="gs1:socialMedia" xml:space="preserve">
-    <value>Réseaux sociaux</value>
+    <value>Sociale media</value>
   </data>
   <data name="gs1:statisticInfo" xml:space="preserve">
-    <value>Statistiques</value>
+    <value>Statistieken</value>
   </data>
   <data name="gs1:subscribe" xml:space="preserve">
-    <value>S'abonner</value>
+    <value>Abonneren</value>
   </data>
   <data name="gs1:support" xml:space="preserve">
-    <value>Assistance</value>
+    <value>Ondersteuning</value>
   </data>
   <data name="gs1:sustainabilityInfo" xml:space="preserve">
-    <value>Durabilité et recyclage</value>
+    <value>Duurzaamheid en recycling</value>
   </data>
   <data name="gs1:traceability" xml:space="preserve">
-    <value>Informations de traçabilité</value>
+    <value>Informatie over traceerbaarheid</value>
   </data>
   <data name="gs1:tutorial" xml:space="preserve">
-    <value>Tutoriel</value>
+    <value>Handleiding</value>
   </data>
   <data name="gs1:userAgreement" xml:space="preserve">
-    <value>Signer renonciation/accord/document</value>
+    <value>Verklaring/overeenkomst/document ondertekenen</value>
   </data>
   <data name="gs1:verificationService" xml:space="preserve">
-    <value>Service de vérification</value>
+    <value>Verificatieservice</value>
   </data>
   <data name="gs1:whatsInTheBox" xml:space="preserve">
-    <value>Que contient la boîte ?</value>
+    <value>Wat zit er in de doos?</value>
   </data>
   <data name="Linkset" xml:space="preserve">
-    <value>Ensemble de liens</value>
+    <value>Linkset</value>
   </data>
   <data name="Linkset for this resource" xml:space="preserve">
-    <value>Ensemble de liens pour cette resource</value>
+    <value>Linkset voor deze bron</value>
   </data>
   <data name="No links configured for this resource" xml:space="preserve">
-    <value>Aucun lien configuré pour cette resource</value>
+    <value>Geen links geconfigureerd voor deze bron</value>
   </data>
 </root>

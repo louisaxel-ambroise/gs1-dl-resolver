@@ -11,26 +11,28 @@ internal sealed class DigitalLinkPrefixConverter(ApplicationIdentifiers identifi
     {
         var parts = input.Split('/', StringSplitOptions.RemoveEmptyEntries);
         var key = identifiers.Identifiers.SingleOrDefault(i => i.Code == parts[0] && i.Type == AIType.PrimaryKey);
+        string? companyPrefix = null;
 
-        if (key is null || key == default)
+        if (key is null)
         {
-            throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
+            throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid DigitalLink prefix", Value = input }]);
         }
-        if (parts.Length >= 2 && !ValidateKey(key, parts[1]))
+        if (parts.Length >= 2 && !ValidateKey(key, parts[1], out companyPrefix))
         {
-            throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
+            throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidCompanyPrefix, Key = ErrorCodes.InvalidCompanyPrefix, Message = "Input has an invalid company prefix", Value = input }]);
         }
-        for (var i=2; i<parts.Length-2; i += 2)
+        for (var i = 2; i < parts.Length - 2; i += 2)
         {
             if (!ValidateQualifier(parts[i], parts[i + 1]))
             {
-                throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid prefix", Value = input }]);
+                throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid DigitalLink prefix", Value = input }]);
             }
         }
 
         return new()
         {
-            Value = input.Trim('/')
+            CompanyPrefix = companyPrefix,
+            Value = string.Join('/', parts)
         };
     }
 
@@ -44,8 +46,9 @@ internal sealed class DigitalLinkPrefixConverter(ApplicationIdentifiers identifi
         return true;
     }
 
-    private static bool ValidateKey(Utils.Identifier key, string value)
+    private static bool ValidateKey(Utils.Identifier key, string value, out string? companyPrefix)
     {
+        companyPrefix = null;
         if (value.Length > key.Components.Sum(c => c.Length)) return false;
 
         var gcpComponent = key.Components[0];
@@ -54,11 +57,14 @@ internal sealed class DigitalLinkPrefixConverter(ApplicationIdentifiers identifi
 
         if(gcpLength < 0 || trimmedValue.Length < gcpLength) return false;
 
+        companyPrefix = trimmedValue[..gcpLength];
+
         return true;
     }
 }
 
 public record Identifier
 {
+    public required string? CompanyPrefix { get; init; }
     public required string Value { get; init; }
 }

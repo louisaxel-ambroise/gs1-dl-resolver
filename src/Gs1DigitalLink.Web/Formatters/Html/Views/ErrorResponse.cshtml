@@ -1,11 +1,11 @@
 ﻿@using Gs1DigitalLink.Web.Contracts
-@using Microsoft.Extensions.Localization
+@using Gs1DigitalLink.Web.Services
+@inject CommonLocalizationService Localizer
+@model ErrorResponse
 @{
     Layout = "_Layout";
     ViewData["Title"] = Localizer["Error"];
 }
-@model ErrorResponse
-@inject IStringLocalizer<ErrorResponse> Localizer
 
 <h2>@Model.Status - @Localizer[Model.Title]</h2>
 

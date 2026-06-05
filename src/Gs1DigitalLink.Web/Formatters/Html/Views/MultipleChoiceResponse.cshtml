@@ -1,12 +1,12 @@
-﻿@using Gs1DigitalLink.Web.Contracts
-@using Microsoft.Extensions.Localization
-@using System.Globalization
+﻿@using System.Globalization
+@using Gs1DigitalLink.Web.Contracts
+@using Gs1DigitalLink.Web.Services
+@inject CommonLocalizationService Localizer
+@model MultipleChoiceResponse
 @{
     Layout = "_Layout";
     ViewData["Title"] = Localizer["Multiple choices available"];
 }
-@model MultipleChoiceResponse
-@inject IStringLocalizer<MultipleChoiceResponse> Localizer
 
 <h2>@Localizer["Multiple links are available for this resource"]</h2>
 

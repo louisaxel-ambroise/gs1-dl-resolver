@@ -1,13 +1,13 @@
-﻿@using Gs1DigitalLink.Web.Contracts
+﻿@using System.Globalization
+@using Gs1DigitalLink.Web.Contracts
 @using Gs1DigitalLink.Web.Formatters.Html.Models
-@using Microsoft.Extensions.Localization
-@using System.Globalization
+@using Gs1DigitalLink.Web.Services
+@inject CommonLocalizationService Localizer
+@model LinksetResponse
 @{
     Layout = "_Layout";
     ViewData["Title"] = Localizer["Linkset"];
 }
-@model LinksetResponse
-@inject IStringLocalizer<LinksetResponse> Localizer
 
 @if(Model.Links.Any())
 {

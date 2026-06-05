@@ -21,9 +21,9 @@ builder.Services.AddAuthentication();
 builder.Services.AddRouting();
 builder.Services.AddHostedService<InsightConsumer>();
 builder.Services.Configure<GS1ResolverOptions>(builder.Configuration.GetSection(GS1ResolverOptions.Key));
-builder.Services.AddLocalization(options => options.ResourcesPath = "Formatters/Html/Views/Resources");
+builder.Services.AddLocalization(options => options.ResourcesPath = "Formatters/Html/Resources");
 builder.Services.AddSingleton<CommonLocalizationService>();
-builder.Services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Formatters/Html/Views/Shared/{1}/{0}.cshtml"));
+builder.Services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Formatters/Html/Views/{1}/{0}.cshtml"));
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     options.AddSupportedUICultures("en", "fr", "nl", "de", "ar");

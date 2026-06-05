@@ -42,17 +42,17 @@ internal sealed class HtmlViewFormatter : TextOutputFormatter
             throw new InvalidOperationException($"View '{context.ObjectType!.Name}' not found.");
         }
 
-        await using var sw = new StringWriter();
+        await using var stringWriter = new StringWriter();
 
         var viewContext = new ViewContext(
             actionContext,
             viewResult.View,
             new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()){ Model = context.Object },
             new TempDataDictionary(httpContext, tempData),
-            sw,
+            stringWriter,
             new HtmlHelperOptions());
 
         await viewResult.View.RenderAsync(viewContext);
-        await context.HttpContext.Response.WriteAsync(sw.ToString());
+        await context.HttpContext.Response.WriteAsync(stringWriter.ToString());
     }
 }

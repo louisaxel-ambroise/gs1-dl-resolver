@@ -17,7 +17,7 @@ public sealed class ResolverController(IDigitalLinkConverter converter, IDigital
     private const string LinkTypeQueryKey = "linkType";
 
     [HttpGet, HttpHead]
-    [Route("{**_:minlength(2)}")]
+    [Route("{**_:minlength(2)}", Order = int.MaxValue)]
     [ResponseCache(NoStore = true)]
     public IActionResult HandleRequest()
     {

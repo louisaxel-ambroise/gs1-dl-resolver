@@ -117,193 +117,259 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Details of the error" xml:space="preserve">
+    <value>Details of the error</value>
+  </data>
+  <data name="DuplicateAI" xml:space="preserve">
+    <value>There is a duplicate AI value</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="gs1:activityIdeas" xml:space="preserve">
-    <value>Ideeën voor activiteiten</value>
+    <value>Activity Ideas</value>
   </data>
   <data name="gs1:allergenInfo" xml:space="preserve">
-    <value>Allergeneninformatie</value>
+    <value>Allergen information</value>
   </data>
   <data name="gs1:appDownload" xml:space="preserve">
-    <value>App downloaden</value>
+    <value>App download</value>
   </data>
   <data name="gs1:backgroundInfo" xml:space="preserve">
-    <value>Achtergrondinformatie</value>
+    <value>Background Information</value>
   </data>
   <data name="gs1:brandHomepageClinical" xml:space="preserve">
-    <value>Merkinformatie (professionals)</value>
+    <value>Brand Information (professionals)</value>
   </data>
   <data name="gs1:brandHomepagePatient" xml:space="preserve">
-    <value>Merkinformatie (patiënten)</value>
+    <value>Brand Information (patients)</value>
   </data>
   <data name="gs1:careersInfo" xml:space="preserve">
-    <value>Carrière-informatie</value>
+    <value>Careers Information</value>
   </data>
   <data name="gs1:certificationInfo" xml:space="preserve">
-    <value>Certificeringsinformatie</value>
+    <value>Certification Information</value>
   </data>
   <data name="gs1:consumerHandlingStorageInfo" xml:space="preserve">
-    <value>Informatie voor consumenten over gebruik en opslag</value>
+    <value>Consumer Handling/Storage Info</value>
   </data>
   <data name="gs1:defaultLink" xml:space="preserve">
-    <value>Standaardlink</value>
+    <value>Default Link</value>
   </data>
   <data name="gs1:defaultLinkMulti" xml:space="preserve">
-    <value>Standaardlink</value>
+    <value>Default Link</value>
   </data>
   <data name="gs1:dpp" xml:space="preserve">
-    <value>Digitaal paspoortproduct</value>
+    <value>Digital Passport Product</value>
   </data>
   <data name="gs1:eifu" xml:space="preserve">
-    <value>Elektronische gebruiksaanwijzing</value>
+    <value>Electronic Instructions For Use</value>
   </data>
   <data name="gs1:epcis" xml:space="preserve">
     <value>EPCIS</value>
   </data>
   <data name="gs1:epil" xml:space="preserve">
-    <value>Elektronische bijsluiter</value>
+    <value>Electronic Patient Information Leaflet</value>
   </data>
   <data name="gs1:eventsInfo" xml:space="preserve">
-    <value>Evenementeninformatie</value>
+    <value>Events information</value>
   </data>
   <data name="gs1:faqs" xml:space="preserve">
-    <value>Veelgestelde vragen</value>
+    <value>Frequently Asked Questions</value>
   </data>
   <data name="gs1:handledBy" xml:space="preserve">
-    <value>Verwerkt door</value>
+    <value>Handled by</value>
   </data>
   <data name="gs1:hasRetailers" xml:space="preserve">
-    <value>Heeft retailers</value>
+    <value>Has Retailers</value>
   </data>
   <data name="gs1:homepage" xml:space="preserve">
-    <value>Organisatie-informatiepagina</value>
+    <value>Organisation Information Page</value>
   </data>
   <data name="gs1:ingredientsInfo" xml:space="preserve">
-    <value>Ingrediënteninformatie</value>
+    <value>Ingredients information</value>
   </data>
   <data name="gs1:instructions" xml:space="preserve">
-    <value>Instructies</value>
+    <value>Instructions</value>
   </data>
   <data name="gs1:jws" xml:space="preserve">
     <value>JSON Web Signature</value>
   </data>
   <data name="gs1:leaveReview" xml:space="preserve">
-    <value>Een beoordeling achterlaten</value>
+    <value>Leave a review</value>
   </data>
   <data name="gs1:locationInfo" xml:space="preserve">
-    <value>Locatie-informatie</value>
+    <value>Location information</value>
   </data>
   <data name="gs1:logisticsInfo" xml:space="preserve">
-    <value>Logistieke informatie</value>
+    <value>Logistics information</value>
   </data>
   <data name="gs1:loyaltyProgram" xml:space="preserve">
-    <value>Loyaliteitsprogramma</value>
+    <value>Loyalty program</value>
   </data>
   <data name="gs1:masterData" xml:space="preserve">
-    <value>Stamgegevens</value>
+    <value>Master data</value>
   </data>
   <data name="gs1:menuInfo" xml:space="preserve">
-    <value>Menu-informatie</value>
+    <value>Menu information</value>
   </data>
   <data name="gs1:nutritionalInfo" xml:space="preserve">
-    <value>Voedingsinformatie</value>
+    <value>Nutritional Information</value>
   </data>
   <data name="gs1:openingHoursInfo" xml:space="preserve">
-    <value>Openingstijdeninformatie</value>
+    <value>Opening hours information</value>
   </data>
   <data name="gs1:paymentLink" xml:space="preserve">
-    <value>Betaling uitvoeren</value>
+    <value>Make Payment</value>
   </data>
   <data name="gs1:pip" xml:space="preserve">
-    <value>Productinformatie</value>
+    <value>Product Information</value>
   </data>
   <data name="gs1:productSustainabilityInfo" xml:space="preserve">
-    <value>Duurzaamheid en recycling</value>
+    <value>Sustainability and recycling</value>
   </data>
   <data name="gs1:promotion" xml:space="preserve">
-    <value>Promotie</value>
+    <value>Promotion</value>
   </data>
   <data name="gs1:purchaseSuppliesOrAccessories" xml:space="preserve">
-    <value>Benodigdheden of accessoires kopen</value>
+    <value>Purchase supplies or accessories</value>
   </data>
   <data name="gs1:quickStartGuide" xml:space="preserve">
-    <value>Snelstartgids</value>
+    <value>Quick start guide</value>
   </data>
   <data name="gs1:recallStatus" xml:space="preserve">
-    <value>Status van terugroepactie</value>
+    <value>Recall status</value>
   </data>
   <data name="gs1:recipeInfo" xml:space="preserve">
-    <value>Receptenwebsite</value>
+    <value>Recipe website</value>
   </data>
   <data name="gs1:registerProduct" xml:space="preserve">
-    <value>Aankoop registreren</value>
+    <value>Register purchase</value>
   </data>
   <data name="gs1:registryEntry" xml:space="preserve">
-    <value>Vermelding in een register</value>
+    <value>Entry in a register</value>
   </data>
   <data name="gs1:relatedImage" xml:space="preserve">
-    <value>Gerelateerde afbeelding</value>
+    <value>Related image</value>
   </data>
   <data name="gs1:relatedVideo" xml:space="preserve">
-    <value>Gerelateerde video</value>
+    <value>Related  video</value>
   </data>
   <data name="gs1:reportFound" xml:space="preserve">
-    <value>Vondst melden</value>
+    <value>Report found</value>
   </data>
   <data name="gs1:review" xml:space="preserve">
-    <value>Beoordelingen</value>
+    <value>Reviews</value>
   </data>
   <data name="gs1:safetyInfo" xml:space="preserve">
-    <value>Veiligheidsinformatie</value>
+    <value>Safety information</value>
   </data>
   <data name="gs1:scheduleTime" xml:space="preserve">
-    <value>Planning/Reservering</value>
+    <value>Scheduling/Reservation</value>
   </data>
   <data name="gs1:serviceInfo" xml:space="preserve">
-    <value>Service-informatie</value>
+    <value>Service information</value>
   </data>
   <data name="gs1:smartLabel" xml:space="preserve">
     <value>SmartLabel</value>
   </data>
   <data name="gs1:smpc" xml:space="preserve">
-    <value>Samenvatting van de productkenmerken</value>
+    <value>Summary Product Characteristics</value>
   </data>
   <data name="gs1:socialMedia" xml:space="preserve">
-    <value>Sociale media</value>
+    <value>Social media</value>
   </data>
   <data name="gs1:statisticInfo" xml:space="preserve">
-    <value>Statistieken</value>
+    <value>Statistics</value>
   </data>
   <data name="gs1:subscribe" xml:space="preserve">
-    <value>Abonneren</value>
+    <value>Subscribe</value>
   </data>
   <data name="gs1:support" xml:space="preserve">
-    <value>Ondersteuning</value>
+    <value>Support</value>
   </data>
   <data name="gs1:sustainabilityInfo" xml:space="preserve">
-    <value>Duurzaamheid en recycling</value>
+    <value>Sustainability and recycling</value>
   </data>
   <data name="gs1:traceability" xml:space="preserve">
-    <value>Informatie over traceerbaarheid</value>
+    <value>Traceability information</value>
   </data>
   <data name="gs1:tutorial" xml:space="preserve">
-    <value>Handleiding</value>
+    <value>Tutorial</value>
   </data>
   <data name="gs1:userAgreement" xml:space="preserve">
-    <value>Verklaring/overeenkomst/document ondertekenen</value>
+    <value>Sign waiver/agreement/document</value>
   </data>
   <data name="gs1:verificationService" xml:space="preserve">
-    <value>Verificatieservice</value>
+    <value>Verification Service</value>
   </data>
   <data name="gs1:whatsInTheBox" xml:space="preserve">
-    <value>Wat zit er in de doos?</value>
+    <value>What's in the box?</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="InternalError" xml:space="preserve">
+    <value>Internal Error</value>
+  </data>
+  <data name="InvalidAIValue" xml:space="preserve">
+    <value>Value does not match the AI pattern</value>
+  </data>
+  <data name="InvalidCheckDigit" xml:space="preserve">
+    <value>The check digit is invalid</value>
+  </data>
+  <data name="InvalidCompanyPrefix" xml:space="preserve">
+    <value>The company prefix is invalid</value>
+  </data>
+  <data name="InvalidInput" xml:space="preserve">
+    <value>The provided digital link is invalid</value>
+  </data>
+  <data name="Light" xml:space="preserve">
+    <value>Light</value>
   </data>
   <data name="Linkset" xml:space="preserve">
     <value>Linkset</value>
   </data>
   <data name="Linkset for this resource" xml:space="preserve">
-    <value>Linkset voor deze bron</value>
+    <value>Linkset for this resource</value>
+  </data>
+  <data name="Multiple choices available" xml:space="preserve">
+    <value>Multiple choices available</value>
+  </data>
+  <data name="Multiple links are available for this resource" xml:space="preserve">
+    <value>Multiple links are available for this resource</value>
   </data>
   <data name="No links configured for this resource" xml:space="preserve">
-    <value>Geen links geconfigureerd voor deze bron</value>
+    <value>No links configured for this resource</value>
+  </data>
+  <data name="NoCompanyPrefix" xml:space="preserve">
+    <value>No component contains a GCP value</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
+  <data name="The provided digital link is invalid" xml:space="preserve">
+    <value>The provided digital link is invalid</value>
+  </data>
+  <data name="The request specified an invalid DigitalLink" xml:space="preserve">
+    <value>The request specified an invalid DigitalLink</value>
+  </data>
+  <data name="Theme:" xml:space="preserve">
+    <value>Theme:</value>
+  </data>
+  <data name="There is no entry configured for the specified request" xml:space="preserve">
+    <value>There is no entry configured for the specified request</value>
+  </data>
+  <data name="This request should not be retried." xml:space="preserve">
+    <value>This request should not be retried.</value>
+  </data>
+  <data name="Unable to process the request" xml:space="preserve">
+    <value>Unable to process the request</value>
+  </data>
+  <data name="UnknownAI" xml:space="preserve">
+    <value>There is an unknown AI</value>
   </data>
 </root>

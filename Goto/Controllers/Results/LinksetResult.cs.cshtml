@@ -1,0 +1,44 @@
+﻿@using Goto.Translations
+@model Goto.Controllers.Results.LinksetResult
+@inject CommonLocalizationService Localizer
+@{
+    Layout = "_Shared";
+    ViewData["Title"] = Localizer["Linkset"];
+    var i = 0;
+
+    string GetCountryName(string language)
+    {
+        var culture = System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag(language);
+
+        return culture.DisplayName;
+    }
+
+    string DetailStatus()
+    {
+        return i++ == 0 
+            ? "open" 
+            : string.Empty;
+    }
+}
+
+<h2>Liste des liens pour cette resource.</h2>
+
+@foreach (var linkset in Model.Anchors)
+{
+    <details name="anchor" @DetailStatus()>
+        <summary>Liens pour l'ancre <code>@linkset.Anchor</code></summary>
+
+        <ul>
+            @foreach (var link in linkset.Links)
+            {
+                <li>
+                    <a href="@link.Href" title="@link.Href" target="_blank">@link.Title</a>
+                    @foreach (var lang in link.Hreflang)
+                    {
+                        <span class="tag language">@GetCountryName(lang)</span>
+                    }
+                </li>
+            }
+        </ul>
+    </details>
+}

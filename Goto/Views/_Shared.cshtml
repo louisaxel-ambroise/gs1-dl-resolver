@@ -1,0 +1,28 @@
+﻿@using System.Globalization
+@using Goto.Translations
+@inject CommonLocalizationService localizer
+@{
+    var direction = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft
+                ? "rtl"
+                : "ltr";
+}
+<!DOCTYPE html>
+<html dir="@direction">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    <link rel="stylesheet" href="/style.css">
+    <title>@ViewData["Title"] - Goto.it.com</title>
+</head>
+<body>
+    <h1 class="logo">Goto</h1>
+    <div class="content">
+        @RenderBody()
+    </div>
+    <footer>
+        <p>&copy; @TimeProvider.System.GetUtcNow().Year Goto.it.com</p>
+        <a href="https://goto.it.com/">@localizer["Home"]</a>
+    </footer>
+</body>
+</html>

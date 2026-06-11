@@ -1,0 +1,27 @@
+﻿@using Goto.Translations
+@model Goto.Controllers.Results.ErrorResponse
+@inject CommonLocalizationService Localizer
+@{
+    Layout = "_Shared";
+    ViewData["Title"] = Localizer["Error"];
+}
+
+<h2>@Model.Status - @Localizer[Model.Title]</h2>
+
+@if (Model.Status is >= 400 and <= 499)
+{
+    <p>@Localizer[Model.Detail]<br /><strong>@Localizer["This request should not be retried."]</strong></p>
+}
+
+@if (Model.Errors.Any())
+{
+    <details>
+        <summary>@Localizer["Details of the error"]</summary>
+        <ul>
+            @foreach (var error in Model.Errors)
+            {
+                <li>@Localizer[error.Code]</li>
+            }
+        </ul>
+    </details>
+}

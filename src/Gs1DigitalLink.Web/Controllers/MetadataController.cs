@@ -17,15 +17,15 @@ public sealed class MetadataController(IOptions<GS1ResolverOptions> options) : C
     [HttpGet(".well-known/gs1resolver")]
     public IActionResult ResolverMetadata()
     {
-        var result = new
+        var result = new GS1ResolverResult
         {
-            resolverRoot = $"{Request.Scheme}://{Request.Host}",
-            name = options.Value.Name,
-            supportedPrimaryKeys = options.Value.SupportedPrimaryKeys,
-            linkTypeDefaultCanBeLinkset = true,
-            contact = new
+            ResolverRoot = $"{Request.Scheme}://{Request.Host}",
+            Name = options.Value.Name,
+            SupportedPrimaryKeys = options.Value.SupportedPrimaryKeys,
+            LinkTypeDefaultCanBeLinkset = true,
+            Contact = new ()
             {
-                fn = options.Value.ContactName
+                Fn = options.Value.ContactName
             }
         };
 

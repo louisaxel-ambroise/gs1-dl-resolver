@@ -85,11 +85,11 @@ public sealed class ResolverController
             var links = ResolutionResultLink.Map(anchor.FindBestMatches(linkType, languages, mediaTypes), digitalLink);
             
             if (links.Count == 1)
-                return new RedirectResult(links.Single().Href);
+                return new RedirectResult(links.Single().Href, permanent: false, preserveMethod: true);
             if (links.Count > 1) 
                 return new MultipleChoicesObjectResult(new ResolutionResult { Links = links });
             if (string.IsNullOrEmpty(linkType))
-                return new RedirectResult(digitalLink.BuildLinksetLink());
+                return new RedirectResult(digitalLink.BuildLinksetLink(), permanent:false, preserveMethod:true);
         }
 
         return new NotFoundObjectResult(ErrorResponse.NotFound);

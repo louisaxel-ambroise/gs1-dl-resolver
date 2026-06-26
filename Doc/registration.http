@@ -27,15 +27,15 @@ POST {{baseUrl}}/api/anchors/UkLWZg9DAJ/links
 Content-Type: application/json
 X-Api-Key: {{apiKey}}
 {
-  "linkType": "gs1:consumerHandlingStorageInfo",
-  "redirectUrl": "https://goto.it.com/my-product/how-to-handle",
-  "title": "Informations sur la manipulation/stockage",
-  "languages": [ "fr" ],
+  "linkType": "gs1:pip",
+  "redirectUrl": "https://en.test.com",
+  "title": "product info",
+  "languages": [ "en-GB" ],
   "mediaType": "text/html",
   "isDefault": true
 }
 
 ### Remove a link from an anchor
-DELETE {{baseUrl}}/api/anchors/UkLWZg9DAJ/links/kQKMTKyEQA
+DELETE {{baseUrl}}/api/anchors/UkLWZg9DAJ/links/XMbTbzBOmP
 Content-Type: application/json
 X-Api-Key: {{apiKey}}

@@ -1,4 +1,4 @@
-@baseUrl=https://localhost:7111
+@baseUrl=https://id.goto.it.com
 @apiKey=sk_HxtRNQ1ZgyGBpNuAAKeJpIvQ4SOUlvNL
 
 ### List all insights - DigitalLink and number of resolutions

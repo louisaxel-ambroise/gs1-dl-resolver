@@ -39,6 +39,7 @@ builder.Services.AddAuthentication("ApiKey").AddScheme<ApiKeyAuthenticationSchem
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseAuthorization();
 app.MapStaticAssets();
 app.UseRequestLocalization();

@@ -11,7 +11,6 @@ public class Context : DbContext
     public Context(DbContextOptions<Context> options, ApiTimeProvider timeProvider) : base(options)
     {
         TimeProvider = timeProvider;
-        Console.WriteLine(Database.GenerateCreateScript());
         Database.EnsureCreatedAsync();
     }
 

@@ -8,6 +8,7 @@ using Goto.Infrastructure.Routing.Constraints;
 using Goto.Infrastructure.Routing.Filters;
 using Goto.Services.Conversion;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Goto.Controllers;
@@ -15,6 +16,7 @@ namespace Goto.Controllers;
 [Controller]
 [TimeTraveler]
 [AllowAnonymous]
+[EnableCors]
 public sealed class ResolverController
 {
     [HttpGet(".well-known/gs1resolver")]
@@ -27,6 +29,7 @@ public sealed class ResolverController
             Name = "GOTO",
             SupportedPrimaryKeys = [ "all" ],
             LinkTypeDefaultCanBeLinkset = true,
+            JsonLdContextLocation = "https://ref.gs1.org/standards/resolver/linkset-context",
             Contact = new()
             {
                 Fn = "GOTO"
@@ -79,7 +82,7 @@ public sealed class ResolverController
 
         foreach (var anchor in anchors.OrderByDescending(a => a.Prefix.Length))
         {
-            var links = ResolutionResultLink.Map(anchor.FindBestMatches(languages, mediaTypes), digitalLink);
+            var links = ResolutionResultLink.Map(anchor.FindBestMatches(linkType, languages, mediaTypes), digitalLink);
             
             if (links.Count == 1)
                 return new RedirectResult(links.Single().Href);

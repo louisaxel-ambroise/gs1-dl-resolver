@@ -6,8 +6,7 @@ Accept-Language: fr-BE
 Accept: application/linkset+json
 
 ### Resolves a linkType for the specified DigitalLink
-GET {{baseUrl}}/01/05414195535264?linkType=gs1:consumerHandlingStorageInfo
-Accept-Language: fr-BE
+GET {{baseUrl}}/01/05414195535264?foo=bar
 Accept: */*
 
 ### Time-Travel - Send a request for a specific DateTime
@@ -24,5 +23,15 @@ X-Request-Date: 2026-05-10T10:24:35+02:00
 # The X-Request-Tracking header with a value of 'bypass' or 'notrack' will not be tracked
 GET {{baseUrl}}/01/05414195535264?linkType=gs1:consumerHandlingStorageInfo
 Accept-Language: fr-BE
+Accept: */*
+X-Request-Tracking: bypass
+
+### CORS
+OPTIONS {{baseUrl}}/01/05414195535264
+Origin: https://foo.example
+Access-Control-Request-Method: GET, HEAD, OPTIONS
+
+### HEAD
+HEAD {{baseUrl}}/01/05414195535264
 Accept: */*
 X-Request-Tracking: bypass

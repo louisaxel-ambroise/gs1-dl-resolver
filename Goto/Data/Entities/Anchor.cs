@@ -10,27 +10,30 @@ public sealed class Anchor
     public string? Description { get; set; }
     public List<AnchorLink> Links { get; set; } = [];
 
-    public List<AnchorLink> FindBestMatches(Language[] languages, string[] mediaTypes)
+    public List<AnchorLink> FindBestMatches(string? linkType, Language[] languages, string[] mediaTypes)
     {
-        var candidates = languages
-            .Select(lang => FindBestMatch(Links, link => link.MatchesLanguage(lang)))
-            .FirstOrDefault(list => list.Count > 0, Links);
+        var candidates = linkType is null
+            ? Links.Where(l => l.IsDefault)
+            : Links.Where(l => l.LinkType == linkType);
+
+        candidates = languages
+            .Select(lang => FindBestMatch(candidates, link => link.MatchesLanguage(lang)))
+            .FirstOrDefault(list => list.Any(), candidates);
 
         candidates = mediaTypes
             .Select(type => FindBestMatch(candidates, link => link.MatchesMediaType(type)))
-            .FirstOrDefault(list => list.Count > 0, candidates);
+            .FirstOrDefault(list => list.Any(), candidates);
 
-        return candidates;
+        return candidates.ToList();
     }
 
-    private static List<AnchorLink> FindBestMatch(List<AnchorLink> links, Func<AnchorLink, Match> selector)
+    private static IEnumerable<AnchorLink> FindBestMatch(IEnumerable<AnchorLink> links, Func<AnchorLink, Match> selector)
     {
         return links.GroupBy(selector)
             .OrderByDescending(grp => grp.Key)
             .Where(grp => grp.Key is not Match.NoMatch)
-            .Select(grp => grp.ToList())
             .FirstOrDefault(EmptyList);
     }
 
-    private static readonly List<AnchorLink> EmptyList = [];
+    private static readonly IEnumerable<AnchorLink> EmptyList = [];
 }

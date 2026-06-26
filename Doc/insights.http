@@ -1,0 +1,10 @@
+@baseUrl=https://localhost:7111
+@apiKey=sk_HxtRNQ1ZgyGBpNuAAKeJpIvQ4SOUlvNL
+
+### List all insights - DigitalLink and number of resolutions
+GET {{baseUrl}}/api/insights
+X-Api-Key: {{apiKey}}
+
+### Get the details of the DigitalLink insights
+GET {{baseUrl}}/api/insights/01/05414195535264
+X-Api-Key: {{apiKey}}

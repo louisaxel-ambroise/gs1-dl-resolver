@@ -1,0 +1,28 @@
+﻿@using Goto.Translations
+@model Goto.Controllers.Results.ResolutionResult
+@inject CommonLocalizationService Localizer
+@{
+    Layout = "_Shared";
+    ViewData["Title"] = Localizer["Multiple choices available"];
+
+    string GetCountryName(string language)
+    {
+        var culture = System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag(language);
+
+        return culture.DisplayName;
+    }
+}
+
+<h2>@Localizer["Multiple links are available for this resource"]</h2>
+<ul>
+    @foreach(var link in Model.Links)
+    {
+        <li>
+            <a href="@link.Href" title="@link.Href" target="_blank">@link.Title</a>
+            @foreach (var lang in link.Hreflang)
+            {
+                <span class="tag language">@GetCountryName(lang)</span>
+            }
+        </li>
+    }
+</ul>

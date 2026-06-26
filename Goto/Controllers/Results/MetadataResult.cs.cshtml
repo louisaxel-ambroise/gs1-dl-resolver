@@ -1,0 +1,10 @@
+﻿@using Goto.Translations
+@model Goto.Controllers.Results.MetadataResult
+@inject CommonLocalizationService Localizer
+@{
+    Layout = "_Shared";
+    ViewData["Title"] = Localizer["Metadata"];
+}
+
+
+<p>Nom du resolveur: @Model.Name</p>

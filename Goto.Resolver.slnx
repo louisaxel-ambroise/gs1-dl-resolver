@@ -1,4 +1,9 @@
 <Solution>
+  <Folder Name="/HTTP Requests/">
+    <File Path="Doc/insights.http" />
+    <File Path="Doc/registration.http" />
+    <File Path="Doc/resolution.http" />
+  </Folder>
   <Project Path="Goto.Tests/Goto.Tests.csproj" />
   <Project Path="Goto/Goto.csproj" />
 </Solution>

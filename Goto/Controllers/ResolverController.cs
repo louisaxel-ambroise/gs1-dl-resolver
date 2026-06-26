@@ -2,18 +2,19 @@
 using Goto.Data;
 using Goto.Data.Entities;
 using Goto.Infrastructure;
-using Goto.Infrastructure.Binding;
-using Goto.Infrastructure.Constraints;
-using Goto.Infrastructure.Filters;
 using Goto.Infrastructure.Results;
+using Goto.Infrastructure.Routing.Binding;
+using Goto.Infrastructure.Routing.Constraints;
+using Goto.Infrastructure.Routing.Filters;
 using Goto.Services.Conversion;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Goto.Controllers;
 
 [Controller]
 [TimeTraveler]
+[AllowAnonymous]
 public sealed class ResolverController
 {
     [HttpGet(".well-known/gs1resolver")]
@@ -33,20 +34,13 @@ public sealed class ResolverController
         });
     }
 
-    [ResponseLinksetSchemaHeader]
-    [GS1ResolverRoute(IsLinksetRequired = true)]
+    [LinksetResolverRoute]
     [Produces(MediaTypes.Linkset, MediaTypes.Html)]
     public IActionResult ResolveLinkset(
         [FromUri] DigitalLink digitalLink, 
         [FromServices] Context context)
     {
-        var anchors = context.Anchors
-            .Include(a => a.Links)
-            .Where(a => a.Links.Any())
-            .Where(a => digitalLink.CompanyPrefix == a.CompanyPrefix)
-            .Where(a => digitalLink.GetPrefixValues().Contains(a.Prefix))
-            .ToList();
-
+        var anchors = context.QueryForLink(digitalLink).ToList();
         var linksets = anchors.Select(a => new LinksetResultAnchor()
         {
             Anchor = string.Join('/', digitalLink.HostUrl, a.Prefix),
@@ -70,8 +64,7 @@ public sealed class ResolverController
     }
 
     [InsightsTracking]
-    [ResponseLinksetHeader]
-    [GS1ResolverRoute(IsLinksetRequired = false)]
+    [LinkTypeResolverRoute]
     [Produces(MediaTypes.Json, MediaTypes.Html)]
     public IActionResult ResolveDigitalLinkAsync(
         [FromUri] DigitalLink digitalLink, 
@@ -80,11 +73,9 @@ public sealed class ResolverController
         [FromHeader] Language[] languages, 
         [FromServices] Context context)
     {
-        var anchors = context.Anchors
-            .Include(a => a.Links.Where(l => l.LinkType == linkType || l.IsDefault))
-            .Where(a => a.Links.Any())
-            .Where(a => digitalLink.CompanyPrefix == a.CompanyPrefix)
-            .Where(a => digitalLink.GetPrefixValues().Contains(a.Prefix));
+        var anchors = context.QueryForLink(digitalLink)
+            .Where(a => a.Links.Any(l => l.LinkType == linkType || l.IsDefault))
+            .ToList();
 
         foreach (var anchor in anchors.OrderByDescending(a => a.Prefix.Length))
         {
@@ -92,7 +83,7 @@ public sealed class ResolverController
             
             if (links.Count == 1)
                 return new RedirectResult(links.Single().Href);
-            if(links.Count > 1) 
+            if (links.Count > 1) 
                 return new MultipleChoicesObjectResult(new ResolutionResult { Links = links });
             if (string.IsNullOrEmpty(linkType))
                 return new RedirectResult(digitalLink.BuildLinksetLink());

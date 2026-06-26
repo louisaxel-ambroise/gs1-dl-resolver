@@ -1,7 +1,7 @@
 ﻿using Goto.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Goto.Infrastructure.Filters;
+namespace Goto.Infrastructure.Routing.Filters;
 
 public sealed class TimeTravelerAttribute : ActionFilterAttribute
 {

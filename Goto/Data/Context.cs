@@ -1,26 +1,35 @@
 ﻿using Goto.Data.Entities;
 using Goto.Services;
+using Goto.Services.Conversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Goto.Data;
 
-public sealed class Context : DbContext
+public class Context : DbContext
 {
     public Context(DbContextOptions<Context> options, ApiTimeProvider timeProvider) : base(options)
     {
         TimeProvider = timeProvider;
+        Console.WriteLine(Database.GenerateCreateScript());
         Database.EnsureCreatedAsync();
     }
 
     public DbSet<Anchor> Anchors => Set<Anchor>();
     public DbSet<Insight> Insights => Set<Insight>();
 
+    public IQueryable<Anchor> QueryForLink(DigitalLink digitalLink)
+    {
+        return Anchors
+            .Where(a => a.Links.Any())
+            .Where(a => digitalLink.CompanyPrefix == a.CompanyPrefix)
+            .Where(a => digitalLink.GetPrefixValues().Contains(a.Prefix));
+    }
+
     public ApiTimeProvider TimeProvider { get; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseSqlite($"Data Source=registry.db");
         options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 
@@ -32,6 +41,7 @@ public sealed class Context : DbContext
         anchor.Property(a => a.Description).IsRequired();
         anchor.HasIndex(a => new { a.CompanyPrefix, a.Prefix }).IsUnique();
         anchor.HasMany(a => a.Links).WithOne().HasForeignKey(l => l.AnchorId);
+        anchor.Navigation(a => a.Links).AutoInclude();
 
         var link = modelBuilder.Entity<AnchorLink>();
         link.HasKey(l => l.Id);

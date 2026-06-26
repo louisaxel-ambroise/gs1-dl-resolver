@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Channels;
 
-namespace Goto.Infrastructure.Filters;
+namespace Goto.Infrastructure.Routing.Filters;
 
 public sealed class InsightsTrackingAttribute : ActionFilterAttribute
 {
+    const string HeaderName = "X-Request-Tracking";
+
     public override void OnActionExecuted(ActionExecutedContext context)
     {
-        if (BypassTracking(context.HttpContext.Request)) return;
+        if (BypassTracking(context.HttpContext.Request)) 
+            return;
 
         var channel = context.HttpContext.RequestServices.GetRequiredService<Channel<Insight>>();
         var insight = context.Result switch
@@ -45,7 +48,7 @@ public sealed class InsightsTrackingAttribute : ActionFilterAttribute
 
     private static bool BypassTracking(HttpRequest request)
     {
-        return request.Headers.TryGetValue("X-GS1-Tracking", out var values) 
+        return request.Headers.TryGetValue(HeaderName, out var values) 
             && values.Any(v => v is "bypass" or "notrack");
     }
 }

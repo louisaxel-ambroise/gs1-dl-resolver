@@ -1,12 +1,14 @@
 ﻿using Goto.Data;
-using Goto.Infrastructure.Filters;
+using Goto.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Goto.Controllers;
 
 [Controller]
 [Route("api/insights")]
-[Produces("application/json")]
+[Produces(MediaTypes.Json)]
+[Authorize(AuthenticationSchemes = "ApiKey")]
 public sealed class InsightsController(Context context)
 {
     [HttpGet]
@@ -17,18 +19,17 @@ public sealed class InsightsController(Context context)
             .Select(grp => new
             {
                 Url = grp.Key,
-                ScanCount = grp.Count(),
-                Details = "details?url=" + grp.Key
+                ScanCount = grp.Count()
             });
 
         return new OkObjectResult(insights);
     }
 
-    [HttpGet("details")]
-    public IActionResult GetInsightDetails([FromQuery] string url)
+    [HttpGet("{**url:minlength(2)}")]
+    public IActionResult GetInsightDetails(string url)
     {
         var details = context.Insights
-            .Where(i => i.Url == url)
+            .Where(i => i.Url == string.Concat('/', url))
             .OrderByDescending(i => i.RecordDate)
             .Select(i => new
             {

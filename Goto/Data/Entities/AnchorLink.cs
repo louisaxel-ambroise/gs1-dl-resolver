@@ -1,4 +1,6 @@
-﻿namespace Goto.Data.Entities;
+﻿using Goto.Data.Enums;
+
+namespace Goto.Data.Entities;
 
 public sealed class AnchorLink
 {
@@ -13,16 +15,16 @@ public sealed class AnchorLink
     public required DateTimeOffset ActiveUntil { get; set; }
     public bool IsDefault { get; set; }
 
-    public Quality MatchesLanguage(Language language)
+    public Match MatchesLanguage(Language language)
     {
-        return Language?.Matches(language) ?? Quality.NoMatch;
+        return Language?.Matches(language) ?? Match.NoMatch;
     }
 
-    public Quality MatchesMediaType(string mediaType)
+    public Match MatchesMediaType(string mediaType)
     {
         return MediaType == mediaType
-            ? Quality.FullMatch
-            : Quality.NoMatch;
+            ? Match.FullMatch
+            : Match.NoMatch;
     }
 
     internal bool IsEquivalentTo(AnchorLink requestLink)
@@ -42,11 +44,4 @@ public sealed class AnchorLink
 
         ActiveUntil = activeUntil;
     }
-}
-
-public enum Quality
-{
-    NoMatch = 0,
-    PartialMatch = 1,
-    FullMatch = 2
 }

@@ -1,6 +1,6 @@
-﻿namespace Goto.Services;
+﻿namespace Goto;
 
-public static class DateTimeOffsetExtensions
+public static class Extensions
 {
     extension (DateTimeOffset)
     {
@@ -12,6 +12,14 @@ public static class DateTimeOffsetExtensions
         public static DateTimeOffset Max(params DateTimeOffset?[] values)
         {
             return values.OrderByDescending(x => x).FirstOrDefault(x => x is not null) ?? DateTimeOffset.UtcNow;
+        }
+    }
+
+    extension(HttpResponse response)
+    {
+        public bool IsSuccessStatusCode()
+        {
+            return response.StatusCode is >= 200 and < 400;
         }
     }
 }

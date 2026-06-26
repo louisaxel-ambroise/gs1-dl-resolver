@@ -1,4 +1,4 @@
-﻿using Goto.Infrastructure.Validation;
+﻿using Goto.Infrastructure.Routing.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Goto.Controllers.Requests;

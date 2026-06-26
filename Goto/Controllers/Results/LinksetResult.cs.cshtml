@@ -21,19 +21,29 @@
     }
 }
 
-<h2>Liste des liens pour cette resource.</h2>
+<h2>@Localizer["Linkset for this resource"]</h2>
 
 @foreach (var linkset in Model.Anchors)
 {
+    var anchorLinks = linkset.Links.GroupBy(l => new { l.Href, l.Title });
+
     <details name="anchor" @DetailStatus()>
-        <summary>Liens pour l'ancre <code>@linkset.Anchor</code></summary>
+        <summary>@Localizer["Links for Anchor"] <code>@linkset.Anchor</code></summary>
 
         <ul>
-            @foreach (var link in linkset.Links)
+            @foreach (var link in anchorLinks)
             {
                 <li>
-                    <a href="@link.Href" title="@link.Href" target="_blank">@link.Title</a>
-                    @foreach (var lang in link.Hreflang)
+                    <a href="@link.Key.Href" title="@link.Key.Href" target="_blank">@link.Key.Title</a>
+                    @if(link.Any(l => l.IsDefault))
+                    {
+                        <span class="tag defaultLink">@Localizer["gs1:defaultLink"]</span>
+                    }
+                    @foreach (var linkType in link.Select(l => l.LinkType).Distinct())
+                    {
+                        <span class="tag linkType">@Localizer[linkType]</span>
+                    }
+                    @foreach (var lang in link.SelectMany(l => l.Hreflang).Distinct())
                     {
                         <span class="tag language">@GetCountryName(lang)</span>
                     }

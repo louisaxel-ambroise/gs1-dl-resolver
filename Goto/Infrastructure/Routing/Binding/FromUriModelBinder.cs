@@ -2,7 +2,7 @@ using Goto.Services.Conversion;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Goto.Infrastructure.Binding;
+namespace Goto.Infrastructure.Routing.Binding;
 
 public sealed class FromUriModelBinder : IModelBinder
 {

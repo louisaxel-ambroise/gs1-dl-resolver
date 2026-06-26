@@ -1,4 +1,6 @@
-﻿namespace Goto.Data.Entities;
+﻿using Goto.Data.Enums;
+
+namespace Goto.Data.Entities;
 
 public sealed class Anchor
 {
@@ -10,8 +12,6 @@ public sealed class Anchor
 
     public List<AnchorLink> FindBestMatches(Language[] languages, string[] mediaTypes)
     {
-        if (Links.Count == 0) return Links;
-
         var candidates = languages
             .Select(lang => FindBestMatch(Links, link => link.MatchesLanguage(lang)))
             .FirstOrDefault(list => list.Count > 0, Links);
@@ -23,11 +23,11 @@ public sealed class Anchor
         return candidates;
     }
 
-    private static List<AnchorLink> FindBestMatch(List<AnchorLink> links, Func<AnchorLink, Quality> selector)
+    private static List<AnchorLink> FindBestMatch(List<AnchorLink> links, Func<AnchorLink, Match> selector)
     {
         return links.GroupBy(selector)
             .OrderByDescending(grp => grp.Key)
-            .Where(grp => grp.Key is not Quality.NoMatch)
+            .Where(grp => grp.Key is not Match.NoMatch)
             .Select(grp => grp.ToList())
             .FirstOrDefault(EmptyList);
     }

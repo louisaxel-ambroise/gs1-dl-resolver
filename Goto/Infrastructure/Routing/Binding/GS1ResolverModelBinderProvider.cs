@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Goto.Infrastructure.Binding;
+namespace Goto.Infrastructure.Routing.Binding;
 
 public sealed class GS1ResolverModelBinderProvider : IModelBinderProvider
 {

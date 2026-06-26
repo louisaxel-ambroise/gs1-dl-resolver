@@ -20,19 +20,18 @@ public static class ResolverControllerFixture
     public sealed class GetMetadataInformation()
     {
         [TestMethod]
-        public void ResultShouldBeOkObjectResult()
+        public void ShouldReturnExpectedMetadata()
         {
             var result = Controller.GetMetadataInformation(new Uri("https://test.url/.well-known/gs1resolver"));
 
-            Assert.IsInstanceOfType<OkObjectResult>(result);
-        }
+            var okObjectResult = Assert.IsInstanceOfType<OkObjectResult>(result);
+            var metadata = Assert.IsInstanceOfType<MetadataResult>(okObjectResult.Value);
 
-        [TestMethod]
-        public void ShouldReturnAMetadataResult()
-        {
-            var result = (OkObjectResult) Controller.GetMetadataInformation(new Uri("https://test.url/.well-known/gs1resolver"));
-
-            Assert.IsInstanceOfType<MetadataResult>(result.Value);
+            Assert.AreEqual("https://test.url", metadata.ResolverRoot);
+            Assert.AreEqual("GOTO", metadata.Name);
+            Assert.IsTrue(metadata.LinkTypeDefaultCanBeLinkset);
+            Assert.AreEqual("GOTO", metadata.Contact.Fn);
+            CollectionAssert.AreEquivalent(new[] { "all" }, metadata.SupportedPrimaryKeys);
         }
     }
 
@@ -43,39 +42,26 @@ public static class ResolverControllerFixture
     [TestClass]
     public sealed class ResolveLinkset()
     {
-        public Context Context { get; private set; } = null!;
-        public DigitalLink DigitalLink { get; private set; } = null!;
-        public ApiTimeProvider TimeProvider { get; private set; } = null!;
+        public static Context Context { get; private set; } = null!;
+        public static ApiTimeProvider TimeProvider { get; private set; } = null!;
 
-        [TestInitialize]
-        public void Initialize()
+        [ClassInitialize]
+        public static void Initialize(TestContext testContext)
         {
             var options = new DbContextOptionsBuilder<Context>()
-                .UseSqlite("Data Source=:memory:")
+                .UseSqlite($"Data Source={nameof(ResolveLinkset)}.db")
                 .Options;
 
-            DigitalLink = new() { AIs = [new KeyValue { Key = new() { Type = AIType.PrimaryKey, Code = "01" }, Value = "123456789", Issues = [] }], CompanyPrefix = "", HostUrl = "https://test.com", QueryString = [] };
             TimeProvider = new ApiTimeProvider();
             Context = new Context(options, TimeProvider);
 
             Context.Database.EnsureDeleted();
             Context.Database.EnsureCreated();
-        }
 
-        [TestMethod]
-        public void ShouldReturnStatusCodeNotFoundWhenNoLinkIsConfigured()
-        {
-            var result = Controller.ResolveLinkset(DigitalLink, Context);
-
-            Assert.IsInstanceOfType<NotFoundObjectResult>(result);
-        }
-
-        [TestMethod]
-        public void ShouldReturnStatusCodeOkWhenLinksAreConfigured()
-        {
             Context.Anchors.Add(new Anchor
             {
-                Prefix = "01/",
+                Prefix = "01",
+                CompanyPrefix = "123456",
                 Description = "test anchor",
                 Links = [ new AnchorLink
                 {
@@ -87,9 +73,33 @@ public static class ResolverControllerFixture
                     Title = "PIP redirection"
                 } ]
             });
-            Context.SaveChanges();
 
-            var result = Controller.ResolveLinkset(DigitalLink, Context);
+            Context.SaveChanges();
+        }
+
+        [ClassCleanup]
+        public static void Cleanup()
+        {
+            if (Context is not null)
+            {
+                Context.Database.EnsureDeleted();
+            }
+        }
+
+        [TestMethod]
+        public void ShouldReturnStatusCodeNotFoundWhenNoLinkIsConfigured()
+        {
+            var digitalLink = new DigitalLink() { AIs = [new KeyValue { Key = new() { Type = AIType.PrimaryKey, Code = "01" }, Value = "undefined", Issues = [] }], CompanyPrefix = "654321", HostUrl = "https://test.com", QueryString = [] };
+            var result = Controller.ResolveLinkset(digitalLink, Context);
+
+            Assert.IsInstanceOfType<NotFoundObjectResult>(result);
+        }
+
+        [TestMethod]
+        public void ShouldReturnStatusCodeOkWhenLinksAreConfigured()
+        {
+            var digitalLink = new DigitalLink() { AIs = [new KeyValue { Key = new() { Type = AIType.PrimaryKey, Code = "01" }, Value = "123456789", Issues = [] }], CompanyPrefix = "123456", HostUrl = "https://test.com", QueryString = [] };
+            var result = Controller.ResolveLinkset(digitalLink, Context);
 
             Assert.IsInstanceOfType<OkObjectResult>(result);
         }

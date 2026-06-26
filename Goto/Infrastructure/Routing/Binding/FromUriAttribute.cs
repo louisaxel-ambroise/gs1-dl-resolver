@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Goto.Infrastructure.Binding;
+namespace Goto.Infrastructure.Routing.Binding;
 
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
 public sealed class FromUriAttribute : Attribute, IBindingSourceMetadata, IModelNameProvider

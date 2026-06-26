@@ -1,0 +1,28 @@
+@baseUrl=https://localhost:7111
+
+### Resolves the entire list of links for the specified DigitalLink
+GET {{baseUrl}}/01/05414195535264
+Accept-Language: fr-BE
+Accept: application/linkset+json
+
+### Resolves a linkType for the specified DigitalLink
+GET {{baseUrl}}/01/05414195535264?linkType=gs1:consumerHandlingStorageInfo
+Accept-Language: fr-BE
+Accept: */*
+
+### Time-Travel - Send a request for a specific DateTime
+# This feature is useful to replay a request and/or performing validations on the configured links (for example promotion or time-specific resolutions)
+# The X-Request-Date header specifies the date and time of the request. This must be in ISO 8601 format, and must be in the past.
+GET {{baseUrl}}/01/05414195535264?linkType=gs1:consumerHandlingStorageInfo
+Accept-Language: fr-BE
+Accept: */*
+X-Request-Date: 2026-05-10T10:24:35+02:00
+
+### No Tracking - Bypass insights tracking for the request
+# This request will not appear in the /api/insights results. It will not be tracked at all
+# Used when debugging a request or when validating the configuration
+# The X-Request-Tracking header with a value of 'bypass' or 'notrack' will not be tracked
+GET {{baseUrl}}/01/05414195535264?linkType=gs1:consumerHandlingStorageInfo
+Accept-Language: fr-BE
+Accept: */*
+X-Request-Tracking: bypass

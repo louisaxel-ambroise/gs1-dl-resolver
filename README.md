@@ -21,22 +21,22 @@ There is also a [Postman Workspace](https://www.postman.com/fastnt-epcis/goto-gs
 ## API Overview
 
 The resolver contains endpoint to:
-- Register a redirection for a DigitalLink
+- Register an anchor/DigitalLink and redirection for DigitalLinks
 - Resolve a DigitalLink
 - Get insights for a DigitalLink
-- Compress/uncompress DigitalLinks
 
-### Register a redirection for a DigitalLink
+### Register a DigitalLink
 
-Registeration of a DigitalLink is made by making a POST request on the root path followed by the DigitalLink (compressed or not).
+The registration of links for a DigitalLink is made in 2 steps:
+	- Register the anchor and provide basic information
+	- Add one or more links on the anchor
+
+Registeration of an Anchor:
 
 ```sh
-curl -X POST "https://id.goto.it.com/api/register" -H "Content-Type: application/json" -d '{
+curl -X POST "https://id.goto.it.com/api/anchor" -H "Content-Type: application/json" -d '{
   "prefix": "/01/09506000134352",
-  "title":"Description",
-  "redirectUrl":"https://example.org{?gtin}",
-  "linkTypes": ["gs1:pip", "gs1:defaultLink"],
-  "language":"en-GB"
+  "description":"My product description"
 }'
 ```
 
@@ -62,38 +62,15 @@ curl -X GET "https://id.goto.it.com/api/insights/01/09506000134352?days=1" -H "C
 
 The days parameter restricts the number of days returned by the endpoint. The default value is 1 and maximum is 365 (1 year)
 
-### Compress/Uncompress a DigitalLink
-
-You can compress a DigitalLink using the `/api/compress/{digitalLink}` endpoint:
-
-```sh
-curl -X POST "https://id.goto.it.com/api/compress -H "Content-Type: application/json" -d '{
-	"digitalLink": "/01/09506000134352",
-	"compressionType": "Full",
-	"compressQueryString": false
-}'
-```
-
-`compressionType` can take the values `Full` or `Partial`. Partial compressed DigitalLink will keep the key AI uncompressed.
-
-Similarily, decompression is done using the `/api/decompres` endpoint. The response include the type of compression used (uncompressed, fully compressed or partially compressed), as well as the canonical URL of the DigitalLink.
-
-Example: 
-
-```sh
-curl -X POST "https://id.goto.it.com/api/decompress" -H "Content-Type: application/json" -d'{
-	"digitalLink": "ARFKk4XBoA"
-}'
-```
 
 ## Installation
 
 1. Clone the repo: `git clone https://github.com/louisaxel-ambroise/goto`
 2. Go to the directory: `cd goto`
 3. Restore nuget packages: `dotnet restore`
-4. Run the project: `dotnet run --project src/Gs1DigitalLink.Api/Gs1DigitalLink.Api.csproj`
+4. Run the project: `dotnet run --project Goto.csproj`
 
-By default, the server will start on: https://localhost:7113
+By default, the server will start on: https://localhost:7111
 
 ## Contributing
 

@@ -5,8 +5,10 @@ namespace Goto.Translations;
 
 public sealed class CommonLocalizationService(IStringLocalizerFactory factory)
 {
-    private const string Resources = nameof(Resources);
-    private readonly IStringLocalizer _localizer = factory.Create(Resources, Assembly.GetExecutingAssembly().GetName().Name!);
+    private static readonly Assembly Assembly = Assembly.GetExecutingAssembly();
+    private static readonly string ResourceName = "Translations.Resources";
+
+    private readonly IStringLocalizer _localizer = factory.Create(ResourceName, Assembly.GetName().Name!);
 
     public string this[string key] => _localizer[key];
 }

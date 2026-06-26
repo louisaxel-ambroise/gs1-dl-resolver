@@ -1,7 +1,7 @@
 ﻿using Goto.Services.Conversion.Utils.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace Goto.Infrastructure.Validation;
+namespace Goto.Infrastructure.Routing.Validation;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
 public sealed class CompanyPrefixAttribute() : ValidationAttribute(DefaultErrorMessageString)

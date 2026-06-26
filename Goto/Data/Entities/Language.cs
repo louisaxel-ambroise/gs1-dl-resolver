@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Goto.Data.Enums;
+using System.Text.RegularExpressions;
 
 namespace Goto.Data.Entities;
 
@@ -26,19 +27,19 @@ public sealed partial class Language
     [GeneratedRegex("^(?<country>[a-zA-Z]{2,3})(\\-(?<region>[a-zA-Z]{2,3}))?$")]
     public partial Regex Regex { get; }
 
-    public Quality Matches(Language language)
+    public Enums.Match Matches(Language language)
     {
         if(language.Country == Country)
         {
             if(string.IsNullOrEmpty(language.Region) || string.IsNullOrEmpty(Region) || language.Region == Region)
             {
-                return Quality.FullMatch;
+                return Enums.Match.FullMatch;
             }
 
-            return Quality.PartialMatch;
+            return Enums.Match.PartialMatch;
         }
 
-        return Quality.NoMatch;
+        return Enums.Match.NoMatch;
     }
 
     public override bool Equals(object? obj)

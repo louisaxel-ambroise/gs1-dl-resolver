@@ -2,7 +2,7 @@ using Goto.Controllers.Results;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Goto.Infrastructure.Converters;
+namespace Goto.Infrastructure.Results.Converters;
 
 public sealed class LinksetResultConverter : JsonConverter<LinksetResult>
 {

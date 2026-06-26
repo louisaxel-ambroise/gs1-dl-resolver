@@ -20,7 +20,7 @@ namespace Goto.Controllers;
 public sealed class ResolverController
 {
     [HttpGet(".well-known/gs1resolver")]
-    [Produces(MediaTypes.Json, MediaTypes.Html)]
+    [Produces(MediaTypes.Json)]
     public IActionResult GetMetadataInformation([FromUri] Uri metadataUrl)
     {
         return new OkObjectResult(new MetadataResult

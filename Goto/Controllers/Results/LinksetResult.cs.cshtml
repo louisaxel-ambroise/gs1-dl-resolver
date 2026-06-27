@@ -29,29 +29,33 @@
         {
             var links = linkType.GroupBy(l => new { l.Href, l.Title, l.Type });
 
-            <h3 title="@linkType.Key">@Localizer[linkType.Key]</h3>
+            <details>
+                <summary>
+                    <h3 title="@linkType.Key">@Localizer[linkType.Key]</h3>
+                </summary>
 
-            foreach (var link in links)
-            {
-                <dl>
-                    <dt>@Localizer["Link"]</dt>
-                    <dd><a href="@link.Key.Href" title="@link.Key.Href" target="_blank">@link.Key.Href</a></dd>
+                @foreach (var link in links)
+                {
+                    <dl>
+                        <dt>@Localizer["Link"]</dt>
+                        <dd><a href="@link.Key.Href" title="@link.Key.Href" target="_blank">@link.Key.Href</a></dd>
 
-                    <dt>@Localizer["Title"]</dt>
-                    <dd>@link.Key.Title</dd>
+                        <dt>@Localizer["Title"]</dt>
+                        <dd>@link.Key.Title</dd>
 
-                    <dt>@Localizer["Language(s)"]</dt>
-                    <dd>
-                        @foreach (var lang in link.SelectMany(l => l.Hreflang).Distinct())
-                        {
-                            <span class="tag language" title="@lang">@GetCountryName(lang)</span>
-                        }
-                    </dd>
+                        <dt>@Localizer["Language(s)"]</dt>
+                        <dd>
+                            @foreach (var lang in link.SelectMany(l => l.Hreflang).Distinct())
+                            {
+                                <span class="tag language" title="@lang">@GetCountryName(lang)</span>
+                            }
+                        </dd>
 
-                    <dt>@Localizer["Media Type"]</dt>
-                    <dd>@link.Key.Type</dd>
-                </dl>
-            }
+                        <dt>@Localizer["Media Type"]</dt>
+                        <dd>@link.Key.Type</dd>
+                    </dl>
+                }
+            </details>
         }
         
         @{

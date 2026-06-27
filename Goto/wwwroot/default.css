@@ -86,13 +86,14 @@ body {
 
     .content h1 {
         text-align: center;
-        margin-bottom: 16px;
+        margin-bottom: 3px;
         font-size: 24px;
         font-weight: 600;
     }
 
     .content header {
-        margin-bottom: 16px;
+        margin-top: 30px;
+        margin-bottom: 6px;
     }
 
         .content header h2 {
@@ -113,6 +114,10 @@ body {
         font-weight: 500;
     }
 
+    .content summary h3{
+        display: inline-block;
+    }
+
 a {
     color: var(--primary);
     text-decoration: none;
@@ -125,7 +130,6 @@ a {
 
 .tag {
     display: inline-block;
-    margin-right: 6px;
     margin-top: 1px;
     margin-bottom: 1px;
     padding: 2px 5px;
@@ -135,6 +139,12 @@ a {
     font-weight: 600;
     letter-spacing: .3px;
     color: var(--surface);
+}
+[dir="ltr"] .tag {
+    margin-right: 6px;
+}
+[dir="rtl"] .tag {
+    margin-left: 6px;
 }
 
 .language {

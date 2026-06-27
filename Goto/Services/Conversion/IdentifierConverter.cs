@@ -16,7 +16,7 @@ public sealed class IdentifierConverter(ApplicationIdentifiers identifiers)
         {
             throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid DigitalLink prefix", Value = input }]);
         }
-        if (key is not null && !ValidateKey(key, parts[1], out companyPrefix))
+        if (key is not null && parts.Length > 1 && !ValidateKey(key, parts[1], out companyPrefix))
         {
             throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidCompanyPrefix, Key = ErrorCodes.InvalidCompanyPrefix, Message = "Input has an invalid company prefix", Value = input }]);
         }

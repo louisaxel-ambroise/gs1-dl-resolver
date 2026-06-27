@@ -5,6 +5,8 @@ namespace Goto.Controllers.Results;
 
 public sealed class ResolutionResult
 {
+    public required string Description { get; set; }
+    public required string Anchor { get; set; }
     public List<ResolutionResultLink> Links { get; init; } = [];
 }
 

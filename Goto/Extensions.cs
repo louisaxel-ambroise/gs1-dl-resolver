@@ -1,4 +1,7 @@
-﻿namespace Goto;
+﻿using System.Security.Claims;
+using System.Security.Principal;
+
+namespace Goto;
 
 public static class Extensions
 {
@@ -21,5 +24,10 @@ public static class Extensions
         {
             return response.StatusCode is >= 200 and < 400;
         }
+    }
+
+    extension(ClaimsPrincipal principal)
+    {
+        public string GetCompanyPrefix() => principal.FindFirstValue("gs1:gcp") ?? throw new InvalidOperationException("Principal does not have company prefix claim");
     }
 }

@@ -35,7 +35,7 @@ public sealed class DigitalLink
     internal List<string> GetPrefixValues()
     {
         var key = AIs.Single(ai => ai.Key.Type is AIType.PrimaryKey);
-        var prefixes = new List<string>([key.Code]);
+        var prefixes = new List<string>([string.Empty, key.Code]);
 
         var gcpPosition = key.Value.IndexOf(CompanyPrefix);
         var position = gcpPosition + CompanyPrefix.Length;

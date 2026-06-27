@@ -3,6 +3,7 @@ using Goto.Services;
 using Goto.Services.Conversion;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Security.Claims;
 
 namespace Goto.Data;
 
@@ -11,18 +12,27 @@ public class Context : DbContext
     public Context(DbContextOptions<Context> options, ApiTimeProvider timeProvider) : base(options)
     {
         TimeProvider = timeProvider;
-        Database.EnsureCreatedAsync();
+        Database.EnsureCreated();
     }
 
-    public DbSet<Anchor> Anchors => Set<Anchor>();
-    public DbSet<Insight> Insights => Set<Insight>();
-
-    public IQueryable<Anchor> QueryForLink(DigitalLink digitalLink)
+    public IQueryable<Insight> InsightsForUser(ClaimsPrincipal user)
     {
-        return Anchors
-            .Where(a => a.Links.Any())
-            .Where(a => digitalLink.CompanyPrefix == a.CompanyPrefix)
-            .Where(a => digitalLink.GetPrefixValues().Contains(a.Prefix));
+        return Set<Insight>()
+            .Where(i => i.CompanyPrefix == null || i.CompanyPrefix == user.GetCompanyPrefix());
+    }
+
+    public IQueryable<Anchor> AnchorsForUser(ClaimsPrincipal user)
+    {
+        return Set<Anchor>()
+            .Where(a => a.CompanyPrefix == user.GetCompanyPrefix());
+    }
+
+    public IQueryable<Anchor> AnchorsForLink(DigitalLink digitalLink)
+    {
+        return Set<Anchor>()
+            .Include(a => a.Links.Where(l => l.ActiveFrom <= TimeProvider.UtcNow && l.ActiveUntil >= TimeProvider.UtcNow))
+            .Where(a => a.Links.Any(l => l.ActiveFrom <= TimeProvider.UtcNow && l.ActiveUntil >= TimeProvider.UtcNow))
+            .Where(a => digitalLink.CompanyPrefix == a.CompanyPrefix && digitalLink.GetPrefixValues().Contains(a.Prefix));
     }
 
     public ApiTimeProvider TimeProvider { get; }
@@ -53,7 +63,6 @@ public class Context : DbContext
         link.Property(l => l.ActiveFrom).IsRequired().HasConversion(new DateTimeOffsetToBinaryConverter());
         link.Property(a => a.ActiveUntil).IsRequired().HasConversion(new DateTimeOffsetToBinaryConverter());
         link.Property(l => l.Language).HasConversion(v => v.ToString(), v => new Language(v));
-        link.HasQueryFilter("ActiveLinks", l => l.ActiveFrom <= TimeProvider.UtcNow && l.ActiveUntil >= TimeProvider.UtcNow);
 
         var insight = modelBuilder.Entity<Insight>();
         insight.HasKey(a => a.Id);

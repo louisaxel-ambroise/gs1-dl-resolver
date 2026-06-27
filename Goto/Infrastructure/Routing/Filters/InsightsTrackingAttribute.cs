@@ -37,6 +37,7 @@ public sealed class InsightsTrackingAttribute : ActionFilterAttribute
         {
             RecordDate = DateTimeOffset.UtcNow,
             RequestDate = timeProvider.Now,
+            CompanyPrefix = context.Items.TryGetValue("gs1:gcp", out var gcp) ? gcp?.ToString() : null,
             StatusCode = statusCode,
             QueryString = context.Request.QueryString.Value,
             AcceptLanguage = context.Request.Headers.AcceptLanguage,

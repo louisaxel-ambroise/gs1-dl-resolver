@@ -94,7 +94,7 @@ internal sealed class DigitalLinkConverter(ApplicationIdentifiers identifiers)
 
                 if(keyValue.Key.Type is AIType.PrimaryKey)
                 {
-                    var gcpComponent = keyValue.Key.Components.FirstOrDefault();
+                    var gcpComponent = keyValue.Key.Components[0];
 
                     if (gcpComponent is null || !gcpComponent.Flags.HasFlag(ComponentFlag.GCP))
                     {

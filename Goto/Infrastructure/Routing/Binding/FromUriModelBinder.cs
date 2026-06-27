@@ -15,6 +15,7 @@ public sealed class FromUriModelBinder : IModelBinder
             var converter = bindingContext.HttpContext.RequestServices.GetRequiredService<DigitalLinkConverter>();
             var digitalLink = converter.Parse(string.Concat(request.Scheme, "://", request.Host), request.Path, request.QueryString.ToString());
 
+            bindingContext.HttpContext.Items.Add("gs1:gcp", digitalLink.CompanyPrefix);
             bindingContext.Result = ModelBindingResult.Success(digitalLink);
         }
         else if (bindingContext.ModelType == typeof(string))

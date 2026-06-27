@@ -160,7 +160,7 @@
     <value>Standaardlink</value>
   </data>
   <data name="gs1:defaultLinkMulti" xml:space="preserve">
-    <value>Standaardlink</value>
+    <value>Standaardlinks</value>
   </data>
   <data name="gs1:dpp" xml:space="preserve">
     <value>Digitaal paspoortproduct</value>
@@ -327,8 +327,14 @@
   <data name="InvalidInput" xml:space="preserve">
     <value>De opgegeven digitale link is ongeldig</value>
   </data>
+  <data name="Language(s)" xml:space="preserve">
+    <value>Taal/talen</value>
+  </data>
   <data name="Light" xml:space="preserve">
     <value>Helder</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
   </data>
   <data name="Links for Anchor" xml:space="preserve">
     <value>Links voor anker</value>
@@ -338,6 +344,9 @@
   </data>
   <data name="Linkset for this resource" xml:space="preserve">
     <value>Linkset voor deze bron</value>
+  </data>
+  <data name="Media Type" xml:space="preserve">
+    <value>Mediatype</value>
   </data>
   <data name="Multiple choices available" xml:space="preserve">
     <value>Er zijn meerdere opties beschikbaar</value>
@@ -368,6 +377,9 @@
   </data>
   <data name="This request should not be retried." xml:space="preserve">
     <value>Dit verzoek mag niet opnieuw worden geprobeerd.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titel</value>
   </data>
   <data name="Unable to process the request" xml:space="preserve">
     <value>Kan het verzoek niet verwerken</value>

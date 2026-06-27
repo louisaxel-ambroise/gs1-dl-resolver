@@ -16,7 +16,8 @@ public sealed class LinksetResultConverter : JsonConverter<LinksetResult>
         var linkset = value.Anchors.Select(a => {
             var dict = new Dictionary<string, object>
             {
-                { "anchor", a.Anchor }
+                { "anchor", a.Anchor },
+                { "description", a.Description }
             };
 
             foreach (var linkType in a.Links.GroupBy(l => l.LinkType))
@@ -41,11 +42,11 @@ public sealed class LinksetResultConverter : JsonConverter<LinksetResult>
                 }));
             }
 
-            var defaultLink = a.Links.First(l => l.IsDefault);
+            var defaultLink = a.Links.FirstOrDefault(l => l.IsDefault);
             dict["https://ref.gs1.org/voc/defaultLink"] = new[]{ new
             {
-                defaultLink.Title,
-                defaultLink.Href,
+                Title = defaultLink?.Title ?? "Linkset",
+                Href = defaultLink?.Href ?? value.LinksetUrl
             }};
 
             return dict;

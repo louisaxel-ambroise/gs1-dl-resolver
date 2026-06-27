@@ -43,26 +43,16 @@ public sealed class ResolverController
         [FromUri] DigitalLink digitalLink, 
         [FromServices] Context context)
     {
-        var anchors = context.QueryForLink(digitalLink).ToList();
+        var anchors = context.AnchorsForLink(digitalLink).ToList();
         var linksets = anchors.Select(a => new LinksetResultAnchor()
         {
             Anchor = string.Join('/', digitalLink.HostUrl, a.Prefix),
+            Description = a.Description ?? digitalLink.ToShortString(),
             Links = LinksetLink.Map(a.Links, digitalLink)
         }).ToList();
 
-        foreach (var linkset in linksets.Where(a => !a.Links.Any(l => l.IsDefault)))
-        {
-            linkset.Links.Add(new LinksetLink
-            {
-                Href = digitalLink.BuildLinksetLink(),
-                LinkType = "gs1:defaultLink",
-                Title = "Linkset",
-                IsDefault = true
-            });
-        }
-
         return linksets.Count > 0
-            ? new OkObjectResult(new LinksetResult { Anchors = linksets.OrderByDescending(a => a.Anchor.Length).ToList() })
+            ? new OkObjectResult(new LinksetResult { LinksetUrl = digitalLink.BuildLinksetLink(), Anchors = linksets.OrderByDescending(a => a.Anchor.Length).ToList() })
             : new NotFoundObjectResult(ErrorResponse.NotFound);
     }
 
@@ -76,7 +66,7 @@ public sealed class ResolverController
         [FromHeader] Language[] languages, 
         [FromServices] Context context)
     {
-        var anchors = context.QueryForLink(digitalLink)
+        var anchors = context.AnchorsForLink(digitalLink)
             .Where(a => a.Links.Any(l => l.LinkType == linkType || l.IsDefault))
             .ToList();
 
@@ -86,8 +76,13 @@ public sealed class ResolverController
             
             if (links.Count == 1)
                 return new RedirectResult(links.Single().Href, permanent: false, preserveMethod: true);
-            if (links.Count > 1) 
-                return new MultipleChoicesObjectResult(new ResolutionResult { Links = links });
+            if (links.Count > 1)
+                return new MultipleChoicesObjectResult(new ResolutionResult
+                {
+                    Description = anchor.Description ?? digitalLink.ToShortString(),
+                    Anchor = string.Join('/', digitalLink.HostUrl, anchor.Prefix),
+                    Links = links
+                });
             if (string.IsNullOrEmpty(linkType))
                 return new RedirectResult(digitalLink.BuildLinksetLink(), permanent:false, preserveMethod:true);
         }

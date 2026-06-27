@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sqids;
+using System.Security.Claims;
 
 namespace Goto.Controllers;
 
@@ -17,21 +18,20 @@ namespace Goto.Controllers;
 [Route("api/anchors")]
 [Produces(MediaTypes.Json)]
 [Authorize(AuthenticationSchemes = "ApiKey")]
-public sealed class AnchorController(Context context, ApiTimeProvider timeProvider)
+public sealed class AnchorController(Context context, ApiTimeProvider timeProvider, ClaimsPrincipal principal, SqidsEncoder<int> encoder)
 {
-    public SqidsEncoder<int> Encoder = new(new SqidsOptions { MinLength = 10 });
-
     [HttpPost]
     public IActionResult CreateAnchor([FromBody] AddAnchorRequest request, [FromServices] IdentifierConverter converter)
     {
         var identifier = converter.Parse(request.Prefix);
 
-        context.Anchors.Add(new Anchor
+        var anchor = new Anchor
         {
             Prefix = identifier.Value,
-            CompanyPrefix = request.CompanyPrefix,
+            CompanyPrefix = principal.GetCompanyPrefix(),
             Description = request.Description
-        });
+        };
+        context.Add(anchor);
 
         return new CreatedResult();
     }
@@ -39,10 +39,8 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
     [HttpDelete("{anchorKey}")]
     public IActionResult CleanAnchor([FromRoute] string anchorKey)
     {
-        var anchorId = Encoder.Decode(anchorKey).Single();
-        var anchors = context.Anchors
-            .IgnoreQueryFilters(["ActiveLinks"])
-            .Single(a => a.Id == anchorId);
+        var anchorId = encoder.Decode(anchorKey).Single();
+        var anchors = context.AnchorsForUser(principal).First(a => a.Id == anchorId);
 
         foreach(var activeLink in anchors.Links.Where(l => l.ActiveUntil >= timeProvider.UtcNow))
         {
@@ -55,10 +53,10 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
     [HttpGet]
     public IActionResult ListAnchors()
     {
-        var anchors = context.Anchors
+        var anchors = context.AnchorsForUser(principal)
             .Select(anchor => new
             {
-                Id = Encoder.Encode(anchor.Id),
+                Id = encoder.Encode(anchor.Id),
                 anchor.Prefix,
                 anchor.Description
             });
@@ -69,19 +67,17 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
     [HttpGet("{anchorKey}")]
     public IActionResult GetAnchorDetails([FromRoute] string anchorKey)
     {
-        var anchorId = Encoder.Decode(anchorKey).Single();
-        var anchor = context.Anchors
-            .IgnoreQueryFilters(["ActiveLinks"])
-            .Single(anchor => anchor.Id == anchorId);
+        var anchorId = encoder.Decode(anchorKey).Single();
+        var anchor = context.AnchorsForUser(principal).First(a => a.Id == anchorId);
 
         return new OkObjectResult(new
         {
-            Id = Encoder.Encode(anchor.Id),
+            Id = encoder.Encode(anchor.Id),
             anchor.Prefix,
             anchor.Description,
             Links = anchor.Links.Select(l => new
             {
-                Id = Encoder.Encode(anchorId, l.Id),
+                Id = encoder.Encode(anchorId, l.Id),
                 l.ActiveFrom,
                 l.ActiveUntil,
                 l.RedirectUrl,
@@ -97,9 +93,8 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
     [HttpPost("{anchorKey}/links")]
     public IActionResult AddAnchorLink([FromRoute] string anchorKey, [FromBody] AddAnchorLinkRequest request)
     {
-        var anchorId = Encoder.Decode(anchorKey).Single();
-        var anchor = context.Anchors
-            .Single(a => a.Id == anchorId);
+        var anchorId = encoder.Decode(anchorKey).Single();
+        var anchor = context.AnchorsForUser(principal).First(a => a.Id == anchorId );
 
         anchor.Links.AddRange(request.ToAnchorLinks());
 
@@ -109,17 +104,14 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
     [HttpDelete("{anchorKey}/links/{linkKey}")]
     public IActionResult RemoveAnchorLink([FromRoute] string anchorKey, [FromRoute] string linkKey)
     {
-        var anchorId = Encoder.Decode(anchorKey).Single();
-        var linkIds = Encoder.Decode(linkKey);
+        var anchorId = encoder.Decode(anchorKey).Single();
+        var linkIds = encoder.Decode(linkKey);
 
-        if (linkIds.First() != anchorId)
+        if (linkIds[0] != anchorId)
             throw new InvalidOperationException("Invalid IDs");
 
-        var anchor = context.Anchors
-            .IgnoreQueryFilters(["ActiveLinks"])
-            .AsTracking()
-            .Single(a => a.Id == anchorId);
-        var link = anchor.Links.Single(l => l.Id == linkIds.Last());
+        var anchor = context.AnchorsForUser(principal).AsTracking().First(a => a.Id == anchorId );
+        var link = anchor.Links.Single(l => l.Id == linkIds[^1]);
 
         link.SetUnavailabilityDate(timeProvider.UtcNow);
 

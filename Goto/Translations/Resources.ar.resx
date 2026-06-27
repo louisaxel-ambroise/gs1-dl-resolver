@@ -160,7 +160,7 @@
     <value>رابط افتراضي</value>
   </data>
   <data name="gs1:defaultLinkMulti" xml:space="preserve">
-    <value>رابط افتراضي</value>
+    <value>الروابط الافتراضية</value>
   </data>
   <data name="gs1:dpp" xml:space="preserve">
     <value>منتج ”جواز السفر الرقمي“</value>
@@ -196,7 +196,7 @@
     <value>التعليمات</value>
   </data>
   <data name="gs1:jws" xml:space="preserve">
-    <value>JSON-Websignatur</value>
+    <value>توقيع JSON على الويب</value>
   </data>
   <data name="gs1:leaveReview" xml:space="preserve">
     <value>اترك تعليقًا</value>
@@ -208,7 +208,7 @@
     <value>معلومات لوجستية</value>
   </data>
   <data name="gs1:loyaltyProgram" xml:space="preserve">
-    <value>Treueprogramm</value>
+    <value>برنامج الولاء</value>
   </data>
   <data name="gs1:masterData" xml:space="preserve">
     <value>البيانات الرئيسية</value>
@@ -232,7 +232,7 @@
     <value>الاستدامة وإعادة التدوير</value>
   </data>
   <data name="gs1:promotion" xml:space="preserve">
-    <value>Werbeaktion</value>
+    <value>الترويج</value>
   </data>
   <data name="gs1:purchaseSuppliesOrAccessories" xml:space="preserve">
     <value>شراء المستلزمات أو الملحقات</value>
@@ -241,10 +241,10 @@
     <value>دليل البدء السريع</value>
   </data>
   <data name="gs1:recallStatus" xml:space="preserve">
-    <value>Rückrufstatus</value>
+    <value>حالة التذكير</value>
   </data>
   <data name="gs1:recipeInfo" xml:space="preserve">
-    <value>Rezept-Website</value>
+    <value>موقع الوصفات</value>
   </data>
   <data name="gs1:registerProduct" xml:space="preserve">
     <value>تسجيل الشراء</value>
@@ -256,10 +256,10 @@
     <value>صورة ذات صلة</value>
   </data>
   <data name="gs1:relatedVideo" xml:space="preserve">
-    <value>Verwandtes Video</value>
+    <value>فيديو ذو صلة</value>
   </data>
   <data name="gs1:reportFound" xml:space="preserve">
-    <value>Fundmeldung</value>
+    <value>الإبلاغ عن العثور عليه</value>
   </data>
   <data name="gs1:review" xml:space="preserve">
     <value>التعليقات</value>
@@ -268,25 +268,25 @@
     <value>معلومات عن السلامة</value>
   </data>
   <data name="gs1:scheduleTime" xml:space="preserve">
-    <value>Terminplanung/Reservierung</value>
+    <value>التخطيط/الحجز</value>
   </data>
   <data name="gs1:serviceInfo" xml:space="preserve">
     <value>معلومات عن الخدمة</value>
   </data>
   <data name="gs1:smartLabel" xml:space="preserve">
-    <value>Smart Label</value>
+    <value>الملصق الذكي</value>
   </data>
   <data name="gs1:smpc" xml:space="preserve">
     <value>ملخص خصائص المنتج</value>
   </data>
   <data name="gs1:socialMedia" xml:space="preserve">
-    <value>Soziale Medien</value>
+    <value>شبكات التواصل الاجتماعي</value>
   </data>
   <data name="gs1:statisticInfo" xml:space="preserve">
-    <value>Statistiken</value>
+    <value>الإحصائيات</value>
   </data>
   <data name="gs1:subscribe" xml:space="preserve">
-    <value>Abonnieren</value>
+    <value>الاشتراك</value>
   </data>
   <data name="gs1:support" xml:space="preserve">
     <value>الدعم</value>
@@ -298,16 +298,16 @@
     <value>معلومات عن التتبع</value>
   </data>
   <data name="gs1:tutorial" xml:space="preserve">
-    <value>Anleitung</value>
+    <value>دليل الاستخدام</value>
   </data>
   <data name="gs1:userAgreement" xml:space="preserve">
-    <value>Verzichtserklärung/Vereinbarung/Dokument unterzeichnen</value>
+    <value>توقيع إخلاء المسؤولية/الاتفاقية/الوثيقة</value>
   </data>
   <data name="gs1:verificationService" xml:space="preserve">
-    <value>Verifizierungsdienst</value>
+    <value>خدمة التحقق</value>
   </data>
   <data name="gs1:whatsInTheBox" xml:space="preserve">
-    <value>Was ist im Lieferumfang enthalten?</value>
+    <value>ماذا تحتوي العلبة؟</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>الصفحة الرئيسية</value>
@@ -327,8 +327,14 @@
   <data name="InvalidInput" xml:space="preserve">
     <value>الرابط الرقمي المقدم غير صالح</value>
   </data>
+  <data name="Language(s)" xml:space="preserve">
+    <value>اللغة (اللغات)</value>
+  </data>
   <data name="Light" xml:space="preserve">
     <value>واضح</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>الرابط</value>
   </data>
   <data name="Links for Anchor" xml:space="preserve">
     <value>روابط للمرساة</value>
@@ -338,6 +344,9 @@
   </data>
   <data name="Linkset for this resource" xml:space="preserve">
     <value>مجموعة الروابط لهذا المورد</value>
+  </data>
+  <data name="Media Type" xml:space="preserve">
+    <value>نوع الوسائط</value>
   </data>
   <data name="Multiple choices available" xml:space="preserve">
     <value>تتوفر خيارات متعددة</value>
@@ -368,6 +377,9 @@
   </data>
   <data name="This request should not be retried." xml:space="preserve">
     <value>لا ينبغي إعادة محاولة هذا الطلب.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>العنوان</value>
   </data>
   <data name="Unable to process the request" xml:space="preserve">
     <value>تعذر معالجة الطلب</value>

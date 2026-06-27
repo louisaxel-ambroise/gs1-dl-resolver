@@ -5,13 +5,15 @@ namespace Goto.Controllers.Results;
 
 public sealed class LinksetResult
 {
-    public IEnumerable<LinksetResultAnchor> Anchors { get; set; } = [];
+    public required string LinksetUrl { get; set; }
+    public required IEnumerable<LinksetResultAnchor> Anchors { get; set; } = [];
 }
 
 public sealed class LinksetResultAnchor
 {
     public required string Anchor { get; init; }
-    public List<LinksetLink> Links { get; init; } = [];
+    public required string Description { get; init; }
+    public required List<LinksetLink> Links { get; init; } = [];
 }
 
 public sealed class LinksetLink

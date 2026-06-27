@@ -7,7 +7,7 @@ public sealed class TimeTravelerAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        if (context.HttpContext.Request.Headers.TryGetValue("X-Request-Date", out var headerDate) && DateTimeOffset.TryParse(headerDate, out var requestDate))
+        if (TryGetHeaderDate(context, out var requestDate))
         {
             if (requestDate.ToUniversalTime() > DateTimeOffset.UtcNow)
             {
@@ -16,5 +16,11 @@ public sealed class TimeTravelerAttribute : ActionFilterAttribute
             var timeProvider = context.HttpContext.RequestServices.GetRequiredService<ApiTimeProvider>();
             timeProvider.SetRequestDate(requestDate);
         }
+    }
+
+    private static bool TryGetHeaderDate(ActionExecutingContext context, out DateTimeOffset date)
+    {
+        date = default;
+        return context.HttpContext.Request.Headers.TryGetValue("X-Request-Date", out var headerDate) && DateTimeOffset.TryParse(headerDate, out date);
     }
 }

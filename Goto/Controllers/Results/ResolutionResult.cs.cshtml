@@ -13,16 +13,33 @@
     }
 }
 
-<h2>@Localizer["Multiple links are available for this resource"]</h2>
-<ul>
+<h1>@Localizer["Multiple links are available for this resource"]</h1>
+
+
+<header>
+    <h2>@Localizer["Links for Anchor"] @Model.Description</h2>
+    <p class="anchor">@Model.Anchor</p>
+</header>
+<section>
     @foreach(var link in Model.Links)
     {
-        <li>
-            <a href="@link.Href" title="@link.Href" target="_blank">@link.Title</a>
-            @foreach (var lang in link.Hreflang)
-            {
-                <span class="tag language">@GetCountryName(lang)</span>
-            }
-        </li>
+        <dl>
+            <dt>@Localizer["Link"]</dt>
+            <dd><a href="@link.Href" title="@link.Href" target="_blank">@link.Href</a></dd>
+
+            <dt>@Localizer["Title"]</dt>
+            <dd>@link.Title</dd>
+
+            <dt>@Localizer["Language(s)"]</dt>
+            <dd>
+                @foreach (var lang in link.Hreflang)
+                {
+                    <span class="tag language" title="@lang">@GetCountryName(lang)</span>
+                }
+            </dd>
+
+            <dt>@Localizer["Media Type"]</dt>
+            <dd>@link.Type</dd>
+        </dl>
     }
-</ul>
+</section>

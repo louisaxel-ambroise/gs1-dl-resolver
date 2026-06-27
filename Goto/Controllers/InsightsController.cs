@@ -2,6 +2,7 @@
 using Goto.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Goto.Controllers;
 
@@ -9,12 +10,12 @@ namespace Goto.Controllers;
 [Route("api/insights")]
 [Produces(MediaTypes.Json)]
 [Authorize(AuthenticationSchemes = "ApiKey")]
-public sealed class InsightsController(Context context)
+public sealed class InsightsController(Context context, ClaimsPrincipal principal)
 {
     [HttpGet]
     public IActionResult ListInsights()
     {
-        var insights = context.Insights
+        var insights = context.InsightsForUser(principal)
             .GroupBy(i => i.Url)
             .Select(grp => new
             {
@@ -28,7 +29,7 @@ public sealed class InsightsController(Context context)
     [HttpGet("{**url:minlength(2)}")]
     public IActionResult GetInsightDetails(string url)
     {
-        var details = context.Insights
+        var details = context.InsightsForUser(principal)
             .Where(i => i.Url == string.Concat('/', url))
             .OrderByDescending(i => i.RecordDate)
             .Select(i => new

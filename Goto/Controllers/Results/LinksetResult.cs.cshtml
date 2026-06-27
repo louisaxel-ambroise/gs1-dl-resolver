@@ -4,7 +4,6 @@
 @{
     Layout = "_Shared";
     ViewData["Title"] = Localizer["Linkset"];
-    var i = 0;
 
     string GetCountryName(string language)
     {
@@ -12,43 +11,77 @@
 
         return culture.DisplayName;
     }
-
-    string DetailStatus()
-    {
-        return i++ == 0 
-            ? "open" 
-            : string.Empty;
-    }
 }
 
-<h2>@Localizer["Linkset for this resource"]</h2>
+<h1>@Localizer["Linkset for this resource"]</h1>
 
 @foreach (var linkset in Model.Anchors)
 {
-    var anchorLinks = linkset.Links.GroupBy(l => new { l.Href, l.Title });
+    var anchorDefaultLinks = linkset.Links.Where(l => l.IsDefault);
+    var anchorLinksByType = linkset.Links.GroupBy(l => l.LinkType);
 
-    <details name="anchor" @DetailStatus()>
-        <summary>@Localizer["Links for Anchor"] <code>@linkset.Anchor</code></summary>
+    <header>
+        <h2>@Localizer["Links for Anchor"] @linkset.Description</h2>
+        <p class="anchor">@linkset.Anchor</p>
+    </header>
+    <section>
+        @foreach (var linkType in anchorLinksByType)
+        {
+            var links = linkType.GroupBy(l => new { l.Href, l.Title, l.Type });
 
-        <ul>
-            @foreach (var link in anchorLinks)
+            <h3 title="@linkType.Key">@Localizer[linkType.Key]</h3>
+
+            foreach (var link in links)
             {
-                <li>
-                    <a href="@link.Key.Href" title="@link.Key.Href" target="_blank">@link.Key.Title</a>
-                    @if(link.Any(l => l.IsDefault))
-                    {
-                        <span class="tag defaultLink">@Localizer["gs1:defaultLink"]</span>
-                    }
-                    @foreach (var linkType in link.Select(l => l.LinkType).Distinct())
-                    {
-                        <span class="tag linkType">@Localizer[linkType]</span>
-                    }
-                    @foreach (var lang in link.SelectMany(l => l.Hreflang).Distinct())
-                    {
-                        <span class="tag language">@GetCountryName(lang)</span>
-                    }
-                </li>
+                <dl>
+                    <dt>@Localizer["Link"]</dt>
+                    <dd><a href="@link.Key.Href" title="@link.Key.Href" target="_blank">@link.Key.Href</a></dd>
+
+                    <dt>@Localizer["Title"]</dt>
+                    <dd>@link.Key.Title</dd>
+
+                    <dt>@Localizer["Language(s)"]</dt>
+                    <dd>
+                        @foreach (var lang in link.SelectMany(l => l.Hreflang).Distinct())
+                        {
+                            <span class="tag language" title="@lang">@GetCountryName(lang)</span>
+                        }
+                    </dd>
+
+                    <dt>@Localizer["Media Type"]</dt>
+                    <dd>@link.Key.Type</dd>
+                </dl>
             }
-        </ul>
-    </details>
+        }
+        
+        @{
+            var defaultLinks = anchorDefaultLinks.GroupBy(l => new { l.Href, l.Title, l.Type });
+            var key = anchorDefaultLinks.Count() > 1 ? "gs1:defaultLinkMulti" : "gs1:defaultLink";
+            <h3 title="@key">@Localizer[key]</h3>
+
+            if (defaultLinks.Any())
+            {
+                foreach (var link in defaultLinks)
+                {
+                    <dl>
+                        <dt>@Localizer["Link"]</dt>
+                        <dd><a href="@link.Key.Href" title="@link.Key.Href" target="_blank">@link.Key.Href</a></dd>
+
+                        <dt>@Localizer["Title"]</dt>
+                        <dd>@link.Key.Title</dd>
+                    </dl>
+                }
+            }
+            else
+            {
+                <dl>
+                    <dt>@Localizer["Link"]</dt>
+                    <dd><a href="@Model.LinksetUrl" title="@Model.LinksetUrl" target="_blank">@Model.LinksetUrl</a></dd>
+
+                    <dt>@Localizer["Title"]</dt>
+                    <dd>Linkset</dd>
+                </dl>
+            }
+        }
+    </section>
 }

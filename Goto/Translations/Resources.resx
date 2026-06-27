@@ -160,7 +160,7 @@
     <value>Default Link</value>
   </data>
   <data name="gs1:defaultLinkMulti" xml:space="preserve">
-    <value>Default Link</value>
+    <value>Default Links</value>
   </data>
   <data name="gs1:dpp" xml:space="preserve">
     <value>Digital Passport Product</value>
@@ -327,8 +327,14 @@
   <data name="InvalidInput" xml:space="preserve">
     <value>The provided digital link is invalid</value>
   </data>
+  <data name="Language(s)" xml:space="preserve">
+    <value>Language(s)</value>
+  </data>
   <data name="Light" xml:space="preserve">
     <value>Light</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
   </data>
   <data name="Links for Anchor" xml:space="preserve">
     <value>Links for Anchor</value>
@@ -338,6 +344,9 @@
   </data>
   <data name="Linkset for this resource" xml:space="preserve">
     <value>Linkset for this resource</value>
+  </data>
+  <data name="Media Type" xml:space="preserve">
+    <value>Media Type</value>
   </data>
   <data name="Multiple choices available" xml:space="preserve">
     <value>Multiple choices available</value>
@@ -368,6 +377,9 @@
   </data>
   <data name="This request should not be retried." xml:space="preserve">
     <value>This request should not be retried.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
   </data>
   <data name="Unable to process the request" xml:space="preserve">
     <value>Unable to process the request</value>

@@ -160,7 +160,7 @@
     <value>Lien par défaut</value>
   </data>
   <data name="gs1:defaultLinkMulti" xml:space="preserve">
-    <value>Lien par défaut</value>
+    <value>Liens par défaut</value>
   </data>
   <data name="gs1:dpp" xml:space="preserve">
     <value>Passeport Numérique</value>
@@ -327,8 +327,14 @@
   <data name="InvalidInput" xml:space="preserve">
     <value>Le DigitalLink fourni est invalide</value>
   </data>
+  <data name="Language(s)" xml:space="preserve">
+    <value>Langue(s)</value>
+  </data>
   <data name="Light" xml:space="preserve">
     <value>Clair</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Lien</value>
   </data>
   <data name="Links for Anchor" xml:space="preserve">
     <value>Liens pour l'ancre</value>
@@ -338,6 +344,9 @@
   </data>
   <data name="Linkset for this resource" xml:space="preserve">
     <value>Ensemble de liens pour cette resource</value>
+  </data>
+  <data name="Media Type" xml:space="preserve">
+    <value>Type de média</value>
   </data>
   <data name="Multiple choices available" xml:space="preserve">
     <value>Plusieurs choix disponible</value>
@@ -368,6 +377,9 @@
   </data>
   <data name="This request should not be retried." xml:space="preserve">
     <value>Cette requête ne doit pas être renvoyée sans modification.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titre</value>
   </data>
   <data name="Unable to process the request" xml:space="preserve">
     <value>Impossible de traiter cette requête</value>

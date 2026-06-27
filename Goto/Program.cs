@@ -10,6 +10,7 @@ using Goto.Services.Conversion.Utils;
 using Goto.Services.Conversion.Utils.Validation;
 using Goto.Translations;
 using Microsoft.EntityFrameworkCore;
+using Sqids;
 using System.Threading.Channels;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 CompanyPrefix.Initialize("wwwroot/gcpprefixformatlist.xml");
 ApplicationIdentifiers.Initialize("wwwroot/ApplicationIdentifiers.json", new() { PropertyNameCaseInsensitive = true });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews(options =>
 {
     options.ModelBinderProviders.Insert(0, new GS1ResolverModelBinderProvider());
@@ -35,6 +37,8 @@ builder.Services.AddScoped<ApiTimeProvider>();
 builder.Services.AddDbContext<Context>(opt => opt.UseSqlite($"Data Source=registry.db"));
 builder.Services.AddHostedService<InsightConsumerService>();
 builder.Services.AddAuthentication("ApiKey").AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationSchemeHandler>("ApiKey", opts => opts.ApiKey = builder.Configuration.GetValue<string>("ApiKey"));
+builder.Services.AddScoped(ctx => ctx.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
+builder.Services.AddSingleton(new SqidsEncoder<int>(new SqidsOptions { MinLength = 10, Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" }));
 
 var app = builder.Build();
 

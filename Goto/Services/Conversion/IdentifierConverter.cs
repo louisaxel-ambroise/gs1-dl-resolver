@@ -9,14 +9,14 @@ public sealed class IdentifierConverter(ApplicationIdentifiers identifiers)
     public Identifier Parse(string input)
     {
         var parts = input.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        var key = identifiers.Identifiers.SingleOrDefault(i => i.Code == parts[0] && i.Type == AIType.PrimaryKey);
-        string? companyPrefix = null;
+        var key = parts.Length > 0 ? identifiers.Identifiers.SingleOrDefault(i => i.Code == parts[0] && i.Type == AIType.PrimaryKey) : null;
+        var companyPrefix = default(string?);
 
-        if (key is null)
+        if (parts.Length > 0 && key is null)
         {
             throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidPrefix, Key = ErrorCodes.InvalidInput, Message = "Input is an invalid DigitalLink prefix", Value = input }]);
         }
-        if (parts.Length >= 2 && !ValidateKey(key, parts[1], out companyPrefix))
+        if (key is not null && !ValidateKey(key, parts[1], out companyPrefix))
         {
             throw new InvalidDigitalLinkException([new() { Code = ErrorCodes.InvalidCompanyPrefix, Key = ErrorCodes.InvalidCompanyPrefix, Message = "Input has an invalid company prefix", Value = input }]);
         }

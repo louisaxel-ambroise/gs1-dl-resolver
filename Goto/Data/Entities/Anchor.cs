@@ -12,7 +12,7 @@ public sealed class Anchor
 
     public List<AnchorLink> FindBestMatches(string? linkType, Language[] languages, string[] mediaTypes)
     {
-        var candidates = linkType is null
+        var candidates = string.IsNullOrEmpty(linkType)
             ? Links.Where(l => l.IsDefault)
             : Links.Where(l => l.LinkType == linkType);
 
@@ -24,7 +24,7 @@ public sealed class Anchor
             .Select(type => FindBestMatch(candidates, link => link.MatchesMediaType(type)))
             .FirstOrDefault(list => list.Any(), candidates);
 
-        return candidates.ToList();
+        return [.. candidates];
     }
 
     private static IEnumerable<AnchorLink> FindBestMatch(IEnumerable<AnchorLink> links, Func<AnchorLink, Match> selector)

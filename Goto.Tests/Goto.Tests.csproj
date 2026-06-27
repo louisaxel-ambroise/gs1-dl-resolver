@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructure\**" />
+    <EmbeddedResource Remove="Infrastructure\**" />
+    <None Remove="Infrastructure\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MSTest" Version="4.0.2" />
   </ItemGroup>
 
@@ -17,10 +23,6 @@
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infrastructure\" />
   </ItemGroup>
 
 </Project>

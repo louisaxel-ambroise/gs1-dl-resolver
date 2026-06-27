@@ -15,7 +15,7 @@ internal sealed class InsightConsumerService(Channel<Insight> channel, IServiceP
                 using var scope = serviceProvider.CreateScope();
                 using var context = scope.ServiceProvider.GetRequiredService<Context>();
 
-                context.Insights.Add(insight);
+                context.Add(insight);
                 context.SaveChanges();
             }
             catch (Exception ex)

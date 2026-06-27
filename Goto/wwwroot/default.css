@@ -173,6 +173,36 @@ dl {
     border-radius: 5px;
 }
 
+@media (max-width: 600px) {
+    body {
+        padding:2vh 1vh;
+    }
+
+    section {
+        margin: 0;
+        padding: 0;
+    }
+    dl {
+        display: block;
+        width: 100%;
+    }
+        dl a {
+            display: block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+    dt {
+        font-weight: 700;
+        padding: 0px !important;
+    }
+    dd:not(:last-child) {
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+}
+
 dt:after {
     content: ':';
 }

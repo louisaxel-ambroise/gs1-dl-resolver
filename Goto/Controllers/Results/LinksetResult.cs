@@ -13,7 +13,7 @@ public sealed class LinksetResultAnchor
 {
     public required string Anchor { get; init; }
     public required string Description { get; init; }
-    public required List<LinksetLink> Links { get; init; } = [];
+    public required IEnumerable<LinksetLink> Links { get; init; } = [];
 }
 
 public sealed class LinksetLink
@@ -25,9 +25,10 @@ public sealed class LinksetLink
     public string? Type { get; init; }
     public bool IsDefault { get; init; }
 
-    public static List<LinksetLink> Map(List<AnchorLink> links, DigitalLink digitalLink)
+    public static IEnumerable<LinksetLink> Map(IEnumerable<AnchorLink> links, DigitalLink digitalLink)
     {
-        var mappedLinks = links.GroupBy(link => new { link.RedirectUrl, link.LinkType, link.Title, link.MediaType, link.IsDefault })
+        var mappedLinks = links.OrderBy(l => l.Id)
+            .GroupBy(link => new { link.RedirectUrl, link.LinkType, link.Title, link.MediaType, link.IsDefault })
             .Select(grp => new LinksetLink
             {
                 Href = digitalLink.FormatUriTemplates(grp.Key.RedirectUrl),

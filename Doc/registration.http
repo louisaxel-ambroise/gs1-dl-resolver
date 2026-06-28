@@ -22,12 +22,12 @@ Content-Type: application/json
 X-Api-Key: {{apiKey}}
 
 ### Register a link for a specific anchor
-POST {{baseUrl}}/api/anchors/nClLtHaQJk/links
+POST {{baseUrl}}/api/anchors/qTFrufVwob/links
 Content-Type: application/json
 X-Api-Key: {{apiKey}}
 {
   "linkType": "gs1:pip",
-  "redirectUrl": "https://en.test.com",
+  "redirectUrl": "https://en.test.com/2",
   "title": "product info",
   "languages": [ "en-GB" ],
   "mediaType": "text/html",

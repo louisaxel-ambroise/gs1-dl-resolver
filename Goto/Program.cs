@@ -33,7 +33,7 @@ builder.Services.AddSingleton(Channel.CreateBounded<Insight>(new BoundedChannelO
 builder.Services.AddSingleton<CommonLocalizationService>();
 builder.Services.AddSingleton<DigitalLinkConverter>();
 builder.Services.AddSingleton<IdentifierConverter>();
-builder.Services.AddScoped<ApiTimeProvider>();
+builder.Services.AddScoped<Clock>();
 builder.Services.AddDbContext<Context>(opt => opt.UseSqlite($"Data Source=registry.db"));
 builder.Services.AddHostedService<InsightConsumerService>();
 builder.Services.AddAuthentication("ApiKey").AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationSchemeHandler>("ApiKey", opts => opts.ApiKey = builder.Configuration.GetValue<string>("ApiKey"));

@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Goto.Infrastructure.Routing.Constraints;
 
 [AttributeUsage(AttributeTargets.Method, Inherited = true)]
-public sealed class LinksetResolverRoute() : GS1ResolverRouteAttribute(true), IActionConstraint, IActionFilter
+public sealed class LinksetResolverRouteAttribute() : GS1ResolverRouteAttribute(ResolverType.Linkset), IActionFilter
 {
     public void OnActionExecuting(ActionExecutingContext context)
     {

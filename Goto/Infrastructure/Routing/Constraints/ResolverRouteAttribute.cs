@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Goto.Infrastructure.Routing.Constraints;
 
 [AttributeUsage(AttributeTargets.Method, Inherited = true)]
-public sealed class LinkTypeResolverRoute() : GS1ResolverRouteAttribute(false), IActionConstraint, IActionFilter
+public abstract class ResolverRouteAttribute(ResolverType resolverType) : GS1ResolverRouteAttribute(resolverType), IActionFilter
 {
     public void OnActionExecuting(ActionExecutingContext context)
     {
@@ -19,3 +18,6 @@ public sealed class LinkTypeResolverRoute() : GS1ResolverRouteAttribute(false), 
         }
     }
 }
+
+public sealed class LinkTypeResolverRouteAttribute() : ResolverRouteAttribute(ResolverType.LinkType);
+public sealed class DefaultLinkResolverRouteAttribute() : ResolverRouteAttribute(ResolverType.DefaultLink);

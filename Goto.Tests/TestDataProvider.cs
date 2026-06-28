@@ -69,8 +69,8 @@ public static class TestDataProvider
                 Description = "Test anchor 1",
                 Prefix = "01/05414195535264",
                 CompanyPrefix = "5414195",
-                Links = new[]
-                {
+                Links =
+                [
                     new AnchorLink
                     {
                         ActiveFrom = DateTimeOffset.MinValue,
@@ -91,7 +91,7 @@ public static class TestDataProvider
                         Title = "Lien de test 2",
                         MediaType = "text/html"
                     }
-                }.ToList()
+                ]
             };
 
             yield return new Anchor
@@ -99,8 +99,8 @@ public static class TestDataProvider
                 Description = "Test anchor 1",
                 Prefix = "01",
                 CompanyPrefix = "5414195",
-                Links = new[]
-                {
+                Links =
+                [
                     new AnchorLink
                     {
                         ActiveFrom = DateTimeOffset.MinValue,
@@ -112,7 +112,7 @@ public static class TestDataProvider
                         MediaType = "text/html",
                         IsDefault = true
                     }
-                }.ToList()
+                ]
             };
 
             yield return new Anchor
@@ -120,8 +120,8 @@ public static class TestDataProvider
                 Description = "Test anchor 2",
                 Prefix = "01/04047111050247",
                 CompanyPrefix = "4047111",
-                Links = new[]
-                {
+                Links =
+                [
                     new AnchorLink
                     {
                         ActiveFrom = DateTimeOffset.MinValue,
@@ -142,7 +142,7 @@ public static class TestDataProvider
                         Title = "Lien de test 2",
                         MediaType = "text/html"
                     }
-                }.ToList()
+                ]
             };
         }
 

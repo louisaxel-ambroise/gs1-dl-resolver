@@ -8,6 +8,7 @@ public class AnchorTests
     public static readonly Anchor Sut = new()
     {
         CompanyPrefix = "123456",
+        Description = "test 123456",
         Prefix = "01/123456789",
         Links =
             [
@@ -103,7 +104,7 @@ public class AnchorTests
     [TestMethod]
     public void FindBestMatchShouldReturnTheDefaultLinksWhenLinkTypeIsEmpty()
     {
-        var result = Sut.FindBestMatches(string.Empty, [new("hr-HR")], ["image/png"]);
+        var result = Sut.FindBestMatches([new("hr-HR")], ["image/png"]);
 
         Assert.HasCount(1, result);
         CollectionAssert.AreEquivalent(new[] { Sut.Links[4] }, result);

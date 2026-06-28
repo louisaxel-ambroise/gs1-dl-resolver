@@ -4,7 +4,7 @@ using System.Threading.Channels;
 
 namespace Goto.Services;
 
-internal sealed class InsightConsumerService(Channel<Insight> channel, IServiceProvider serviceProvider, ILogger<InsightConsumerService> logger) : BackgroundService
+public sealed class InsightConsumerService(Channel<Insight> channel, IServiceProvider serviceProvider, ILogger<InsightConsumerService> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

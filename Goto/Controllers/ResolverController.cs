@@ -7,86 +7,86 @@ using Goto.Infrastructure.Routing.Binding;
 using Goto.Infrastructure.Routing.Constraints;
 using Goto.Infrastructure.Routing.Filters;
 using Goto.Services.Conversion;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Goto.Controllers;
 
 [Controller]
 [TimeTraveler]
-[AllowAnonymous]
-[EnableCors]
 public sealed class ResolverController
 {
-    [HttpGet(".well-known/gs1resolver")]
-    [Produces(MediaTypes.Json)]
-    public IActionResult GetMetadataInformation([FromUri] Uri metadataUrl)
-    {
-        return new OkObjectResult(new MetadataResult
-        {
-            ResolverRoot = string.Concat(metadataUrl.Scheme, "://", metadataUrl.Host),
-            Name = "GOTO",
-            SupportedPrimaryKeys = [ "all" ],
-            LinkTypeDefaultCanBeLinkset = true,
-            JsonLdContextLocation = "https://ref.gs1.org/standards/resolver/linkset-context",
-            Contact = new()
-            {
-                Fn = "GOTO"
-            }
-        });
-    }
-
     [LinksetResolverRoute]
     [Produces(MediaTypes.Linkset, MediaTypes.Html)]
-    public IActionResult ResolveLinkset(
-        [FromUri] DigitalLink digitalLink, 
-        [FromServices] Context context)
+    public IActionResult ResolveLinkset([FromUri] DigitalLink digitalLink, [FromServices] Context context)
     {
         var anchors = context.AnchorsForLink(digitalLink).ToList();
-        var linksets = anchors.Select(a => new LinksetResultAnchor()
+        var linksets = anchors.Select(a => new LinksetResultAnchor
         {
             Anchor = string.Join('/', digitalLink.HostUrl, a.Prefix),
-            Description = a.Description ?? digitalLink.ToShortString(),
+            Description = a.Description,
             Links = LinksetLink.Map(a.Links, digitalLink)
         }).ToList();
 
         return linksets.Count > 0
-            ? new OkObjectResult(new LinksetResult { LinksetUrl = digitalLink.BuildLinksetLink(), Anchors = linksets.OrderByDescending(a => a.Anchor.Length).ToList() })
+            ? new OkObjectResult(new LinksetResult { LinksetUrl = digitalLink.BuildLinksetLink(), Anchors = linksets })
             : new NotFoundObjectResult(ErrorResponse.NotFound);
     }
 
     [InsightsTracking]
     [LinkTypeResolverRoute]
     [Produces(MediaTypes.Json, MediaTypes.Html)]
-    public IActionResult ResolveDigitalLinkAsync(
+    public IActionResult ResolveLinkTypeAsync(
         [FromUri] DigitalLink digitalLink, 
         [FromQuery] string linkType, 
         [FromHeader] string[] mediaTypes, 
-        [FromHeader] Language[] languages, 
+        [FromHeader] Language[] languages,
         [FromServices] Context context)
     {
         var anchors = context.AnchorsForLink(digitalLink)
-            .Where(a => a.Links.Any(l => l.LinkType == linkType || l.IsDefault))
+            .Include(a => a.Links.Where(l => l.LinkType == linkType))
+            .Where(a => a.Links.Any(l => l.LinkType == linkType))
             .ToList();
 
-        foreach (var anchor in anchors.OrderByDescending(a => a.Prefix.Length))
+        foreach (var anchor in anchors)
         {
-            var links = ResolutionResultLink.Map(anchor.FindBestMatches(linkType, languages, mediaTypes), digitalLink);
+            var bestMatch = anchor.FindBestMatches(linkType, languages, mediaTypes);
+            var links = ResolutionResultLink.Map(bestMatch, digitalLink);
             
-            if (links.Count == 1)
+            if (links.Count() == 1)
                 return new RedirectResult(links.Single().Href, permanent: false, preserveMethod: true);
-            if (links.Count > 1)
+            if (links.Count() > 1)
                 return new MultipleChoicesObjectResult(new ResolutionResult
                 {
-                    Description = anchor.Description ?? digitalLink.ToShortString(),
+                    Description = anchor.Description,
                     Anchor = string.Join('/', digitalLink.HostUrl, anchor.Prefix),
                     Links = links
                 });
-            if (string.IsNullOrEmpty(linkType))
-                return new RedirectResult(digitalLink.BuildLinksetLink(), permanent:false, preserveMethod:true);
         }
 
         return new NotFoundObjectResult(ErrorResponse.NotFound);
+    }
+
+    [InsightsTracking]
+    [DefaultLinkResolverRoute]
+    [Produces(MediaTypes.Json, MediaTypes.Html)]
+    public IActionResult ResolveDefaultLinkAsync(
+        [FromUri] DigitalLink digitalLink, 
+        [FromHeader] string[] mediaTypes, 
+        [FromHeader] Language[] languages,
+        [FromServices] Context context)
+    {
+        var anchor = context.AnchorsForLink(digitalLink)
+            .Include(a => a.Links.Where(l => l.IsDefault))
+            .FirstOrDefault();
+
+        if (anchor is null)
+            return new NotFoundObjectResult(ErrorResponse.NotFound);
+        
+        var bestMatch = anchor.FindBestMatches(languages, mediaTypes);
+        var links = ResolutionResultLink.Map(bestMatch.Take(1), digitalLink);
+        var defaultLink = links.FirstOrDefault()?.Href ?? digitalLink.BuildLinksetLink();
+
+        return new RedirectResult(defaultLink, permanent: false, preserveMethod: true) ;
     }
 }

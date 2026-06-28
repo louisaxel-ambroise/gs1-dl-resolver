@@ -18,8 +18,24 @@ namespace Goto.Controllers;
 [Route("api/anchors")]
 [Produces(MediaTypes.Json)]
 [Authorize(AuthenticationSchemes = "ApiKey")]
-public sealed class AnchorController(Context context, ApiTimeProvider timeProvider, ClaimsPrincipal principal, SqidsEncoder<int> encoder)
+public sealed class AnchorController(Context context, Clock clock, ClaimsPrincipal principal, SqidsEncoder<int> encoder)
 {
+    [HttpGet]
+    public IActionResult ListAnchors()
+    {
+        var anchors = context.AnchorsForUser(principal)
+            .OrderBy(a => a.Id)
+            .Select(a => new
+            {
+                Id = encoder.Encode(a.Id),
+                a.Prefix,
+                a.Description
+            });
+
+        return new OkObjectResult(anchors);
+    }
+
+
     [HttpPost]
     public IActionResult CreateAnchor([FromBody] AddAnchorRequest request, [FromServices] IdentifierConverter converter)
     {
@@ -42,26 +58,12 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
         var anchorId = encoder.Decode(anchorKey).Single();
         var anchors = context.AnchorsForUser(principal).First(a => a.Id == anchorId);
 
-        foreach(var activeLink in anchors.Links.Where(l => l.ActiveUntil >= timeProvider.UtcNow))
+        foreach(var activeLink in anchors.Links.Where(l => l.ActiveUntil >= clock.UtcNow))
         {
-            activeLink.ActiveUntil = DateTimeOffset.Min(activeLink.ActiveFrom, timeProvider.UtcNow);
+            activeLink.ActiveUntil = DateTimeOffset.Min(activeLink.ActiveFrom, clock.UtcNow);
         }
 
         return new NoContentResult();
-    }
-
-    [HttpGet]
-    public IActionResult ListAnchors()
-    {
-        var anchors = context.AnchorsForUser(principal)
-            .Select(anchor => new
-            {
-                Id = encoder.Encode(anchor.Id),
-                anchor.Prefix,
-                anchor.Description
-            });
-
-        return new OkObjectResult(anchors);
     }
 
     [HttpGet("{anchorKey}")]
@@ -75,18 +77,19 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
             Id = encoder.Encode(anchor.Id),
             anchor.Prefix,
             anchor.Description,
-            Links = anchor.Links.Select(l => new
-            {
-                Id = encoder.Encode(anchorId, l.Id),
-                l.ActiveFrom,
-                l.ActiveUntil,
-                l.RedirectUrl,
-                l.Title,
-                l.LinkType,
-                Language = l.Language.ToString(),
-                l.MediaType,
-                l.IsDefault
-            })
+            Links = anchor.Links.OrderBy(l => l.Id)
+                .Select(l => new
+                {
+                    Id = encoder.Encode(anchorId, l.Id),
+                    l.ActiveFrom,
+                    l.ActiveUntil,
+                    l.RedirectUrl,
+                    l.Title,
+                    l.LinkType,
+                    Language = l.Language.ToString(),
+                    l.MediaType,
+                    l.IsDefault
+                })
         });
     }
 
@@ -94,7 +97,7 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
     public IActionResult AddAnchorLink([FromRoute] string anchorKey, [FromBody] AddAnchorLinkRequest request)
     {
         var anchorId = encoder.Decode(anchorKey).Single();
-        var anchor = context.AnchorsForUser(principal).First(a => a.Id == anchorId );
+        var anchor = context.AnchorsForUser(principal).First(a => a.Id == anchorId);
 
         anchor.Links.AddRange(request.ToAnchorLinks());
 
@@ -113,7 +116,7 @@ public sealed class AnchorController(Context context, ApiTimeProvider timeProvid
         var anchor = context.AnchorsForUser(principal).AsTracking().First(a => a.Id == anchorId );
         var link = anchor.Links.Single(l => l.Id == linkIds[^1]);
 
-        link.SetUnavailabilityDate(timeProvider.UtcNow);
+        link.SetUnavailabilityDate(clock.UtcNow);
 
         return new NoContentResult();
     }

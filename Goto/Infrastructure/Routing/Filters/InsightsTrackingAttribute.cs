@@ -20,7 +20,7 @@ public sealed class InsightsTrackingAttribute : ActionFilterAttribute
         var channel = context.HttpContext.RequestServices.GetRequiredService<Channel<Insight>>();
         var insight = context.Result switch
         {
-            MultipleChoicesObjectResult multipleChoices => CreateInsight(context.HttpContext, 300, (multipleChoices.Value as ResolutionResult)?.Links.Count ?? 0),
+            MultipleChoicesObjectResult multipleChoices => CreateInsight(context.HttpContext, 300, (multipleChoices.Value as ResolutionResult)?.Links.Count() ?? 0),
             RedirectResult => CreateInsight(context.HttpContext, 307, 1),
             NotFoundObjectResult => CreateInsight(context.HttpContext, 404, 0),
             _ => CreateInsight(context.HttpContext, 500, 0)
@@ -31,12 +31,12 @@ public sealed class InsightsTrackingAttribute : ActionFilterAttribute
 
     private static Insight CreateInsight(HttpContext context, int statusCode, int linkCount)
     {
-        var timeProvider = context.RequestServices.GetRequiredService<ApiTimeProvider>();
+        var clock = context.RequestServices.GetRequiredService<Clock>();
 
         return new Insight
         {
             RecordDate = DateTimeOffset.UtcNow,
-            RequestDate = timeProvider.Now,
+            RequestDate = clock.Now,
             CompanyPrefix = context.Items.TryGetValue("gs1:gcp", out var gcp) ? gcp?.ToString() : null,
             StatusCode = statusCode,
             QueryString = context.Request.QueryString.Value,

@@ -13,8 +13,8 @@ public sealed class TimeTravelerAttribute : ActionFilterAttribute
             {
                 throw new InvalidOperationException("Cannot time travel in the future.");
             }
-            var timeProvider = context.HttpContext.RequestServices.GetRequiredService<ApiTimeProvider>();
-            timeProvider.SetRequestDate(requestDate);
+            var clock = context.HttpContext.RequestServices.GetRequiredService<Clock>();
+            clock.SetNow(requestDate);
         }
     }
 

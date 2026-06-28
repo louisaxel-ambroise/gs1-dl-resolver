@@ -9,9 +9,9 @@ namespace Goto.Data;
 
 public class Context : DbContext
 {
-    public Context(DbContextOptions<Context> options, ApiTimeProvider timeProvider) : base(options)
+    public Context(DbContextOptions<Context> options, Clock clock) : base(options)
     {
-        TimeProvider = timeProvider;
+        Clock = clock;
         Database.EnsureCreated();
     }
 
@@ -24,18 +24,19 @@ public class Context : DbContext
     public IQueryable<Anchor> AnchorsForUser(ClaimsPrincipal user)
     {
         return Set<Anchor>()
+            .IgnoreQueryFilters(["ActiveLinks"])
             .Where(a => a.CompanyPrefix == user.GetCompanyPrefix());
     }
 
     public IQueryable<Anchor> AnchorsForLink(DigitalLink digitalLink)
     {
         return Set<Anchor>()
-            .Include(a => a.Links.Where(l => l.ActiveFrom <= TimeProvider.UtcNow && l.ActiveUntil >= TimeProvider.UtcNow))
-            .Where(a => a.Links.Any(l => l.ActiveFrom <= TimeProvider.UtcNow && l.ActiveUntil >= TimeProvider.UtcNow))
-            .Where(a => digitalLink.CompanyPrefix == a.CompanyPrefix && digitalLink.GetPrefixValues().Contains(a.Prefix));
+            .Where(a => digitalLink.CompanyPrefix == a.CompanyPrefix && digitalLink.GetPrefixValues().Contains(a.Prefix))
+            .Where(a => a.Links.Any())
+            .OrderByDescending(a => a.Prefix.Length);
     }
 
-    public ApiTimeProvider TimeProvider { get; }
+    public Clock Clock { get; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
@@ -63,6 +64,7 @@ public class Context : DbContext
         link.Property(l => l.ActiveFrom).IsRequired().HasConversion(new DateTimeOffsetToBinaryConverter());
         link.Property(a => a.ActiveUntil).IsRequired().HasConversion(new DateTimeOffsetToBinaryConverter());
         link.Property(l => l.Language).HasConversion(v => v.ToString(), v => new Language(v));
+        link.HasQueryFilter("ActiveLinks", l => l.ActiveFrom <= Clock.UtcNow && l.ActiveUntil >= Clock.UtcNow);
 
         var insight = modelBuilder.Entity<Insight>();
         insight.HasKey(a => a.Id);

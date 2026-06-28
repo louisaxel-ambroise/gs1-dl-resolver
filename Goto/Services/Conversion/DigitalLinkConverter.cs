@@ -7,6 +7,13 @@ namespace Goto.Services.Conversion;
 
 internal sealed class DigitalLinkConverter(ApplicationIdentifiers identifiers) 
 {
+    public DigitalLink Parse(HttpRequest request)
+    {
+        var host = string.Concat(request.Scheme, "://", request.Host);
+
+        return Parse(host, request.Path, request.QueryString.ToString());
+    }
+
     public DigitalLink Parse(string host, string path, string query)
     {
         var builder = new DigitalLinkBuilder(host);

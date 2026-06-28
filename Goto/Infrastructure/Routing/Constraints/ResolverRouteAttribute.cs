@@ -1,3 +1,4 @@
+using Goto.Services.Conversion;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -14,8 +15,20 @@ public abstract class ResolverRouteAttribute(ResolverType resolverType) : GS1Res
     {
         if (context.HttpContext.Response.IsSuccessStatusCode())
         {
-            context.HttpContext.Response.Headers.Append("Link", $"<{context.HttpContext.Request.GetDisplayUrl()}>; rel=\"linkset\"; type=\"application/linkset+json\"");
+            var digitalLink = GetDigitalLink(context.HttpContext);
+            context.HttpContext.Response.Headers.Append("Link", $"<{digitalLink.BuildLinksetLink()}>; rel=\"linkset\"; type=\"application/linkset+json\"");
         }
+    }
+
+    private static DigitalLink GetDigitalLink(HttpContext httpContext)
+    {
+        if(!httpContext.Items.TryGetValue("gs1:digitalLink", out var item) || item is not DigitalLink digitalLink)
+        {
+            var converter = httpContext.RequestServices.GetRequiredService<DigitalLinkConverter>();
+            digitalLink = converter.Parse(httpContext.Request);
+        }
+
+        return digitalLink;
     }
 }
 

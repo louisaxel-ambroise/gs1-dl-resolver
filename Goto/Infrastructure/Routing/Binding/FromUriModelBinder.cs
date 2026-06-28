@@ -13,14 +13,11 @@ public sealed class FromUriModelBinder : IModelBinder
         if (bindingContext.ModelType == typeof(DigitalLink))
         {
             var converter = bindingContext.HttpContext.RequestServices.GetRequiredService<DigitalLinkConverter>();
-            var digitalLink = converter.Parse(string.Concat(request.Scheme, "://", request.Host), request.Path, request.QueryString.ToString());
+            var digitalLink = converter.Parse(request);
 
             bindingContext.HttpContext.Items.Add("gs1:gcp", digitalLink.CompanyPrefix);
+            bindingContext.HttpContext.Items.Add("gs1:digitalLink", digitalLink);
             bindingContext.Result = ModelBindingResult.Success(digitalLink);
-        }
-        else if (bindingContext.ModelType == typeof(string))
-        {
-            bindingContext.Result = ModelBindingResult.Success(request.GetDisplayUrl());
         }
         else if (bindingContext.ModelType == typeof(Uri))
         {

@@ -9,6 +9,7 @@
     --link-bg: #efefef;
     --surface: #ffffff;
     --text: #141414;
+    --border: #DDD;
     --subtle: #666;
     --primary: #005fcc;
     --tag-lang: #141414;
@@ -21,6 +22,7 @@
     :root {
         --bg: #0f0f10;
         --link-bg: #151515;
+        --border: #333;
         --surface: #1b1b1d;
         --text: #ededed;
         --subtle: #aaa;
@@ -33,6 +35,7 @@
 [data-theme="dark"] {
     --bg: #f4f4f5;
     --link-bg: #efefef;
+    --border: #DDD;
     --surface: #f4f4f5;
     --text: #141414;
     --subtle: #666;
@@ -45,6 +48,7 @@
 [data-theme="light"] {
     --bg: #0f0f10;
     --link-bg: #151515;
+    --border: #333;
     --surface: #0f0f10;
     --text: #ededed;
     --subtle: #aaa;
@@ -199,7 +203,7 @@ dl {
     }
     dd:not(:last-child) {
         padding-bottom: 5px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid var(--border);
     }
 }
 

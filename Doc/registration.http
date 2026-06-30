@@ -29,12 +29,12 @@ X-Api-Key: {{apiKey}}
   "linkType": "gs1:pip",
   "redirectUrl": "https://en.test.com/2",
   "title": "product info",
-  "languages": [ "en-GB" ],
+  "languages": [ "en-001" ],
   "mediaType": "text/html",
   "isDefault": true
 }
 
 ### Remove a link from an anchor
-DELETE {{baseUrl}}/api/anchors/qTFrufVwob/links/cKgRLPsAte
+DELETE {{baseUrl}}/api/anchors/qTFrufVwob/links/HpSATmuEMA
 Content-Type: application/json
 X-Api-Key: {{apiKey}}

@@ -5,15 +5,21 @@ using Goto.Infrastructure.Authentication;
 using Goto.Infrastructure.Results.Converters;
 using Goto.Infrastructure.Routing.Binding;
 using Goto.Services;
-using Goto.Services.Conversion;
-using Goto.Services.Conversion.Utils;
-using Goto.Services.Conversion.Utils.Validation;
 using Goto.Translations;
+using DigitalLinkToolkit.Translation;
 using Microsoft.EntityFrameworkCore;
 using Sqids;
 using System.Threading.Channels;
+using DigitalLinkToolkit.Conversion;
+using DigitalLinkToolkit.Conversion.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var tdtEngineBuilder = new TdtEngineBuilder();
+
+tdtEngineBuilder = Directory.GetFiles("wwwroot/DefinitionFiles").Aggregate(tdtEngineBuilder, (builder, file) => builder.AddDefinitionFile(file));
+tdtEngineBuilder = Directory.GetFiles("wwwroot/Tables").Aggregate(tdtEngineBuilder, (builder, file) => builder.AddTableFile(file));
+
 
 CompanyPrefix.Initialize("wwwroot/gcpprefixformatlist.xml");
 ApplicationIdentifiers.Initialize("wwwroot/ApplicationIdentifiers.json", new() { PropertyNameCaseInsensitive = true });
@@ -39,6 +45,7 @@ builder.Services.AddHostedService<InsightConsumerService>();
 builder.Services.AddAuthentication("ApiKey").AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationSchemeHandler>("ApiKey", opts => opts.ApiKey = builder.Configuration.GetValue<string>("ApiKey"));
 builder.Services.AddScoped(ctx => ctx.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
 builder.Services.AddSingleton(new SqidsEncoder<int>(new SqidsOptions { MinLength = 10, Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" }));
+builder.Services.AddSingleton(tdtEngineBuilder.BuildEngine());
 
 var app = builder.Build();
 

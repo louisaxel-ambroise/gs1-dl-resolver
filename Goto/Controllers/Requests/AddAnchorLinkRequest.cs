@@ -1,5 +1,4 @@
 ﻿using Goto.Data.Entities;
-using Goto.Services;
 
 namespace Goto.Controllers.Requests;
 
@@ -21,7 +20,7 @@ public sealed class AddAnchorLinkRequest
             LinkType = LinkType,
             RedirectUrl = RedirectUrl,
             Title = Title,
-            Language = new Language(language),
+            Language = Language.Parse(language),
             MediaType = MediaType,
             ActiveFrom = DateTimeOffset.Min(ActiveFrom?.ToUniversalTime(), DateTimeOffset.UtcNow),
             ActiveUntil = DateTimeOffset.Min(ActiveUntil?.ToUniversalTime(), DateTimeOffset.MaxValue),

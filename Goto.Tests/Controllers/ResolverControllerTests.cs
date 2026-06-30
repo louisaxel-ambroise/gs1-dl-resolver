@@ -1,7 +1,7 @@
-﻿using Goto.Controllers;
+﻿using DigitalLinkToolkit.Conversion.DTOs;
+using Goto.Controllers;
 using Goto.Controllers.Results;
-using Goto.Services.Conversion;
-using Goto.Services.Conversion.Utils;
+using DigitalLinkToolkit.Conversion.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Goto.Tests.Controllers;

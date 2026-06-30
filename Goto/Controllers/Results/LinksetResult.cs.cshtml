@@ -21,7 +21,7 @@
     var anchorLinksByType = linkset.Links.GroupBy(l => l.LinkType);
 
     <header>
-        <h2>@Localizer["Links for Anchor"] @linkset.Description</h2>
+        <h2>@linkset.Description</h2>
         <p class="anchor">@linkset.Anchor</p>
     </header>
     <section>
@@ -61,31 +61,36 @@
         @{
             var defaultLinks = anchorDefaultLinks.GroupBy(l => new { l.Href, l.Title, l.Type });
             var key = anchorDefaultLinks.Count() > 1 ? "gs1:defaultLinkMulti" : "gs1:defaultLink";
-            <h3 title="@key">@Localizer[key]</h3>
+            
+            <details>
+                <summary>
+                    <h3 title="@key">@Localizer[key]</h3>
+                </summary>
 
-            if (defaultLinks.Any())
-            {
-                foreach (var link in defaultLinks)
+                @if (defaultLinks.Any())
+                {
+                    foreach (var link in defaultLinks)
+                    {
+                        <dl>
+                            <dt>@Localizer["Link"]</dt>
+                            <dd><a href="@link.Key.Href" title="@link.Key.Href" target="_blank">@link.Key.Href</a></dd>
+
+                            <dt>@Localizer["Title"]</dt>
+                            <dd>@link.Key.Title</dd>
+                        </dl>
+                    }
+                }
+                else
                 {
                     <dl>
                         <dt>@Localizer["Link"]</dt>
-                        <dd><a href="@link.Key.Href" title="@link.Key.Href" target="_blank">@link.Key.Href</a></dd>
+                        <dd><a href="@Model.LinksetUrl" title="@Model.LinksetUrl" target="_blank">@Model.LinksetUrl</a></dd>
 
                         <dt>@Localizer["Title"]</dt>
-                        <dd>@link.Key.Title</dd>
+                        <dd>Linkset</dd>
                     </dl>
                 }
-            }
-            else
-            {
-                <dl>
-                    <dt>@Localizer["Link"]</dt>
-                    <dd><a href="@Model.LinksetUrl" title="@Model.LinksetUrl" target="_blank">@Model.LinksetUrl</a></dd>
-
-                    <dt>@Localizer["Title"]</dt>
-                    <dd>Linkset</dd>
-                </dl>
-            }
+            </details>
         }
     </section>
 }

@@ -6,7 +6,7 @@ using Goto.Infrastructure.Results;
 using Goto.Infrastructure.Routing.Binding;
 using Goto.Infrastructure.Routing.Constraints;
 using Goto.Infrastructure.Routing.Filters;
-using Goto.Services.Conversion;
+using DigitalLinkToolkit.Conversion.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

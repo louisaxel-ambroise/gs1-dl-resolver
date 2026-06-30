@@ -1,22 +1,24 @@
 ﻿using Goto.Data.Enums;
-using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Goto.Data.Entities;
 
 public sealed partial class Language
 {
-    public string Country { get; private set; }
-    public string? Region { get; private set; }
+    public string Country { get; }
+    public string? Region { get; }
 
     public Language(string value)
     {
-        var match = Regex.Match(value);
+        var parts = value.Split('-', 2, StringSplitOptions.TrimEntries | StringSplitOptions.TrimEntries);
 
-        if (!match.Success)
-            throw new InvalidOperationException($"Language is invalid: '{value}'");
+        if (parts.Any(p => p.Length is < 2 or > 3 || p.Any(c => !char.IsLetterOrDigit(c))))
+        {
+            throw new InvalidOperationException($"Invalid language: '{value}'. Shall use 2 or 3 letter country and region (optional)");
+        }
 
-        Country = match.Groups["country"].Value;
-        Region = match.Groups["region"].Value;
+        Country = parts[0];
+        Region = parts.Length > 1 ? parts[1] : null;
     }
 
     public override string ToString()
@@ -24,33 +26,25 @@ public sealed partial class Language
         return string.IsNullOrEmpty(Region) ? Country : string.Concat(Country, '-', Region);
     }
 
-    [GeneratedRegex("^(?<country>[a-zA-Z]{2,3})(\\-(?<region>[a-zA-Z]{2,3}))?$")]
-    public partial Regex Regex { get; }
-
-    public Enums.Match Matches(Language language)
+    public Match Matches(Language language)
     {
         if(language.Country == Country)
         {
             if(string.IsNullOrEmpty(language.Region) || string.IsNullOrEmpty(Region) || language.Region == Region)
             {
-                return Enums.Match.FullMatch;
+                return Match.FullMatch;
             }
 
-            return Enums.Match.PartialMatch;
+            return Match.PartialMatch;
         }
 
-        return Enums.Match.NoMatch;
+        return Match.NoMatch;
     }
 
-    public override bool Equals(object? obj)
+    public static Language Parse(string value)
     {
-        return obj is Language other
-            && other.Country == Country 
-            && other.Region == Region;
-    }
+        var culture = new CultureInfo(value);
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Country, Region);
+        return new Language(culture.Name);
     }
 }

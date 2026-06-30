@@ -1,6 +1,6 @@
-﻿using Goto.Controllers.Results;
-using Goto.Infrastructure.Exceptions;
-using Goto.Services.Conversion;
+﻿using DigitalLinkToolkit.Conversion.Model;
+using DigitalLinkToolkit.Exceptions;
+using Goto.Controllers.Results;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +13,6 @@ namespace Goto.Controllers;
 [Produces("application/json", "text/html")]
 public sealed class ErrorController : ControllerBase
 {
-    [HttpGet, HttpPost, HttpPut, HttpDelete]
     public IActionResult HandleError()
     {
         var ex = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
@@ -59,21 +58,21 @@ public sealed class ErrorController : ControllerBase
         };
     }
 
-    private static string FormatMessage(ValidationIssue i)
+    private static string FormatMessage(ValidationIssue issue)
     {
-        var messageBuilder = new StringBuilder(i.Message);
+        var messageBuilder = new StringBuilder(issue.Message);
 
-        if (!string.IsNullOrEmpty(i.Key) && !string.IsNullOrEmpty(i.Value))
+        if (!string.IsNullOrEmpty(issue.Key) && !string.IsNullOrEmpty(issue.Value))
         {
-            messageBuilder.AppendFormat(" (Key: '{0}', Value: '{1}')", i.Key, i.Value);
+            messageBuilder.AppendFormat(" (Key: '{0}', Value: '{1}')", issue.Key, issue.Value);
         }
-        else if (!string.IsNullOrEmpty(i.Key))
+        else if (!string.IsNullOrEmpty(issue.Key))
         {
-            messageBuilder.AppendFormat(" (Key: '{0}')", i.Key);
+            messageBuilder.AppendFormat(" (Key: '{0}')", issue.Key);
         }
-        else if (!string.IsNullOrEmpty(i.Value))
+        else if (!string.IsNullOrEmpty(issue.Value))
         {
-            messageBuilder.AppendFormat(" (Value: '{0}')", i.Value);
+            messageBuilder.AppendFormat(" (Value: '{0}')", issue.Value);
         }
 
         return messageBuilder.ToString();

@@ -1,5 +1,5 @@
-using Goto.Services.Conversion;
-using Microsoft.AspNetCore.Http.Extensions;
+using DigitalLinkToolkit.Conversion;
+using DigitalLinkToolkit.Conversion.Model;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Goto.Infrastructure.Routing.Constraints;

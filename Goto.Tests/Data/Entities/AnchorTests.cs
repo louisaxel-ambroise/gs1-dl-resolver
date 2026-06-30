@@ -14,6 +14,7 @@ public class AnchorTests
             [
                 new ()
                 {
+                    Id = 2,
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("en-GB"),
@@ -24,6 +25,7 @@ public class AnchorTests
                 },
                 new ()
                 {
+                    Id = 1,
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("en-US"),
@@ -33,7 +35,8 @@ public class AnchorTests
                     MediaType = "text/html"
                 },
                 new ()
-                {
+                {                    
+                    Id = 3,
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("fr-BE"),
@@ -44,6 +47,7 @@ public class AnchorTests
                 },
                 new ()
                 {
+                    Id = 4,
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("de"),
@@ -54,6 +58,7 @@ public class AnchorTests
                 },
                 new ()
                 {
+                    Id = 5,
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("ar"),
@@ -99,6 +104,16 @@ public class AnchorTests
 
         Assert.HasCount(2, result);
         CollectionAssert.AreEquivalent(new[] { Sut.Links[0], Sut.Links[1] }, result);
+        Assert.AreSame(Sut.Links[1], result[0]);
+    }
+
+    [TestMethod]
+    public void FindBestMatchShouldOrderTheResultsByIdAscending()
+    {
+        var result = Sut.FindBestMatches("gs1:pip", [new("en")], ["application/json"]);
+
+        Assert.HasCount(2, result);
+        Assert.AreSame(Sut.Links[1], result[0]);
     }
 
     [TestMethod]

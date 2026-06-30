@@ -1,5 +1,5 @@
 using Goto.Data.Entities;
-using Goto.Services.Conversion;
+using DigitalLinkToolkit.Conversion.Model;
 
 namespace Goto.Controllers.Results;
 

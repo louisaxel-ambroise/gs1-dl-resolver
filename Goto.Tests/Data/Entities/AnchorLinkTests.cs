@@ -6,6 +6,8 @@ namespace Goto.Tests.Data.Entities;
 [TestClass]
 public class AnchorLinkTests
 {
+    #region Matches methods
+
     [TestMethod]
     [DataRow("en-GB", Match.FullMatch)]
     [DataRow("en", Match.FullMatch)]
@@ -53,4 +55,46 @@ public class AnchorLinkTests
 
         Assert.AreEqual(expectedResult, result);
     }
+
+    #endregion
+
+    #region SetUnavailabilityDate
+
+    [TestMethod]
+    public void ShouldUpdateEndAvailabilityDate()
+    {
+        var now = DateTimeOffset.UtcNow;
+        var sut = new AnchorLink()
+        {
+            ActiveFrom = DateTimeOffset.MinValue,
+            ActiveUntil = DateTimeOffset.MaxValue,
+            Language = new("en"),
+            LinkType = "gs1:pip",
+            RedirectUrl = "https://test.com",
+            Title = "Test link"
+        };
+
+        sut.SetUnavailabilityDate(now);
+
+        Assert.AreEqual(now, sut.ActiveUntil);
+    }
+
+    [TestMethod]
+    public void ShouldRaiseErrorWhenEndAvailabilityDateIsBeforeTheSpecifiedDate()
+    {
+        var now = DateTimeOffset.UtcNow;
+        var sut = new AnchorLink()
+        {
+            ActiveFrom = DateTimeOffset.MinValue,
+            ActiveUntil = now.AddDays(-2),
+            Language = new("en"),
+            LinkType = "gs1:pip",
+            RedirectUrl = "https://test.com",
+            Title = "Test link"
+        };
+
+        Assert.Throws<InvalidOperationException>(() => sut.SetUnavailabilityDate(now));
+    }
+
+    #endregion
 }

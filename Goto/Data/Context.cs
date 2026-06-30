@@ -1,6 +1,6 @@
 ﻿using Goto.Data.Entities;
 using Goto.Services;
-using Goto.Services.Conversion;
+using DigitalLinkToolkit.Conversion.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Security.Claims;

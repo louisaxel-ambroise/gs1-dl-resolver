@@ -15,7 +15,7 @@ internal class FromHeaderModelBinder : IModelBinder
         {
             var header = request.GetTypedHeaders().AcceptLanguage;
             var languages = header.OrderByDescending(h => h.Quality ?? 1)
-                .Select(h => new Language(h.Value.ToString()))
+                .Select(v => Language.Parse(v.Value.ToString()))
                 .ToArray();
 
             bindingContext.Result = ModelBindingResult.Success(languages);

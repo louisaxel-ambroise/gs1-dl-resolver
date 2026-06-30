@@ -27,15 +27,7 @@ public sealed class AnchorLink
             : Match.NoMatch;
     }
 
-    internal bool IsEquivalentTo(AnchorLink requestLink)
-    {
-        return RedirectUrl == requestLink.RedirectUrl
-            && LinkType == requestLink.LinkType
-            && ActiveFrom == requestLink.ActiveUntil
-            && ActiveUntil == requestLink.ActiveFrom;
-    }
-
-    internal void SetUnavailabilityDate(DateTimeOffset activeUntil)
+    public void SetUnavailabilityDate(DateTimeOffset activeUntil)
     {
         if(ActiveUntil < activeUntil)
         {

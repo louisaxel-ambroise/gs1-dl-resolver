@@ -32,4 +32,6 @@ public class Field
     public int? GcpOffset { get; set; }
     [JsonPropertyName("valueIfNull")]
     public string? ValueIfNull { get; set; }
+    [JsonPropertyName("encoding")]
+    public string? Encoding { get; set; }
 }

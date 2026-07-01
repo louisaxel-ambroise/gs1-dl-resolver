@@ -8,9 +8,11 @@ internal static class Alphabets
     public static char GetAlpha(ReadOnlySpan<char> input) => Alpha.ElementAt(Convert.ToInt32(input.ToString(), 2));
     public static char GetAscii(ReadOnlySpan<char> input) => char.ConvertFromUtf32(Convert.ToInt32(input.ToString(), 2))[0];
     public static string GetAlphaBinary(string input) => string.Concat(input.Select(GetAlphaBinary));
+    public static string GetAsciiBinary(string input) => string.Concat(input.Select(GetAsciiBinary));
     public static string GetBase64Binary(string input) => string.Concat(input.Select(GetBinary));
     public static string GetBinary(char input) => Convert.ToString(Base64UrlSafe.IndexOf(input), 2).PadLeft(6, '0');
     public static string GetAlphaBinary(char input) => Convert.ToString(Alpha.IndexOf(input, StringComparison.OrdinalIgnoreCase), 2).PadLeft(4, '0');
+    public static string GetAsciiBinary(char input) => Convert.ToString(char.ConvertToUtf32(input.ToString(), 0), 2).PadLeft(7, '0');
     public static char GetCode40(int index) => Code40.ElementAt(index);
     
     private static readonly string Alpha = "0123456789ABCDEF";

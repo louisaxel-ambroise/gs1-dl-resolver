@@ -20,7 +20,6 @@ var tdtEngineBuilder = new TdtEngineBuilder();
 tdtEngineBuilder = Directory.GetFiles("wwwroot/DefinitionFiles").Aggregate(tdtEngineBuilder, (builder, file) => builder.AddDefinitionFile(file));
 tdtEngineBuilder = Directory.GetFiles("wwwroot/Tables").Aggregate(tdtEngineBuilder, (builder, file) => builder.AddTableFile(file));
 
-
 CompanyPrefix.Initialize("wwwroot/gcpprefixformatlist.xml");
 ApplicationIdentifiers.Initialize("wwwroot/ApplicationIdentifiers.json", new() { PropertyNameCaseInsensitive = true });
 

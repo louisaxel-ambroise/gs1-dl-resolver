@@ -3,7 +3,6 @@ using DigitalLinkToolkit.Translation.Functions;
 using DigitalLinkToolkit.Translation.Model.EPCs;
 using DigitalLinkToolkit.Translation.Model.Tables;
 using System.Data;
-using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -14,9 +13,12 @@ namespace DigitalLinkToolkit.Translation;
 
 public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
 {
+    private readonly GrammarFormatter _formatter = new(tables);
+
     public string Decompress(string path, string host)
     {
         var decompressed = new StringBuilder();
+
         if (path.StartsWith("eh"))
         {
             foreach (var c in path[2..])
@@ -32,18 +34,32 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
             }
         }
 
-        return Translate(decompressed.ToString(), string.Concat("uriStem=", host), LevelType.Gs1_Digital_Link.ToString());
+        return Translate(decompressed.ToString(), string.Concat("uriStem=", host), LevelType.Gs1_Digital_Link);
     }
 
-    public string Compress(string value, string host)
+    public string Compress(string value)
     {
-        var binaryRepresentation = Translate(value, "dataToggle=1;filter=1", LevelType.Binary.ToString());
+        var host = value[..value.IndexOf('/', 8)];
+        var binaryRepresentation = Translate(value, "dataToggle=1;filter=1", LevelType.Binary);
+        var expectedLength = (int)Math.Ceiling((double)binaryRepresentation.Length / 6) * 6;
+        binaryRepresentation = binaryRepresentation.PadRight(expectedLength, '0');
 
-        // TODO: format binary using ex or eh
-        return string.Concat(host, '/', binaryRepresentation);
+        var result = new StringBuilder().Append(host).Append("/ex");
+
+        for (var i = 0; i < binaryRepresentation.Length; i+=6)
+        {
+            result.Append(Alphabets.GetChar(binaryRepresentation.AsSpan(i, 6)));
+        }
+
+        return result.ToString();
     }
 
     public string Translate(string input, string parameterList, string outputFormat)
+    {
+        return Translate(input, parameterList, Enum.Parse<LevelType>(outputFormat, true));
+    }
+
+    public string Translate(string input, string parameterList, LevelType outputFormat)
     {
         var parameters = ParseParameterList(parameterList); // 1. Setup
         var candidates = FindCandidateSchemes(input, parameters); // 2. Determine the EPC scheme and input format level.  
@@ -54,71 +70,45 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
         ApplyRules(parameters, inputOption.Level, RuleType.Extract); // 5. Perform any rules of type EXTRACT within the input format option in order to calculate additional derived fields
         ApplyRules(parameters, outputOption.Level, RuleType.Format); // 7. Perform any rules of type FORMAT within the output format in order to calculate additional derived fields
 
-        var result = GrammarFormatter.Format(outputOption.Level, outputOption.Option, parameters); // 8. Use the grammar string and substitutions from the associative array to build the output value
+        var result = _formatter.Format(outputOption.Level, outputOption.Option, parameters); // 8. Use the grammar string and substitutions from the associative array to build the output value
 
-        return PostProcessOutput(result, outputOption.Level);
+        return PostProcessOutput(result, outputOption.Level, parameters);
     }
 
-    private static string PostProcessOutput(string result, Level level)
+    private static string PostProcessOutput(string result, Level level, Dictionary<string, string> parameters)
     {
-        if(level.Type is LevelType.Gs1_Digital_Link)
+        // TODO: append AIDC data to the end of the URL
+        if (level.Type is LevelType.Gs1_Digital_Link && level.DigitalLinkToolkitKeyQualifiers.Any())
         {
-            var url = new Uri(result);
-            var scheme = url.Scheme + "://" + url.Host + "/";
-            var paths = url.AbsolutePath.Trim('/').Split('/');
-            var kv = new List<(string, string)>();
+            var parts = ParseUrl(result, out var pathStart);
+            var path = parts[0] + "/" + parts[1];
 
-            scheme += paths[0] + "/" + paths[1] + "/";
-            for(var i =2; i<paths.Length; i += 2)
+            foreach(var qualifier in level.DigitalLinkToolkitKeyQualifiers)
             {
-                kv.Add((paths[i], paths[i + 1]));
-            }
-            foreach(var qv in url.Query.Trim('?').Split('&', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-            {
-                kv.Add((qv.Split('=')[0], qv.Split('=')[1]));
-            }
-            var queryElements = new List<KeyValuePair<string, string?>>();
-            var pathElements = new List<KeyValuePair<string, string?>>();
-
-            foreach (var keys in level.DigitalLinkToolkitKeyQualifiers)
-            {
-                var v = kv.SingleOrDefault(x => x.Item1 == keys);
-
-                if(v.Item1 is not null)
+                if(parts.IndexOf(qualifier) is var index && index > 0 && index < parts.Length - 1)
                 {
-                    scheme += v.Item1 + "/" + v.Item2 + "/";
+                    path += "/" + qualifier + "/" + parts[index+1];
                 }
             }
-
-            scheme = scheme.TrimEnd('/');
-            var queryString = "?";
-
-            foreach(var v in kv.Where(x => !level.DigitalLinkToolkitKeyQualifiers.Contains(x.Item1)))
-            {
-                queryString += v.Item1 + "=" + v.Item2 + "&";
-            }
-
-            if(queryString.Length > 1) scheme += queryString;
-
-            return scheme;
+            
+            return string.Concat(result[..pathStart], '/', path);
         }
 
         return result;
     }
 
-    private static (Scheme Scheme, Level Level, Option Option) FindOutputOption(Scheme scheme, string inputOptionKey, string outputFormat)
+    private static (Scheme Scheme, Level Level, Option Option) FindOutputOption(Scheme scheme, string inputOptionKey, LevelType outputFormat)
     {
-        var level = scheme.Levels.Single(l => l.Type.ToString().Equals(outputFormat, StringComparison.OrdinalIgnoreCase));
+        var level = scheme.Levels.Single(l => l.Type == outputFormat);
 
         return (scheme, level, level.Options.Single(o => o.OptionKey == inputOptionKey));
     }
 
-    private static void ApplyRules(Dictionary<string, string> fields, Level level, RuleType ruleType)
+    private static void ApplyRules(Dictionary<string, string> parameters, Level level, RuleType ruleType)
     {
         foreach (var rule in level.Rules.Where(r => r.Type == ruleType).OrderBy(r => r.Seq))
         {
-            var function = FunctionUtils.ParseFunction(rule.Function);
-            var result = function.Invoke(fields);
+            var result = FunctionUtils.Execute(rule.Function, parameters);
 
             if (rule.Length.HasValue)
             {
@@ -132,19 +122,13 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
                 {
                     throw new Exception($"Invalid length for field {rule.NewFieldName}. Expected length of {rule.Length.Value}");
                 }
-                if (!string.IsNullOrEmpty(rule.DecimalMinimum) && rule.DecimalMinimum.Any(c => c != '0'))
+                if (!string.IsNullOrEmpty(rule.DecimalMinimum) && !ValidationRule.MinValue(rule.DecimalMinimum, result))
                 {
-                    if (BigInteger.Parse(result) < BigInteger.Parse(rule.DecimalMinimum))
-                    {
-                        throw new Exception($"Invalid value. Expected minimum of  {rule.DecimalMinimum}");
-                    }
+                    throw new Exception($"Invalid value. Expected minimum of {rule.DecimalMinimum}");
                 }
-                if (!string.IsNullOrEmpty(rule.DecimalMaximum) && (rule.DecimalMaximum.Length < rule.Length || rule.DecimalMaximum.Any(c => c != '9')))
+                if (!string.IsNullOrEmpty(rule.DecimalMaximum) && !ValidationRule.MaxValue(rule.DecimalMaximum, result))
                 {
-                    if (BigInteger.Parse(result) > BigInteger.Parse(rule.DecimalMaximum))
-                    {
-                        throw new Exception($"Invalid value. Expected minimum of  {rule.DecimalMaximum}");
-                    }
+                    throw new Exception($"Invalid value. Expected maximum of {rule.DecimalMaximum}");
                 }
                 if (!Regex.IsMatch(result, $"${rule.CharacterSet}$"))
                 {
@@ -152,7 +136,7 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
                 }
             }
 
-            fields[rule.NewFieldName] = result;
+            parameters[rule.NewFieldName] = result;
         }
     }
 
@@ -174,20 +158,13 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
                 value = ParseBinaryField(field, value);
             }
 
-            ValidateRange(field, value);
-            if (!string.IsNullOrEmpty(field.DecimalMinimum) && field.DecimalMinimum.Any(c => c != '0'))
+            if (!string.IsNullOrEmpty(field.DecimalMinimum) && !ValidationRule.MinValue(field.DecimalMinimum, value))
             {
-                if (BigInteger.Parse(value) < BigInteger.Parse(field.DecimalMinimum))
-                {
-                    throw new Exception($"Invalid value. Expected minimum of  {field.DecimalMinimum}");
-                }
+                throw new Exception($"Invalid value. Expected minimum of {field.DecimalMinimum}");
             }
-            if (!string.IsNullOrEmpty(field.DecimalMaximum))
+            if (!string.IsNullOrEmpty(field.DecimalMaximum) && !ValidationRule.MaxValue(field.DecimalMaximum, value))
             {
-                if (BigInteger.Parse(value) > BigInteger.Parse(field.DecimalMaximum))
-                {
-                    throw new Exception($"Invalid value. Expected minimum of  {field.DecimalMaximum}");
-                }
+                throw new Exception($"Invalid value. Expected maximum of {field.DecimalMaximum}");
             }
 
             parameters.Add(field.Name, value);
@@ -235,39 +212,25 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
 
     private static string PreProcessInput(string input, Level level, Option inputOption)
     {
-        if (level.Type == LevelType.Gs1_Digital_Link && inputOption.AISequence.Any())
+        if (level.Type == LevelType.Gs1_Digital_Link && level.DigitalLinkToolkitKeyQualifiers.Any())
         {
-            var url = new Uri(input);
-            var scheme = url.Scheme + "://" + url.Host;
-            var urlPath = url.AbsolutePath.Trim('/').Split('/').Reverse();
-            var queryElements = new List<KeyValuePair<string, string?>>();
-            var pathElements = new List<KeyValuePair<string, string?>>();
+            var parts = ParseUrl(input, out var pathStart);
+            var path = parts[0] + "/" + parts[1];
 
-            for (var i = 0; i < urlPath.Count(); i += 2)
+            foreach (var qualifier in level.DigitalLinkToolkitKeyQualifiers)
             {
-                if (urlPath.ElementAt(i + 1) == inputOption.AISequence.First())
+                if (parts.IndexOf(qualifier) is var index && index > 0 && index < parts.Length - 1)
                 {
-                    pathElements.Insert(0, new(urlPath.ElementAt(i + 1), urlPath.ElementAt(i)));
-                    break;
-                }
-                else if (inputOption.AISequence.Contains(urlPath.ElementAt(i + 1)))
-                {
-                    pathElements.Insert(0, new(urlPath.ElementAt(i + 1), urlPath.ElementAt(i)));
-                }
-                else
-                {
-                    queryElements.Add(new(urlPath.ElementAt(i + 1), urlPath.ElementAt(i)));
+                    path += "/" + qualifier + "/" + parts[index + 1];
                 }
             }
 
-            scheme += "/" + string.Join('/', pathElements.Select(p => p.Key + "/" + p.Value));
+            var queryElements = Enumerable.Range(1, (parts.Length-1) / 2).Where(i => !level.DigitalLinkToolkitKeyQualifiers.Contains(parts[i * 2])).Select(i => $"{parts[i * 2]}={parts[i * 2 + 1]}");
+            var url = string.Concat(input[..pathStart], '/', path);
 
-            if (queryElements.Count > 0)
-            {
-                scheme += "?" + string.Join('&', queryElements.Select(p => p.Key + "=" + p.Value));
-            }
-
-            return scheme;
+            return queryElements.Any() 
+                ? string.Concat(url, '?', string.Join('&', queryElements)) 
+                : url;
         }
         else if (level.Type == LevelType.Gs1_AI_Json && inputOption.AISequence.Any())
         {
@@ -329,22 +292,6 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
         return false;
     }
 
-    private static void ValidateRange(Field field, string value)
-    {
-        if(field.DecimalMaximum is null && field.DecimalMinimum is null) return;
-        
-        var decimalValue = BigInteger.Parse(value);
-
-        if(field.DecimalMinimum is not null && field.DecimalMinimum.Any(c => c is not '0') && decimalValue < BigInteger.Parse(field.DecimalMinimum))
-        {
-            throw new Exception($"Invalid value. Expected minimum of {field.DecimalMinimum}");
-        }
-        if(field.DecimalMaximum is not null && decimalValue > BigInteger.Parse(field.DecimalMaximum))
-        {
-            throw new Exception($"Invalid value. Expected maximum of {field.DecimalMaximum}");
-        }
-    }
-
     private string ParseEncodedAI(EncodedAI encodedAI, Bitstream bitStream)
     {
         var tableF = tables.Single(t => t.TableId == "F");
@@ -362,7 +309,16 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
                 : value.TrimEnd((field.PadChar ?? "0").ElementAt(0));
         }
 
-        var parsedValue = value.ToBinaryValue();
+        string parsedValue;
+
+        if (field.Encoding is not null)
+        {
+            parsedValue = TagDataStandardFunctions.Parse(field.Encoding, new(value));
+        }
+        else
+        {
+            parsedValue = value.ToBinaryValue();
+        }
 
         if(field.Length is not null && parsedValue.Length < field.Length)
         {
@@ -399,16 +355,16 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
         {
             string? optionKey;
 
-            if (candidate.Scheme.OptionKey is null or "1")
+            if (candidate.Scheme.OptionKey is null or "1" or "dateType")
             {
-                optionKey = "1";
+                optionKey = null;
             }
-            else if(!parameters.TryGetValue(candidate.Scheme.OptionKey, out optionKey))
+            else if (!parameters.TryGetValue(candidate.Scheme.OptionKey, out optionKey))
             {
                 continue;
             }
             
-            foreach(var level in candidate.Levels)
+            foreach (var level in candidate.Levels)
             {
                 foreach (var option in level.Options)
                 {
@@ -423,5 +379,24 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
         }
 
         throw new Exception("No matching option found");
+    }
+
+    private static string[] ParseUrl(string url, out int pathStart)
+    {
+        pathStart = url.IndexOf('/', 8); // 8 = LEN(https://)
+        var queryStart = url.IndexOf('?', pathStart);
+        var parts = default(IEnumerable<string>);
+
+        if(queryStart > 0)
+        {
+            parts = url[pathStart..queryStart].Split('/', StringSplitOptions.RemoveEmptyEntries)
+                .Union(url[(queryStart+1)..].Split('&').SelectMany(s => s.Split('=')));
+        }
+        else
+        {
+            parts = url[pathStart..].Split('/', StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        return [.. parts];
     }
 }

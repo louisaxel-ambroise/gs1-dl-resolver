@@ -86,8 +86,15 @@ public sealed class DigitalLink
     public string BuildLinksetLink()
     {
         var path = ToShortString();
+        var query = AIs
+            .Where(ai => ai.Key.Type is AIType.DataAttribute)
+            .Select(ai => new KeyValuePair<string, string?>(ai.Key.Code, ai.Value))
+            .Union(QueryString)
+            .ToDictionary();
 
-        return string.Concat(HostUrl, '/', path, "?linkType=linkset");
+        query["linkType"] = "linkset";
+
+        return string.Concat(HostUrl, '/', path, '?', string.Join('&', query.Select(kv => $"{kv.Key}={kv.Value}")));
     }
 }
 

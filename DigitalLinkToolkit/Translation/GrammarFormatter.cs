@@ -1,12 +1,14 @@
-﻿using DigitalLinkToolkit.Translation.Model.EPCs;
+﻿using DigitalLinkToolkit.Translation.Functions;
+using DigitalLinkToolkit.Translation.Model.EPCs;
+using DigitalLinkToolkit.Translation.Model.Tables;
 using System.Numerics;
 using System.Text;
 
 namespace DigitalLinkToolkit.Translation;
 
-public static class GrammarFormatter
+public sealed class GrammarFormatter(List<Table> tables)
 {
-    internal static string Format(Level level, Option option, Dictionary<string, string> parameters)
+    internal string Format(Level level, Option option, Dictionary<string, string> parameters)
     {
         if (string.IsNullOrEmpty(option.Grammar))
             return string.Empty;
@@ -51,32 +53,19 @@ public static class GrammarFormatter
             }
         }
 
-        if(level.Type == LevelType.Gs1_Digital_Link)
-        {
-            var additionalParameters = parameters.Where(p => p.Key.StartsWith("aidc+"));
-            
-            if (additionalParameters.Any())
-            {
-                builder.Append('?');
-
-                foreach(var param in additionalParameters)
-                {
-                    var key = param.Key["aidc+".Length..];
-                    builder.Append(key).Append('=').Append(param.Value).Append('&');
-                }
-            }
-        }
-
         return builder.ToString();
     }
 
-    private static void FormatValue(StringBuilder builder, Option option, Dictionary<string, string> parameters, string key)
+    private void FormatValue(StringBuilder builder, Option option, Dictionary<string, string> parameters, string key)
     {
         var field = option.Fields.SingleOrDefault(f => f.Name == key);
 
         if (key == "encodedAI" && option.EncodedAIs.Any())
         {
-            throw new NotImplementedException("Cannot format encodedAIs yet.");
+            foreach (var encodedAI in option.EncodedAIs)
+            {
+                builder.Append(Format(encodedAI, parameters));
+            }
         }
         else if (!parameters.TryGetValue(key, out var value))
         {
@@ -91,9 +80,25 @@ public static class GrammarFormatter
         }
     }
 
+    private string Format(EncodedAI encodedAI, Dictionary<string, string> parameters)
+    {
+        if (!parameters.TryGetValue(encodedAI.Name, out var value))
+        {
+            throw new Exception($"No parameter with name {encodedAI.Name} was found");
+        }
+
+        var row = tables.Single(t => t.TableId == "F").Rows.Single(r => r.GetString("a") == encodedAI.AI);
+
+        return TagDataStandardFunctions.Format(row, value);
+    }
+
     private static string? Format(Field field, string value)
     {
-        if(field.BitLength is not null)
+        if(field.Encoding is not null)
+        {
+            return TagDataStandardFunctions.Format(field.Encoding, value);
+        }
+        if (field.BitLength is not null)
         {
             if(BigInteger.TryParse(value, out var parsedValue))
             {

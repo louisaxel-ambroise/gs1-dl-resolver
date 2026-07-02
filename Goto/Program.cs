@@ -48,6 +48,13 @@ builder.Services.AddSingleton(tdtEngineBuilder.BuildEngine());
 
 var app = builder.Build();
 
+if (builder.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    using var context = scope.ServiceProvider.GetRequiredService<Context>();
+    context.Database.EnsureCreated();
+}
+
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();

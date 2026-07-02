@@ -7,14 +7,8 @@ using System.Security.Claims;
 
 namespace Goto.Data;
 
-public class Context : DbContext
+public class Context(DbContextOptions<Context> options, Clock clock) : DbContext(options)
 {
-    public Context(DbContextOptions<Context> options, Clock clock) : base(options)
-    {
-        Clock = clock;
-        Database.EnsureCreated();
-    }
-
     public IQueryable<Insight> InsightsForUser(ClaimsPrincipal user)
     {
         return Set<Insight>()
@@ -35,8 +29,6 @@ public class Context : DbContext
             .Where(a => a.Links.Any())
             .OrderByDescending(a => a.Prefix.Length);
     }
-
-    public Clock Clock { get; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
@@ -64,7 +56,7 @@ public class Context : DbContext
         link.Property(l => l.ActiveFrom).IsRequired().HasConversion(new DateTimeOffsetToBinaryConverter());
         link.Property(a => a.ActiveUntil).IsRequired().HasConversion(new DateTimeOffsetToBinaryConverter());
         link.Property(l => l.Language).HasConversion(v => v.ToString(), v => new Language(v));
-        link.HasQueryFilter("ActiveLinks", l => l.ActiveFrom <= Clock.UtcNow && l.ActiveUntil >= Clock.UtcNow);
+        link.HasQueryFilter("ActiveLinks", l => l.ActiveFrom <= clock.UtcNow && l.ActiveUntil >= clock.UtcNow);
 
         var insight = modelBuilder.Entity<Insight>();
         insight.HasKey(a => a.Id);

@@ -39,19 +39,26 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
 
     public string Compress(string value)
     {
-        var host = value[..value.IndexOf('/', 8)];
-        var binaryRepresentation = Translate(value, "dataToggle=1;filter=1", LevelType.Binary);
-        var expectedLength = (int)Math.Ceiling((double)binaryRepresentation.Length / 6) * 6;
-        binaryRepresentation = binaryRepresentation.PadRight(expectedLength, '0');
-
-        var result = new StringBuilder().Append(host).Append("/ex");
-
-        for (var i = 0; i < binaryRepresentation.Length; i+=6)
+        try
         {
-            result.Append(Alphabets.GetChar(binaryRepresentation.AsSpan(i, 6)));
-        }
+            var host = value[..value.IndexOf('/', 8)];
+            var binaryRepresentation = Translate(value, "dataToggle=1;filter=1", LevelType.Binary);
+            var expectedLength = (int)Math.Ceiling((double)binaryRepresentation.Length / 6) * 6;
+            binaryRepresentation = binaryRepresentation.PadRight(expectedLength, '0');
 
-        return result.ToString();
+            var result = new StringBuilder().Append(host).Append("/ex");
+
+            for (var i = 0; i < binaryRepresentation.Length; i += 6)
+            {
+                result.Append(Alphabets.GetChar(binaryRepresentation.AsSpan(i, 6)));
+            }
+
+            return result.ToString();
+        }
+        catch
+        {
+            return value;
+        }
     }
 
     public string Translate(string input, string parameterList, string outputFormat)
@@ -236,18 +243,10 @@ public sealed class TdTEngine(List<Scheme> schemes, List<Table> tables)
         {
             var json = JsonSerializer.Deserialize<Dictionary<string, string>>(input) ?? [];
             var resultJson = new Dictionary<string, string>();
-            var additionalValues = new Dictionary<string, string>();
 
-            foreach (var (key, value) in json)
+            foreach(var key in inputOption.AISequence)
             {
-                if (inputOption.AISequence.Contains(key))
-                {
-                    resultJson[key] = value;
-                }
-                else
-                {
-                    additionalValues["aidc+" + key] = value;
-                }
+                resultJson[key] = json[key];
             }
 
             return JsonSerializer.Serialize(resultJson);

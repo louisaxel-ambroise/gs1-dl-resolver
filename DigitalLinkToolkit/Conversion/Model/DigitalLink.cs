@@ -12,7 +12,7 @@ public sealed class DigitalLink
     public required IEnumerable<KeyValue> AIs { get; init; }
     public required IEnumerable<KeyValuePair<string, string?>> QueryString { get; init; }
 
-    public string ToShortString()
+    public override string ToString()
     {
         var pathBuilder = new StringBuilder();
 
@@ -85,7 +85,7 @@ public sealed class DigitalLink
 
     public string BuildLinksetLink()
     {
-        var path = ToShortString();
+        var path = ToString();
         var query = AIs
             .Where(ai => ai.Key.Type is AIType.DataAttribute)
             .Select(ai => new KeyValuePair<string, string?>(ai.Key.Code, ai.Value))

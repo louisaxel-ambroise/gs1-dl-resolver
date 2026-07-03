@@ -155,9 +155,9 @@ public static class TestDataProvider
                 AcceptLanguage = "en-GB",
                 LinkCount = 1,
                 StatusCode = 307,
-                QueryString = "",
                 RecordDate = DateTimeOffset.Parse("2026-05-03T15:53:20"),
                 RequestDate = DateTimeOffset.Parse("2026-05-03T15:53:20"),
+                DigitalLink = "01/05414195535264",
                 Url = "01/05414195535264"
             };
 
@@ -168,9 +168,9 @@ public static class TestDataProvider
                 AcceptLanguage = "en-GB",
                 LinkCount = 1,
                 StatusCode = 307,
-                QueryString = "",
                 RecordDate = DateTimeOffset.Parse("2026-05-10T03:11:34"),
                 RequestDate = DateTimeOffset.Parse("2026-05-10T03:11:20"),
+                DigitalLink = "01/05414195535264/10/XYZ",
                 Url = "01/05414195535264/10/XYZ"
             };
         }

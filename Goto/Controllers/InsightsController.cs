@@ -16,10 +16,11 @@ public sealed class InsightsController(Context context, ClaimsPrincipal principa
     public IActionResult ListInsights()
     {
         var insights = context.InsightsForUser(principal)
-            .GroupBy(i => i.Url)
+            .Where(i => !string.IsNullOrEmpty(i.DigitalLink))
+            .GroupBy(i => i.DigitalLink)
             .Select(grp => new
             {
-                Url = grp.Key,
+                DigitalLink = grp.Key,
                 ScanCount = grp.Count()
             });
 
@@ -30,11 +31,11 @@ public sealed class InsightsController(Context context, ClaimsPrincipal principa
     public IActionResult GetInsightDetails(string url)
     {
         var details = context.InsightsForUser(principal)
-            .Where(i => i.Url == string.Concat('/', url))
+            .Where(i => i.DigitalLink == url)
             .OrderByDescending(i => i.RecordDate)
             .Select(i => new
             {
-                RequestedUrl = string.Concat(i.Url, i.QueryString),
+                i.Url,
                 i.RecordDate,
                 i.RequestDate,
                 Headers = new

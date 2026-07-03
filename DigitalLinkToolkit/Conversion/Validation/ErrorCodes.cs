@@ -19,4 +19,12 @@ public static class ErrorCodes
     public static string InvalidPrefix => nameof(InvalidPrefix);
 
     #endregion
+
+    #region Compression
+
+    public static string UnsupportedGS1Algorithm => nameof(UnsupportedGS1Algorithm);
+    public static string UnsupportedProprietaryAlgorithm => nameof(UnsupportedProprietaryAlgorithm);
+    public static string InvalidCompressedValue => nameof(InvalidCompressedValue);
+
+    #endregion
 }

@@ -149,6 +149,10 @@ section {
     padding: 0 15px;
 }
 
+ul{
+    margin: 10px 40px;
+}
+
 dl {
     font-size: small;
     display: grid;

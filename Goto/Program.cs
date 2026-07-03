@@ -14,13 +14,13 @@ using DigitalLinkToolkit.Conversion;
 using DigitalLinkToolkit.Conversion.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var tdtEngineBuilder = new TdtEngineBuilder();
 
 tdtEngineBuilder = Directory.GetFiles("wwwroot/DefinitionFiles").Aggregate(tdtEngineBuilder, (builder, file) => builder.AddDefinitionFile(file));
 tdtEngineBuilder = Directory.GetFiles("wwwroot/Tables").Aggregate(tdtEngineBuilder, (builder, file) => builder.AddTableFile(file));
 
 CompanyPrefix.Initialize("wwwroot/gcpprefixformatlist.xml");
+OptimizationCodes.Initialize("wwwroot/OptimizationCodes.json", new() { PropertyNameCaseInsensitive = true });
 ApplicationIdentifiers.Initialize("wwwroot/ApplicationIdentifiers.json", new() { PropertyNameCaseInsensitive = true });
 
 builder.Services.AddHttpContextAccessor();
@@ -31,20 +31,21 @@ builder.Services.AddControllersWithViews(options =>
     options.RespectBrowserAcceptHeader = true;
 }).AddJsonOptions(opt => opt.JsonSerializerOptions.Converters.Insert(0, new LinksetResultConverter()));
 builder.Services.Configure<RequestLocalizationOptions>(opt => opt.AddSupportedUICultures("en", "fr", "nl", "de", "ar"));
+builder.Services.AddAuthentication("ApiKey").AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationSchemeHandler>("ApiKey", opts => opts.ApiKey = builder.Configuration.GetValue<string>("ApiKey"));
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(p => p.AllowAnyHeader().AllowAnyOrigin().WithMethods("GET", "HEAD", "OPTIONS")));
 builder.Services.AddLocalization();
+builder.Services.AddDbContext<Context>(opt => opt.UseSqlite($"Data Source=registry.db"));
+builder.Services.AddScoped(ctx => ctx.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
+builder.Services.AddScoped<Clock>();
+builder.Services.AddSingleton(tdtEngineBuilder.BuildEngine());
+builder.Services.AddSingleton(OptimizationCodes.Shared);
 builder.Services.AddSingleton(ApplicationIdentifiers.Shared);
-builder.Services.AddSingleton(Channel.CreateBounded<Insight>(new BoundedChannelOptions(100) { FullMode = BoundedChannelFullMode.DropOldest }));
 builder.Services.AddSingleton<CommonLocalizationService>();
 builder.Services.AddSingleton<DigitalLinkConverter>();
 builder.Services.AddSingleton<IdentifierConverter>();
-builder.Services.AddScoped<Clock>();
-builder.Services.AddDbContext<Context>(opt => opt.UseSqlite($"Data Source=registry.db"));
-builder.Services.AddHostedService<InsightConsumerService>();
-builder.Services.AddAuthentication("ApiKey").AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationSchemeHandler>("ApiKey", opts => opts.ApiKey = builder.Configuration.GetValue<string>("ApiKey"));
-builder.Services.AddScoped(ctx => ctx.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
+builder.Services.AddSingleton(Channel.CreateBounded<Insight>(new BoundedChannelOptions(100) { FullMode = BoundedChannelFullMode.DropOldest }));
 builder.Services.AddSingleton(new SqidsEncoder<int>(new SqidsOptions { MinLength = 10, Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" }));
-builder.Services.AddSingleton(tdtEngineBuilder.BuildEngine());
+builder.Services.AddHostedService<InsightConsumerService>();
 
 var app = builder.Build();
 

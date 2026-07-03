@@ -1,0 +1,316 @@
+﻿{
+  "OptimizationCodes": [
+    {
+      "Code": "0A",
+      "SequenceAIs": [ "01", "22" ],
+      "Meaning": "GTIN + consumer product variant",
+      "Usage": "retail, CPG metrics"
+    },
+    {
+      "Code": "0B",
+      "SequenceAIs": [ "01", "10" ],
+      "Meaning": "GTIN + batch/lot",
+      "Usage": "retail, recalls"
+    },
+    {
+      "Code": "0C",
+      "SequenceAIs": [ "01", "21" ],
+      "Meaning": "GTIN + serial",
+      "Usage": "Serialisation"
+    },
+    {
+      "Code": "0D",
+      "SequenceAIs": [ "01", "17" ],
+      "Meaning": "GTIN + expiry date",
+      "Usage": "retail, fresh food"
+    },
+    {
+      "Code": "0E",
+      "SequenceAIs": [ "01", "7003" ],
+      "Meaning": "GTIN + expiry date&time",
+      "Usage": "retail, fresh food"
+    },
+    {
+      "Code": "0F",
+      "SequenceAIs": [ "01", "30" ],
+      "Meaning": "GTIN + count",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "1A",
+      "SequenceAIs": [ "01", "10", "21", "17" ],
+      "Meaning": "GTIN + batch/lot+serial+expiry",
+      "Usage": "Pharma"
+    },
+    {
+      "Code": "1B",
+      "SequenceAIs": [ "01", "15" ],
+      "Meaning": "GTIN + best before",
+      "Usage": "retail, fresh food"
+    },
+    {
+      "Code": "1C",
+      "SequenceAIs": [ "01", "11" ],
+      "Meaning": "GTIN + production date",
+      "Usage": "retail, food traceability"
+    },
+    {
+      "Code": "1D",
+      "SequenceAIs": [ "01", "16" ],
+      "Meaning": "GTIN + sell by date",
+      "Usage": "retail, fresh food"
+    },
+    {
+      "Code": "1E",
+      "SequenceAIs": [ "01", "91" ],
+      "Meaning": "GTIN + company internal information",
+      "Usage": "brand protection"
+    },
+    {
+      "Code": "1F",
+      "SequenceAIs": [ "01", "10", "15" ],
+      "Meaning": "GTIN + batch/lot + best before",
+      "Usage": "retail, fresh food"
+    },
+    {
+      "Code": "2A",
+      "SequenceAIs": [ "01", "3100" ],
+      "Meaning": "GTIN + weight (kg)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "2B",
+      "SequenceAIs": [ "01", "3101" ],
+      "Meaning": "GTIN + weight (kg)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "2C",
+      "SequenceAIs": [ "01", "3102" ],
+      "Meaning": "GTIN + weight (kg)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "2D",
+      "SequenceAIs": [ "01", "3103" ],
+      "Meaning": "GTIN + weight (kg)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "2E",
+      "SequenceAIs": [ "01", "3104" ],
+      "Meaning": "GTIN + weight (kg)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "2F",
+      "SequenceAIs": [ "01", "3105" ],
+      "Meaning": "GTIN + weight (kg)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "3A",
+      "SequenceAIs": [ "01", "3200" ],
+      "Meaning": "GTIN + weight (lbs)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "3B",
+      "SequenceAIs": [ "01", "3201" ],
+      "Meaning": "GTIN + weight (lbs)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "3C",
+      "SequenceAIs": [ "01", "3202" ],
+      "Meaning": "GTIN + weight (lbs)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "3D",
+      "SequenceAIs": [ "01", "3203" ],
+      "Meaning": "GTIN + weight (lbs)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "3E",
+      "SequenceAIs": [ "01", "3204" ],
+      "Meaning": "GTIN + weight (lbs)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "3F",
+      "SequenceAIs": [ "01", "3205" ],
+      "Meaning": "GTIN + weight (lbs)",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "9A",
+      "SequenceAIs": [ "8010", "8011" ],
+      "Meaning": "CPID + CPID serial number",
+      "Usage": "Automotive"
+    },
+    {
+      "Code": "9B",
+      "SequenceAIs": [ "8017", "8019" ],
+      "Meaning": "GSRN-P + SRIN",
+      "Usage": "service relationships (provider)"
+    },
+    {
+      "Code": "9C",
+      "SequenceAIs": [ "8018", "8019" ],
+      "Meaning": "GSRN + SRIN",
+      "Usage": "service relationships (recipient)"
+    },
+    {
+      "Code": "9D",
+      "SequenceAIs": [ "414", "254" ],
+      "Meaning": "physical location GLN + GLN extension",
+      "Usage": "Locations"
+    },
+    {
+      "Code": "A0",
+      "SequenceAIs": [ "01", "3920" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A1",
+      "SequenceAIs": [ "01", "3921" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A2",
+      "SequenceAIs": [ "01", "3922" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A3",
+      "SequenceAIs": [ "01", "3923" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A4",
+      "SequenceAIs": [ "01", "3924" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A5",
+      "SequenceAIs": [ "01", "3925" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A6",
+      "SequenceAIs": [ "01", "3926" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A7",
+      "SequenceAIs": [ "01", "3927" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A8",
+      "SequenceAIs": [ "01", "3928" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "A9",
+      "SequenceAIs": [ "01", "3929" ],
+      "Meaning": "GTIN + amount payable",
+      "Usage": "variable measure"
+    },
+    {
+      "Code": "C0",
+      "SequenceAIs": [ "255", "3900" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C1",
+      "SequenceAIs": [ "255", "3901" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C2",
+      "SequenceAIs": [ "255", "3902" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C3",
+      "SequenceAIs": [ "255", "3903" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C4",
+      "SequenceAIs": [ "255", "3904" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C5",
+      "SequenceAIs": [ "255", "3905" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C6",
+      "SequenceAIs": [ "255", "3906" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C7",
+      "SequenceAIs": [ "255", "3907" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C8",
+      "SequenceAIs": [ "255", "3908" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "C9",
+      "SequenceAIs": [ "255", "3909" ],
+      "Meaning": "GCN + amount payable",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "CA",
+      "SequenceAIs": [ "255", "3940" ],
+      "Meaning": "GCN + percentage discount",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "CB",
+      "SequenceAIs": [ "255", "3941" ],
+      "Meaning": "GCN + percentage discount",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "CC",
+      "SequenceAIs": [ "255", "3942" ],
+      "Meaning": "GCN + percentage discount",
+      "Usage": "Coupons"
+    },
+    {
+      "Code": "CD",
+      "SequenceAIs": [ "255", "3943" ],
+      "Meaning": "GCN + percentage discount",
+      "Usage": "Coupons"
+    }
+  ]
+}

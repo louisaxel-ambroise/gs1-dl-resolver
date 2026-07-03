@@ -1,4 +1,6 @@
-﻿namespace DigitalLinkToolkit.Translation;
+﻿using System.Text;
+
+namespace DigitalLinkToolkit.Translation;
 
 public sealed class Bitstream(string remaining)
 {
@@ -6,6 +8,19 @@ public sealed class Bitstream(string remaining)
 
     public int Remaining => remaining.Length - _position;
     public string RemainingStr => remaining[_position..];
+    public string Current { get; private set; } = string.Empty;
+
+    public bool Buffer(int length)
+    {
+        if (Remaining < length)
+        {
+            return false;
+        }
+
+        Current = Read(length);
+
+        return true;
+    }
 
     public string ReadUntil(int bitNumber)
     {

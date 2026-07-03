@@ -19,6 +19,11 @@ public record AIComponent
     public required int Length { get; init; }
     public ComponentFlag Flags { get; set; }
     public int Gcp { get; init; }
+
+    internal string GetValue(string remaining)
+    {
+        return Flags.HasFlag(ComponentFlag.FixedLength) ? remaining[..Length] : remaining;
+    }
 }
 
 [Flags]

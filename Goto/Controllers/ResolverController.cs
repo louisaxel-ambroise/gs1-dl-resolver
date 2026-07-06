@@ -1,6 +1,4 @@
 ﻿using Goto.Controllers.Results;
-using Goto.Data;
-using Goto.Data.Entities;
 using Goto.Infrastructure;
 using Goto.Infrastructure.Results;
 using Goto.Infrastructure.Routing.Binding;
@@ -9,6 +7,8 @@ using Goto.Infrastructure.Routing.Filters;
 using DigitalLinkToolkit.Conversion.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Goto.Services.Data;
+using Goto.Services.Data.Entities;
 
 namespace Goto.Controllers;
 

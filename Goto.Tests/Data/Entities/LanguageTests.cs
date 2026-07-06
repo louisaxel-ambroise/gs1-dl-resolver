@@ -1,5 +1,5 @@
-﻿using Goto.Data.Entities;
-using Goto.Data.Enums;
+﻿using Goto.Services.Data.Entities;
+using Goto.Services.Data.Enums;
 
 namespace Goto.Tests.Data.Entities;
 

@@ -1,7 +1,7 @@
-﻿using Goto.Data.Enums;
+﻿using Goto.Services.Data.Enums;
 using System.Globalization;
 
-namespace Goto.Data.Entities;
+namespace Goto.Services.Data.Entities;
 
 public sealed partial class Language
 {

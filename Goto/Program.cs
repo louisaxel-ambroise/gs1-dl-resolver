@@ -1,17 +1,18 @@
-using Goto.Data;
-using Goto.Data.Entities;
-using Goto.Infrastructure;
+using DigitalLinkToolkit.Conversion;
+using DigitalLinkToolkit.Conversion.Validation;
+using DigitalLinkToolkit.Translation;
 using Goto.Infrastructure.Authentication;
 using Goto.Infrastructure.Results.Converters;
 using Goto.Infrastructure.Routing.Binding;
+using Goto.Infrastructure.Views;
 using Goto.Services;
-using Goto.Translations;
-using DigitalLinkToolkit.Translation;
+using Goto.Services.Data;
+using Goto.Services.Data.Entities;
+using Goto.Services.Translations;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Sqids;
 using System.Threading.Channels;
-using DigitalLinkToolkit.Conversion;
-using DigitalLinkToolkit.Conversion.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 var tdtEngineBuilder = new TdtEngineBuilder();
@@ -30,6 +31,11 @@ builder.Services.AddControllersWithViews(options =>
     options.OutputFormatters.Add(new HtmlViewFormatter());
     options.RespectBrowserAcceptHeader = true;
 }).AddJsonOptions(opt => opt.JsonSerializerOptions.Converters.Insert(0, new LinksetResultConverter()));
+builder.Services.Configure<RazorViewEngineOptions>(options =>
+{
+    options.ViewLocationFormats.Clear();
+    options.ViewLocationFormats.Add("/Infrastructure/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
+});
 builder.Services.Configure<RequestLocalizationOptions>(opt => opt.AddSupportedUICultures("en", "fr", "nl", "de", "ar"));
 builder.Services.AddAuthentication("ApiKey").AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationSchemeHandler>("ApiKey", opts => opts.ApiKey = builder.Configuration.GetValue<string>("ApiKey"));
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(p => p.AllowAnyHeader().AllowAnyOrigin().WithMethods("GET", "HEAD", "OPTIONS")));

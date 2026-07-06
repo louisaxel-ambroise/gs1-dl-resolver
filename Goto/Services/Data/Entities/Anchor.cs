@@ -1,6 +1,6 @@
-﻿using Goto.Data.Enums;
+﻿using Goto.Services.Data.Enums;
 
-namespace Goto.Data.Entities;
+namespace Goto.Services.Data.Entities;
 
 public sealed class Anchor
 {

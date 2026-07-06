@@ -1,10 +1,10 @@
 ﻿using DigitalLinkToolkit.Conversion;
 using Goto.Controllers.Requests;
-using Goto.Data;
-using Goto.Data.Entities;
+using Goto.Services.Data.Entities;
 using Goto.Infrastructure;
 using Goto.Infrastructure.Routing.Filters;
 using Goto.Services;
+using Goto.Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

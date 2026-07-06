@@ -1,4 +1,4 @@
-﻿namespace Goto.Data.Entities;
+﻿namespace Goto.Services.Data.Entities;
 
 public sealed class Insight
 {

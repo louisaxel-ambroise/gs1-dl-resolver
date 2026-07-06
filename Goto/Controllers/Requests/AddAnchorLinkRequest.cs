@@ -1,4 +1,5 @@
-﻿using Goto.Data.Entities;
+﻿using Goto.Services;
+using Goto.Services.Data.Entities;
 
 namespace Goto.Controllers.Requests;
 

@@ -1,7 +1,7 @@
 @baseUrl=https://localhost:7111
 
 ### Resolves the entire list of links for the specified DigitalLink
-GET {{baseUrl}}/01/05414195535264
+GET {{baseUrl}}/01/05414196535263
 Accept-Language: fr-BE
 Accept: application/linkset+json
 

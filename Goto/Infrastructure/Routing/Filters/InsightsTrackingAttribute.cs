@@ -1,7 +1,7 @@
 ﻿using Goto.Controllers.Results;
-using Goto.Data.Entities;
 using Goto.Infrastructure.Results;
 using Goto.Services;
+using Goto.Services.Data.Entities;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

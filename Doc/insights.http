@@ -6,5 +6,5 @@ GET {{baseUrl}}/api/insights
 X-Api-Key: {{apiKey}}
 
 ### Get the details of the DigitalLink insights
-GET {{baseUrl}}/api/insights/01/05414195535264
+GET {{baseUrl}}/api/insights/01/05414195535264/21/32a%2Fb
 X-Api-Key: {{apiKey}}

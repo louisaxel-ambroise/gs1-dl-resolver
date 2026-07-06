@@ -33,7 +33,7 @@ public sealed class InsightsController
     public IActionResult GetInsightDetails([FromRoute] string url, [FromServices] Context context, [FromServices] ClaimsPrincipal principal)
     {
         var details = context.InsightsForUser(principal)
-            .Where(i => i.Url == string.Concat('/', url))
+            .Where(i => i.DigitalLink == url)
             .OrderByDescending(i => i.RecordDate)
             .Select(i => new InsightDetail
             {

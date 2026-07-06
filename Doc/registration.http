@@ -12,8 +12,8 @@ POST {{baseUrl}}/api/anchors
 Content-Type: application/json
 X-Api-Key: {{apiKey}}
 {
-  "prefix": "/",
-  "description": "Company"
+  "prefix": "01/05414195535264",
+  "description": "Product description"
 }
 
 ### Get details of an anchor

@@ -1,4 +1,4 @@
-﻿namespace Goto.Data.Enums;
+﻿namespace Goto.Services.Data.Enums;
 
 public enum Match
 {

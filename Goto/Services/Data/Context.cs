@@ -1,11 +1,12 @@
-﻿using Goto.Data.Entities;
+﻿using Goto.Services.Data.Entities;
 using Goto.Services;
 using DigitalLinkToolkit.Conversion.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Security.Claims;
+using Goto.Services.Data.Entities;
 
-namespace Goto.Data;
+namespace Goto.Services.Data;
 
 public class Context(DbContextOptions<Context> options, Clock clock) : DbContext(options)
 {

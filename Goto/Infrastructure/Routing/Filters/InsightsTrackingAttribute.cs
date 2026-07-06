@@ -1,7 +1,8 @@
 ﻿using Goto.Controllers.Results;
-using Goto.Data.Entities;
 using Goto.Infrastructure.Results;
 using Goto.Services;
+using Goto.Services.Data.Entities;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Channels;
@@ -37,12 +38,12 @@ public sealed class InsightsTrackingAttribute : ActionFilterAttribute
         {
             RecordDate = DateTimeOffset.UtcNow,
             RequestDate = clock.Now,
+            DigitalLink = context.Items.TryGetValue("gs1:digitalLink", out var digitalLink) ? digitalLink?.ToString() : null,
             CompanyPrefix = context.Items.TryGetValue("gs1:gcp", out var gcp) ? gcp?.ToString() : null,
             StatusCode = statusCode,
-            QueryString = context.Request.QueryString.Value,
             AcceptLanguage = context.Request.Headers.AcceptLanguage,
             Accept = context.Request.Headers.Accept,
-            Url = context.Request.Path,
+            Url = context.Request.GetDisplayUrl(),
             LinkCount = linkCount
         };
     }

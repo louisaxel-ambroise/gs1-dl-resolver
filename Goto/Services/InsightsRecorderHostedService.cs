@@ -1,5 +1,5 @@
-﻿using Goto.Data;
-using Goto.Data.Entities;
+﻿using Goto.Services.Data;
+using Goto.Services.Data.Entities;
 using System.Threading.Channels;
 
 namespace Goto.Services;

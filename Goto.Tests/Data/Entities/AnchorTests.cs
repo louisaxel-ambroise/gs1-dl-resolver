@@ -1,4 +1,4 @@
-﻿using Goto.Data.Entities;
+﻿using Goto.Services.Data.Entities;
 
 namespace Goto.Tests.Data.Entities;
 

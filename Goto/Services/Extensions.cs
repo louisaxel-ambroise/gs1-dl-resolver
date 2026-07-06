@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Goto;
+namespace Goto.Services;
 
 public static class Extensions
 {

@@ -1,4 +1,4 @@
-using Goto.Data.Entities;
+using Goto.Services.Data.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Goto.Infrastructure.Routing.Binding;

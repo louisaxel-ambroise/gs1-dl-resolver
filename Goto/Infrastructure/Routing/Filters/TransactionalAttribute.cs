@@ -1,4 +1,4 @@
-﻿using Goto.Data;
+﻿using Goto.Services.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;

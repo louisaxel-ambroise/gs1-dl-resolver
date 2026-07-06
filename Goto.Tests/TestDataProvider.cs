@@ -1,7 +1,7 @@
 ﻿using DigitalLinkToolkit.Conversion.DTOs;
 using DigitalLinkToolkit.Conversion.Model;
-using Goto.Data;
-using Goto.Data.Entities;
+using Goto.Services.Data;
+using Goto.Services.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -155,9 +155,22 @@ public static class TestDataProvider
                 AcceptLanguage = "en-GB",
                 LinkCount = 1,
                 StatusCode = 307,
-                QueryString = "",
                 RecordDate = DateTimeOffset.Parse("2026-05-03T15:53:20"),
                 RequestDate = DateTimeOffset.Parse("2026-05-03T15:53:20"),
+                DigitalLink = "01/05414195535264",
+                Url = "01/05414195535264"
+            };
+
+            yield return new Insight
+            {
+                CompanyPrefix = "5414195",
+                Accept = "image/png",
+                AcceptLanguage = "fr-BE, de-DE;q=0.7",
+                LinkCount = 0,
+                StatusCode = 404,
+                RecordDate = DateTimeOffset.Parse("2026-05-03T15:54:32"),
+                RequestDate = DateTimeOffset.Parse("2026-05-03T15:54:30"),
+                DigitalLink = "01/05414195535264",
                 Url = "01/05414195535264"
             };
 
@@ -168,9 +181,9 @@ public static class TestDataProvider
                 AcceptLanguage = "en-GB",
                 LinkCount = 1,
                 StatusCode = 307,
-                QueryString = "",
                 RecordDate = DateTimeOffset.Parse("2026-05-10T03:11:34"),
                 RequestDate = DateTimeOffset.Parse("2026-05-10T03:11:20"),
+                DigitalLink = "01/05414195535264/10/XYZ",
                 Url = "01/05414195535264/10/XYZ"
             };
         }

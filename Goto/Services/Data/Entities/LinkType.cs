@@ -70,4 +70,9 @@ public record LinkType(string Value)
             ? new LinkType(linkType)
             : throw new ArgumentOutOfRangeException(nameof(linkType));
     }
+
+    public override string ToString()
+    {
+        return Value;
+    }
 }

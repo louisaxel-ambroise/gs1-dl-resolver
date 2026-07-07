@@ -31,26 +31,3 @@ internal class FromHeaderModelBinder : IModelBinder
         }
     }
 }
-
-internal class FromQueryModelBinder : IModelBinder
-{
-    public string? Name { get; set; }
-
-    public async Task BindModelAsync(ModelBindingContext bindingContext)
-    {
-        var request = bindingContext.HttpContext.Request;
-
-        if (bindingContext.ModelType == typeof(LinkType))
-        {
-            var queryParameter = request.Query["linkType"];
-            var linkType = queryParameter.LastOrDefault() ?? string.Empty;
-
-            bindingContext.Result = ModelBindingResult.Success(LinkType.Parse(linkType));
-        }
-        else
-        {
-            var queryParameter = request.Query[Name ?? bindingContext.FieldName];
-            bindingContext.Result = ModelBindingResult.Success(queryParameter);
-        }
-    }
-}

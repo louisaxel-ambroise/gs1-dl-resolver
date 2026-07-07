@@ -1,6 +1,3 @@
-using DigitalLinkToolkit.Conversion.Model;
-using Goto.Services.Data.Entities;
-
 namespace Goto.Controllers.Results;
 
 public sealed class LinksetResult
@@ -24,20 +21,4 @@ public sealed class LinksetLink
     public string[] Hreflang { get; init; } = [];
     public string? Type { get; init; }
     public bool IsDefault { get; init; }
-
-    public static IEnumerable<LinksetLink> Map(IEnumerable<AnchorLink> links, DigitalLink digitalLink)
-    {
-        var mappedLinks = links.OrderBy(l => l.Id)
-            .GroupBy(link => new { link.RedirectUrl, link.LinkType, link.Title, link.MediaType, link.IsDefault })
-            .Select(grp => new LinksetLink
-            {
-                Href = digitalLink.FormatUriTemplates(grp.Key.RedirectUrl),
-                LinkType = grp.Key.LinkType,
-                Title = grp.Key.Title,
-                Type = grp.Key.MediaType,
-                IsDefault = grp.Key.IsDefault,
-                Hreflang = [.. grp.Select(l => l.Language.ToString()).Distinct()]
-            });
-        return [.. mappedLinks];
-    }
 }

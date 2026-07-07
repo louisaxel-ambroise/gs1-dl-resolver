@@ -1,6 +1,6 @@
 ﻿using Goto.Controllers.Results;
-using Goto.Infrastructure;
 using Goto.Infrastructure.Routing.Binding;
+using Goto.Services.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +13,7 @@ namespace Goto.Controllers;
 public sealed class MetadataController
 {
     [HttpGet(".well-known/gs1resolver")]
-    [Produces(MediaTypes.Json)]
+    [Produces(MediaType.Json)]
     public IActionResult GetMetadataInformation([FromUri] Uri metadataUrl)
     {
         return new OkObjectResult(new MetadataResult

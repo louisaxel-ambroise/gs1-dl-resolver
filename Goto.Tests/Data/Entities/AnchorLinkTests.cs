@@ -10,7 +10,7 @@ public class AnchorLinkTests
 
     [TestMethod]
     [DataRow("en-GB", Match.FullMatch)]
-    [DataRow("en", Match.FullMatch)]
+    [DataRow("en", Match.WildcardMatch)]
     [DataRow("en-US", Match.PartialMatch)]
     [DataRow("en-AU", Match.PartialMatch)]
     [DataRow("fr", Match.NoMatch)]
@@ -22,7 +22,8 @@ public class AnchorLinkTests
             ActiveFrom = DateTimeOffset.MinValue,
             ActiveUntil = DateTimeOffset.MaxValue,
             Language = new("en-GB"),
-            LinkType = "gs1:pip",
+            LinkType = new("gs1:pip"),
+            MediaType = new("text/html"),
             RedirectUrl = "https://test.com",
             Title = "Test link"
         };
@@ -33,10 +34,10 @@ public class AnchorLinkTests
     }
 
     [TestMethod]
-    [DataRow("en-GB", Match.FullMatch)]
+    [DataRow("en-GB", Match.WildcardMatch)]
     [DataRow("en", Match.FullMatch)]
-    [DataRow("en-US", Match.FullMatch)]
-    [DataRow("en-AU", Match.FullMatch)]
+    [DataRow("en-US", Match.WildcardMatch)]
+    [DataRow("en-AU", Match.WildcardMatch)]
     [DataRow("fr", Match.NoMatch)]
     [DataRow("de-DE", Match.NoMatch)]
     public void MatchesLanguageShouldReturnTheCorrectValueWhenRegionIsNotSet(string language, Match expectedResult)
@@ -46,7 +47,8 @@ public class AnchorLinkTests
             ActiveFrom = DateTimeOffset.MinValue,
             ActiveUntil = DateTimeOffset.MaxValue,
             Language = new("en"),
-            LinkType = "gs1:pip",
+            LinkType = new("gs1:pip"),
+            MediaType = new("text/html"),
             RedirectUrl = "https://test.com",
             Title = "Test link"
         };
@@ -69,7 +71,8 @@ public class AnchorLinkTests
             ActiveFrom = DateTimeOffset.MinValue,
             ActiveUntil = DateTimeOffset.MaxValue,
             Language = new("en"),
-            LinkType = "gs1:pip",
+            LinkType = new("gs1:pip"),
+            MediaType = new("text/html"),
             RedirectUrl = "https://test.com",
             Title = "Test link"
         };
@@ -88,7 +91,8 @@ public class AnchorLinkTests
             ActiveFrom = DateTimeOffset.MinValue,
             ActiveUntil = now.AddDays(-2),
             Language = new("en"),
-            LinkType = "gs1:pip",
+            LinkType = new("gs1:pip"),
+            MediaType = new("text/html"),
             RedirectUrl = "https://test.com",
             Title = "Test link"
         };

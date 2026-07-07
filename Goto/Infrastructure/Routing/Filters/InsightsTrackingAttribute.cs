@@ -9,6 +9,7 @@ using System.Threading.Channels;
 
 namespace Goto.Infrastructure.Routing.Filters;
 
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 public sealed class InsightsTrackingAttribute : ActionFilterAttribute
 {
     const string HeaderName = "X-Request-Tracking";

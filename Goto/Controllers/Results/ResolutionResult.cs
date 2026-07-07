@@ -25,9 +25,9 @@ public sealed class ResolutionResultLink
             .Select(grp => new ResolutionResultLink
             {
                 Href = digitalLink.FormatUriTemplates(grp.Key.RedirectUrl),
-                LinkType = grp.Key.LinkType,
+                LinkType = grp.Key.LinkType.ToString(),
                 Title = grp.Key.Title,
-                Type = grp.Key.MediaType,
+                Type = grp.Key.MediaType.ToString(),
                 Hreflang = [.. grp.Select(l => l.Language.ToString()).Distinct()]
             });
     }

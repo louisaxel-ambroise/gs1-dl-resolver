@@ -1,10 +1,8 @@
 ﻿using Goto.Services.Data.Entities;
-using Goto.Services;
 using DigitalLinkToolkit.Conversion.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Security.Claims;
-using Goto.Services.Data.Entities;
 
 namespace Goto.Services.Data;
 
@@ -52,11 +50,11 @@ public class Context(DbContextOptions<Context> options, Clock clock) : DbContext
         link.Property(l => l.RedirectUrl).HasMaxLength(4096).IsRequired();
         link.Property(l => l.Title).HasMaxLength(4096).IsRequired();
         link.Property(l => l.IsDefault);
-        link.Property(l => l.LinkType);
-        link.Property(l => l.MediaType);
         link.Property(l => l.ActiveFrom).IsRequired().HasConversion(new DateTimeOffsetToBinaryConverter());
         link.Property(a => a.ActiveUntil).IsRequired().HasConversion(new DateTimeOffsetToBinaryConverter());
+        link.Property(l => l.LinkType).HasConversion(t => t.Value, v => new LinkType(v));
         link.Property(l => l.Language).HasConversion(v => v.ToString(), v => new Language(v));
+        link.Property(l => l.MediaType).HasConversion(v => v.ToString(), v => new MediaType(v));
         link.HasQueryFilter("ActiveLinks", l => l.ActiveFrom <= clock.UtcNow && l.ActiveUntil >= clock.UtcNow);
 
         var insight = modelBuilder.Entity<Insight>();

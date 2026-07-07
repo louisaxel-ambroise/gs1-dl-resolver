@@ -22,7 +22,8 @@ public class AnchorLinkTests
             ActiveFrom = DateTimeOffset.MinValue,
             ActiveUntil = DateTimeOffset.MaxValue,
             Language = new("en-GB"),
-            LinkType = "gs1:pip",
+            LinkType = new("gs1:pip"),
+            MediaType = new("text/html"),
             RedirectUrl = "https://test.com",
             Title = "Test link"
         };
@@ -46,7 +47,8 @@ public class AnchorLinkTests
             ActiveFrom = DateTimeOffset.MinValue,
             ActiveUntil = DateTimeOffset.MaxValue,
             Language = new("en"),
-            LinkType = "gs1:pip",
+            LinkType = new("gs1:pip"),
+            MediaType = new("text/html"),
             RedirectUrl = "https://test.com",
             Title = "Test link"
         };
@@ -69,7 +71,8 @@ public class AnchorLinkTests
             ActiveFrom = DateTimeOffset.MinValue,
             ActiveUntil = DateTimeOffset.MaxValue,
             Language = new("en"),
-            LinkType = "gs1:pip",
+            LinkType = new("gs1:pip"),
+            MediaType = new("text/html"),
             RedirectUrl = "https://test.com",
             Title = "Test link"
         };
@@ -88,7 +91,8 @@ public class AnchorLinkTests
             ActiveFrom = DateTimeOffset.MinValue,
             ActiveUntil = now.AddDays(-2),
             Language = new("en"),
-            LinkType = "gs1:pip",
+            LinkType = new("gs1:pip"),
+            MediaType = new("text/html"),
             RedirectUrl = "https://test.com",
             Title = "Test link"
         };

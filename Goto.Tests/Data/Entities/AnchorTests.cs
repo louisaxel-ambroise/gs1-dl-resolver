@@ -18,10 +18,10 @@ public class AnchorTests
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("en-GB"),
-                    LinkType = "gs1:pip",
+                    LinkType = new("gs1:pip"),
                     RedirectUrl = "https://test.com/1",
                     Title = "Test link",
-                    MediaType = "image/png"
+                    MediaType = new("image/png")
                 },
                 new ()
                 {
@@ -29,10 +29,10 @@ public class AnchorTests
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("en-US"),
-                    LinkType = "gs1:pip",
+                    LinkType = new("gs1:pip"),
                     RedirectUrl = "https://test.com/2",
                     Title = "Test link",
-                    MediaType = "text/html"
+                    MediaType = new("text/html")
                 },
                 new ()
                 {                    
@@ -40,10 +40,10 @@ public class AnchorTests
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("fr-BE"),
-                    LinkType = "gs1:pip",
+                    LinkType = new("gs1:pip"),
                     RedirectUrl = "https://test.com/3",
                     Title = "Test link",
-                    MediaType = "image/png"
+                    MediaType = new("image/png")
                 },
                 new ()
                 {
@@ -51,10 +51,10 @@ public class AnchorTests
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("de"),
-                    LinkType = "gs1:homepage",
+                    LinkType = new("gs1:homepage"),
                     RedirectUrl = "https://test.com/4",
                     Title = "Test link",
-                    MediaType = "text/html"
+                    MediaType = new("text/html")
                 },
                 new ()
                 {
@@ -62,10 +62,10 @@ public class AnchorTests
                     ActiveFrom = DateTimeOffset.MinValue,
                     ActiveUntil = DateTimeOffset.MaxValue,
                     Language = new("ar"),
-                    LinkType = "gs1:consumerHandlingStorageInfo",
+                    LinkType = new("gs1:consumerHandlingStorageInfo"),
                     RedirectUrl = "https://test.com/5",
                     Title = "Test link",
-                    MediaType = "image/png",
+                    MediaType = new("image/png"),
                     IsDefault = true
                 }
             ]
@@ -74,7 +74,7 @@ public class AnchorTests
     [TestMethod]
     public void FindBestMatchShouldReturnTheLinksThatMatchLinkTypeAndLanguageAndMediaType()
     {
-        var result = Sut.FindBestMatches("gs1:pip", [new("en-US")], ["image/png"]);
+        var result = Sut.FindBestMatches([new("en-US")], [new("image/png")]);
 
         Assert.HasCount(1, result);
         CollectionAssert.AreEquivalent(new[] { Sut.Links[1] }, result);
@@ -83,7 +83,7 @@ public class AnchorTests
     [TestMethod]
     public void FindBestMatchShouldReturnAnEmptyListIfNoneMatchesLinkType()
     {
-        var result = Sut.FindBestMatches("gs1:relatedVideo", [new("hr-HR")], ["application/json"]);
+        var result = Sut.FindBestMatches([new("hr-HR")], [new("application/json")]);
 
         Assert.HasCount(0, result);
     }
@@ -91,7 +91,7 @@ public class AnchorTests
     [TestMethod]
     public void FindBestMatchShouldReturnTheLinksThatMatchLinkTypeAndMediaTypeIfNoneMatchesLanguage()
     {
-        var result = Sut.FindBestMatches("gs1:pip", [new("hr-HR")], ["image/png"]);
+        var result = Sut.FindBestMatches([new("hr-HR")], [new("image/png")]);
 
         Assert.HasCount(2, result);
         CollectionAssert.AreEquivalent(new[] { Sut.Links[0], Sut.Links[2] }, result);
@@ -100,7 +100,7 @@ public class AnchorTests
     [TestMethod]
     public void FindBestMatchShouldReturnTheLinksThatMatchLinkTypeAndLanguageIfNoneMatchesMediaType()
     {
-        var result = Sut.FindBestMatches("gs1:pip", [new("en")], ["application/json"]);
+        var result = Sut.FindBestMatches([new("en-US")], [new("application/json")]);
 
         Assert.HasCount(2, result);
         CollectionAssert.AreEquivalent(new[] { Sut.Links[0], Sut.Links[1] }, result);
@@ -110,7 +110,7 @@ public class AnchorTests
     [TestMethod]
     public void FindBestMatchShouldOrderTheResultsByIdAscending()
     {
-        var result = Sut.FindBestMatches("gs1:pip", [new("en")], ["application/json"]);
+        var result = Sut.FindBestMatches([new("en-US")], [new("application/json")]);
 
         Assert.HasCount(2, result);
         Assert.AreSame(Sut.Links[1], result[0]);
@@ -119,7 +119,7 @@ public class AnchorTests
     [TestMethod]
     public void FindBestMatchShouldReturnTheDefaultLinksWhenLinkTypeIsEmpty()
     {
-        var result = Sut.FindBestMatches([new("hr-HR")], ["image/png"]);
+        var result = Sut.FindBestMatches([new("hr-HR")], [new("image/png")]);
 
         Assert.HasCount(1, result);
         CollectionAssert.AreEquivalent(new[] { Sut.Links[4] }, result);

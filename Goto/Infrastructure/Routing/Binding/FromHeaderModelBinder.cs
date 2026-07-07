@@ -20,19 +20,37 @@ internal class FromHeaderModelBinder : IModelBinder
 
             bindingContext.Result = ModelBindingResult.Success(languages);
         }
-        else if(bindingContext.ModelType == typeof(string[]))
+        else if(bindingContext.ModelType == typeof(MediaType[]))
         {
             var header = request.GetTypedHeaders().Accept;
-            var mediaTypes = header.OrderByDescending(h => h.Quality)
-                .Select(h => h.MediaType.ToString())
+            var mediaTypes = header.OrderByDescending(h => h.Quality ?? 1)
+                .Select(h => MediaType.Parse(h.MediaType.ToString()))
                 .ToArray();
 
             bindingContext.Result = ModelBindingResult.Success(mediaTypes);
         }
-        else if (bindingContext.ModelType == typeof(string) && !string.IsNullOrEmpty(Name))
+    }
+}
+
+internal class FromQueryModelBinder : IModelBinder
+{
+    public string? Name { get; set; }
+
+    public async Task BindModelAsync(ModelBindingContext bindingContext)
+    {
+        var request = bindingContext.HttpContext.Request;
+
+        if (bindingContext.ModelType == typeof(LinkType))
         {
-            var header = request.Headers[Name];
-            bindingContext.Result = ModelBindingResult.Success(header.FirstOrDefault());
+            var queryParameter = request.Query["linkType"];
+            var linkType = queryParameter.LastOrDefault() ?? string.Empty;
+
+            bindingContext.Result = ModelBindingResult.Success(LinkType.Parse(linkType));
+        }
+        else
+        {
+            var queryParameter = request.Query[Name ?? bindingContext.FieldName];
+            bindingContext.Result = ModelBindingResult.Success(queryParameter);
         }
     }
 }

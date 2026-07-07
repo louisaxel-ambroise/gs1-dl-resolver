@@ -14,6 +14,10 @@ public sealed class GS1ResolverModelBinderProvider : IModelBinderProvider
         {
             return new FromHeaderModelBinder();
         }
+        if (context.BindingInfo.BindingSource?.CanAcceptDataFrom(BindingSource.Query) ?? false)
+        {
+            return new FromQueryModelBinder();
+        }
         else
         {
             return null;

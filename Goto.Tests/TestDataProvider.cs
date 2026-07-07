@@ -42,7 +42,7 @@ public static class TestDataProvider
         return new DigitalLink
         {
             CompanyPrefix = companyPrefix,
-            HostUrl = "https://test.com",
+            HostUrl = new("https://test.com"),
             QueryString = [],
             AIs = keyValues
         };
@@ -66,9 +66,9 @@ public static class TestDataProvider
         {
             yield return new Anchor
             {
-                Description = "Test anchor 1",
-                Prefix = "01/05414195535264",
-                CompanyPrefix = "5414195",
+                Description = new("Test anchor 1"),
+                Prefix = new("01/05414195535264"),
+                CompanyPrefix = new("5414195"),
                 Links =
                 [
                     new AnchorLink
@@ -76,29 +76,29 @@ public static class TestDataProvider
                         ActiveFrom = DateTimeOffset.MinValue,
                         ActiveUntil = DateTimeOffset.MaxValue,
                         Language = new("en-GB"),
-                        LinkType = "gs1:pip",
-                        RedirectUrl = "https://test.url/en",
-                        Title = "Test link 1",
-                        MediaType = "text/html"
+                        LinkType = new("gs1:pip"),
+                        RedirectUrl = new("https://test.url/en"),
+                        Title = new("Test link 1"),
+                        MediaType = new("text/html")
                     },
                     new AnchorLink
                     {
                         ActiveFrom = DateTimeOffset.MinValue,
                         ActiveUntil = DateTimeOffset.MaxValue,
                         Language = new("fr-BE"),
-                        LinkType = "gs1:pip",
-                        RedirectUrl = "https://test.url/fr",
-                        Title = "Lien de test 2",
-                        MediaType = "text/html"
+                        LinkType = new("gs1:pip"),
+                        RedirectUrl = new("https://test.url/fr"),
+                        Title = new("Lien de test 2"),
+                        MediaType = new("text/html")
                     }
                 ]
             };
 
             yield return new Anchor
             {
-                Description = "Test anchor 1",
-                Prefix = "01",
-                CompanyPrefix = "5414195",
+                Description = new("Test anchor 1"),
+                Prefix = new("01"),
+                CompanyPrefix = new("5414195"),
                 Links =
                 [
                     new AnchorLink
@@ -106,10 +106,10 @@ public static class TestDataProvider
                         ActiveFrom = DateTimeOffset.MinValue,
                         ActiveUntil = DateTimeOffset.MaxValue,
                         Language = new("en-GB"),
-                        LinkType = "gs1:homepage",
-                        RedirectUrl = "https://test.url/about-us",
-                        Title = "Company description",
-                        MediaType = "text/html",
+                        LinkType = new("gs1:homepage"),
+                        RedirectUrl = new("https://test.url/about-us"),
+                        Title = new("Company description"),
+                        MediaType = new("text/html"),
                         IsDefault = true
                     }
                 ]
@@ -117,9 +117,9 @@ public static class TestDataProvider
 
             yield return new Anchor
             {
-                Description = "Test anchor 2",
-                Prefix = "01/04047111050247",
-                CompanyPrefix = "4047111",
+                Description = new("Test anchor 2"),
+                Prefix = new("01/04047111050247"),
+                CompanyPrefix = new("4047111"),
                 Links =
                 [
                     new AnchorLink
@@ -127,20 +127,20 @@ public static class TestDataProvider
                         ActiveFrom = DateTimeOffset.MinValue,
                         ActiveUntil = DateTimeOffset.MaxValue,
                         Language = new("en-GB"),
-                        LinkType = "gs1:pip",
-                        RedirectUrl = "https://test.url/en",
-                        Title = "Test link 1",
-                        MediaType = "text/html"
+                        LinkType = new("gs1:pip"),
+                        RedirectUrl = new("https://test.url/en"),
+                        Title = new("Test link 1"),
+                        MediaType = new("text/html")
                     },
                     new AnchorLink
                     {
                         ActiveFrom = DateTimeOffset.MinValue,
                         ActiveUntil = DateTimeOffset.MaxValue,
                         Language = new("fr-BE"),
-                        LinkType = "gs1:pip",
-                        RedirectUrl = "https://test.url/fr",
-                        Title = "Lien de test 2",
-                        MediaType = "text/html"
+                        LinkType = new("gs1:pip"),
+                        RedirectUrl = new("https://test.url/fr"),
+                        Title = new("Lien de test 2"),
+                        MediaType = new("text/html")
                     }
                 ]
             };
@@ -150,41 +150,41 @@ public static class TestDataProvider
         {
             yield return new Insight
             {
-                CompanyPrefix = "5414195",
-                Accept = "*/*",
-                AcceptLanguage = "en-GB",
+                CompanyPrefix = new("5414195"),
+                Accept = new("*/*"),
+                AcceptLanguage = new("en-GB"),
                 LinkCount = 1,
                 StatusCode = 307,
                 RecordDate = DateTimeOffset.Parse("2026-05-03T15:53:20"),
                 RequestDate = DateTimeOffset.Parse("2026-05-03T15:53:20"),
-                DigitalLink = "01/05414195535264",
-                Url = "01/05414195535264"
+                DigitalLink = new("01/05414195535264"),
+                Url = new("01/05414195535264")
             };
 
             yield return new Insight
             {
-                CompanyPrefix = "5414195",
-                Accept = "image/png",
-                AcceptLanguage = "fr-BE, de-DE;q=0.7",
+                CompanyPrefix = new("5414195"),
+                Accept = new("image/png"),
+                AcceptLanguage = new("fr-BE, de-DE;q=0.7"),
                 LinkCount = 0,
                 StatusCode = 404,
                 RecordDate = DateTimeOffset.Parse("2026-05-03T15:54:32"),
                 RequestDate = DateTimeOffset.Parse("2026-05-03T15:54:30"),
-                DigitalLink = "01/05414195535264",
-                Url = "01/05414195535264"
+                DigitalLink = new("01/05414195535264"),
+                Url = new("01/05414195535264")
             };
 
             yield return new Insight
             {
-                CompanyPrefix = "5414195",
-                Accept = "*/*",
-                AcceptLanguage = "en-GB",
+                CompanyPrefix = new("5414195"),
+                Accept = new("*/*"),
+                AcceptLanguage = new("en-GB"),
                 LinkCount = 1,
                 StatusCode = 307,
                 RecordDate = DateTimeOffset.Parse("2026-05-10T03:11:34"),
                 RequestDate = DateTimeOffset.Parse("2026-05-10T03:11:20"),
-                DigitalLink = "01/05414195535264/10/XYZ",
-                Url = "01/05414195535264/10/XYZ"
+                DigitalLink = new("01/05414195535264/10/XYZ"),
+                Url = new("01/05414195535264/10/XYZ")
             };
         }
     }

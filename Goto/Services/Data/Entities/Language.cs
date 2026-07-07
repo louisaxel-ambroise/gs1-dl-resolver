@@ -26,11 +26,11 @@ public sealed partial class Language
         return string.IsNullOrEmpty(Region) ? Country : string.Concat(Country, '-', Region);
     }
 
-    public Match Matches(Language language)
+    public Match Matches(Language other)
     {
-        if(language.Country == Country)
+        if(other.Country == Country)
         {
-            if(string.IsNullOrEmpty(language.Region) || string.IsNullOrEmpty(Region) || language.Region == Region)
+            if(string.IsNullOrEmpty(other.Region) || string.IsNullOrEmpty(Region) || other.Region == Region)
             {
                 return Match.FullMatch;
             }

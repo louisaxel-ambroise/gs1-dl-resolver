@@ -1,6 +1,6 @@
 ﻿using Goto.Controllers.Results;
-using Goto.Infrastructure;
 using Goto.Services.Data;
+using Goto.Services.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,7 +9,7 @@ namespace Goto.Controllers;
 
 [Controller]
 [Route("api/insights")]
-[Produces(MediaTypes.Json)]
+[Produces(MediaType.Json)]
 [Authorize(AuthenticationSchemes = "ApiKey")]
 public sealed class InsightsController
 {

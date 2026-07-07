@@ -41,6 +41,13 @@ public sealed class ErrorController : ControllerBase
                 Detail = ex.Message,
                 Status = (int)HttpStatusCode.Conflict
             },
+            ArgumentOutOfRangeException ex => new ErrorResponse
+            {
+                Type = "BadRequest",
+                Title = "The request specified an invalid argument",
+                Detail = ex.Message,
+                Status = (int)HttpStatusCode.BadRequest
+            },
             var ex when ex is not null => new ErrorResponse
             {
                 Type = "InternalError",

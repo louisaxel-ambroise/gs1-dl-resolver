@@ -1,7 +1,6 @@
 ﻿using DigitalLinkToolkit.Conversion;
 using Goto.Controllers.Requests;
 using Goto.Services.Data.Entities;
-using Goto.Infrastructure;
 using Goto.Infrastructure.Routing.Filters;
 using Goto.Services;
 using Goto.Services.Data;
@@ -16,7 +15,7 @@ namespace Goto.Controllers;
 [TransactionalController]
 [ValidateRequest]
 [Route("api/anchors")]
-[Produces(MediaTypes.Json)]
+[Produces(MediaType.Json)]
 [Authorize(AuthenticationSchemes = "ApiKey")]
 public sealed class AnchorController(Context context, Clock clock, ClaimsPrincipal principal, SqidsEncoder<int> encoder)
 {

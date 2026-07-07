@@ -10,21 +10,12 @@ public sealed class Anchor
     public required string Description { get; set; }
     public List<AnchorLink> Links { get; set; } = [];
 
-    public List<AnchorLink> FindBestMatches(string linkType, Language[] languages, string[] mediaTypes)
+    public List<AnchorLink> FindBestMatches(Language[] languages, MediaType[] mediaTypes)
     {
-        var candidates = Links.Where(l => l.LinkType == linkType);
-
-        return FindBestMatches(candidates, languages, mediaTypes);
+        return FindBestMatches(Links, languages, mediaTypes);
     }
 
-    public List<AnchorLink> FindBestMatches(Language[] languages, string[] mediaTypes)
-    {
-        var candidates = Links.Where(l => l.IsDefault);
-
-        return FindBestMatches(candidates, languages, mediaTypes);
-    }
-
-    private static List<AnchorLink> FindBestMatches(IEnumerable<AnchorLink> candidates, Language[] languages, string[] mediaTypes)
+    private static List<AnchorLink> FindBestMatches(IEnumerable<AnchorLink> candidates, Language[] languages, MediaType[] mediaTypes)
     {
         candidates = candidates.OrderBy(l => l.Id);
         candidates = languages

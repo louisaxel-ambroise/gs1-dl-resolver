@@ -11,6 +11,7 @@ using Goto.Services.Data.Entities;
 using Goto.Services.Translations;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Sqids;
 using System.Threading.Channels;
 
@@ -40,7 +41,15 @@ builder.Services.Configure<RequestLocalizationOptions>(opt => opt.AddSupportedUI
 builder.Services.AddAuthentication("ApiKey").AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationSchemeHandler>("ApiKey", opts => opts.ApiKey = builder.Configuration.GetValue<string>("ApiKey"));
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(p => p.AllowAnyHeader().AllowAnyOrigin().WithMethods("GET", "HEAD", "OPTIONS")));
 builder.Services.AddLocalization();
-builder.Services.AddDbContext<Context>(opt => opt.UseSqlite($"Data Source=registry.db"));
+builder.Services.AddDbContext<Context>(opt =>
+{
+    opt.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
+    opt.ConfigureWarnings(warnings =>
+    {
+        warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning);
+        warnings.Throw(CoreEventId.FirstWithoutOrderByAndFilterWarning);
+    });
+});
 builder.Services.AddScoped(ctx => ctx.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
 builder.Services.AddScoped<Clock>();
 builder.Services.AddSingleton(tdtEngineBuilder.BuildEngine());

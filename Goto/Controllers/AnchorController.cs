@@ -34,7 +34,6 @@ public sealed class AnchorController(Context context, Clock clock, ClaimsPrincip
         return new OkObjectResult(anchors);
     }
 
-
     [HttpPost]
     public IActionResult CreateAnchor([FromBody] AddAnchorRequest request, [FromServices] IdentifierConverter converter)
     {
@@ -57,7 +56,7 @@ public sealed class AnchorController(Context context, Clock clock, ClaimsPrincip
         var anchorId = encoder.Decode(anchorKey).Single();
         var anchors = context.AnchorsForUser(principal).First(a => a.Id == anchorId);
 
-        foreach(var activeLink in anchors.Links.Where(l => l.ActiveUntil >= clock.UtcNow))
+        foreach (var activeLink in anchors.Links.Where(l => l.ActiveUntil >= clock.UtcNow))
         {
             activeLink.ActiveUntil = DateTimeOffset.Min(activeLink.ActiveFrom, clock.UtcNow);
         }
@@ -109,11 +108,11 @@ public sealed class AnchorController(Context context, Clock clock, ClaimsPrincip
         var anchorId = encoder.Decode(anchorKey).Single();
         var linkIds = encoder.Decode(linkKey);
 
-        if (linkIds[0] != anchorId)
+        if (linkIds.Count != 2 || linkIds[0] != anchorId)
             throw new InvalidOperationException("Invalid IDs");
 
-        var anchor = context.AnchorsForUser(principal).AsTracking().First(a => a.Id == anchorId );
-        var link = anchor.Links.Single(l => l.Id == linkIds[^1]);
+        var anchor = context.AnchorsForUser(principal).AsTracking().First(a => a.Id == anchorId);
+        var link = anchor.Links.Single(l => l.Id == linkIds[1]);
 
         link.SetUnavailabilityDate(clock.UtcNow);
 

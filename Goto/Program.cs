@@ -9,6 +9,7 @@ using Goto.Services;
 using Goto.Services.Data;
 using Goto.Services.Data.Entities;
 using Goto.Services.Translations;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -51,6 +52,7 @@ builder.Services.AddDbContext<Context>(opt =>
     });
 });
 builder.Services.AddScoped(ctx => ctx.GetRequiredService<IHttpContextAccessor>().HttpContext?.User ?? new());
+builder.Services.AddScoped(ctx => ctx.GetRequiredService<IHttpContextAccessor>().HttpContext?.Features?.Get<IExceptionHandlerFeature>() ?? new ExceptionHandlerFeature());
 builder.Services.AddScoped<Clock>();
 builder.Services.AddSingleton(tdtEngineBuilder.BuildEngine());
 builder.Services.AddSingleton(OptimizationCodes.Shared);

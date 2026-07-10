@@ -7,7 +7,7 @@ using System.Text.Encodings.Web;
 
 namespace Goto.Infrastructure.Authentication;
 
-public class ApiKeyAuthenticationSchemeHandler(IOptionsMonitor<ApiKeyAuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder urlEncoder, SqidsEncoder<int> idEncoder) 
+public sealed class ApiKeyAuthenticationSchemeHandler(IOptionsMonitor<ApiKeyAuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder urlEncoder, SqidsEncoder<int> idEncoder) 
     : AuthenticationHandler<ApiKeyAuthenticationSchemeOptions>(options, logger, urlEncoder)
 {
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()

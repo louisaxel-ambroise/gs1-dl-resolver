@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Goto.Services.Data;
 
-public class Context(DbContextOptions<Context> options, Clock clock) : DbContext(options)
+public sealed class Context(DbContextOptions<Context> options, Clock clock) : DbContext(options)
 {
     public IQueryable<Insight> InsightsForUser(ClaimsPrincipal user)
     {

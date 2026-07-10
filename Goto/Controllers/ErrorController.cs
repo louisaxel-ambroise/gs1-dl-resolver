@@ -1,6 +1,7 @@
 ﻿using DigitalLinkToolkit.Conversion.Model;
 using DigitalLinkToolkit.Exceptions;
 using Goto.Controllers.Results;
+using Goto.Services.Data.Entities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +11,13 @@ using System.Text;
 namespace Goto.Controllers;
 
 [Route("error")]
-[Produces("application/json", "text/html")]
-public sealed class ErrorController : ControllerBase
+[Produces(MediaType.Json, MediaType.Html)]
+public sealed class ErrorController
 {
-    public IActionResult HandleError()
+    public IActionResult HandleError([FromServices] IExceptionHandlerFeature exceptionHandlerFeature)
     {
-        var ex = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
-
-        var problem = GetProblemDetail(ex);
+        var exceptions = exceptionHandlerFeature.Error;
+        var problem = GetProblemDetail(exceptions);
 
         return new ObjectResult(problem) { StatusCode = problem.Status };
     }

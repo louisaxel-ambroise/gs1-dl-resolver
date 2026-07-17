@@ -4,6 +4,9 @@
     <File Path="Doc/registration.http" />
     <File Path="Doc/resolution.http" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".filenesting.json" />
+  </Folder>
   <Project Path="DigitalLinkToolkit/DigitalLinkToolkit.csproj" Id="345fbc2d-4825-4369-87ee-56d95252dd99" />
   <Project Path="Goto.Tests/Goto.Tests.csproj" />
   <Project Path="Goto/Goto.csproj" />

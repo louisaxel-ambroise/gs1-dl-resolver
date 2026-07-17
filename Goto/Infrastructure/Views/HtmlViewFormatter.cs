@@ -31,9 +31,10 @@ internal sealed class HtmlViewFormatter : TextOutputFormatter
             new RouteData(),
             new ActionDescriptor());
 
-        var viewName = context.ObjectType!.Namespace![5..].Replace('.', '/') + "/" + context.ObjectType.Name + ".cs.cshtml";
-        var viewResult = engine.GetView("", viewName, true);
-        if (!viewResult.Success)
+        var viewName = context.ObjectType!.Namespace![5..].Replace('.', '/') + "/" + context.ObjectType.Name + ".cshtml";
+        var viewResult = engine.GetView("", viewName, false);
+        
+        if (viewResult is null || !viewResult.Success)
         {
             throw new InvalidOperationException($"View '{context.ObjectType!.Name}' not found.");
         }

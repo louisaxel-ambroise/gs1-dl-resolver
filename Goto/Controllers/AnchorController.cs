@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sqids;
 using System.Security.Claims;
+using Goto.Controllers.Results;
 
 namespace Goto.Controllers;
 
@@ -22,16 +23,16 @@ public sealed class AnchorController(Context context, Clock clock, ClaimsPrincip
     [HttpGet]
     public IActionResult ListAnchors()
     {
-        var anchors = context.AnchorsForUser(principal)
+            var anchors = context.AnchorsForUser(principal)
             .OrderBy(a => a.Id)
-            .Select(a => new
+            .Select(a => new AnchorResult
             {
                 Id = encoder.Encode(a.Id),
-                a.Prefix,
-                a.Description
+                Prefix = a.Prefix,
+                Description = a.Description
             });
 
-        return new OkObjectResult(anchors);
+        return new OkObjectResult(new AnchorListResult { Anchors = anchors.ToList() });
     }
 
     [HttpPost]
@@ -70,23 +71,23 @@ public sealed class AnchorController(Context context, Clock clock, ClaimsPrincip
         var anchorId = encoder.Decode(anchorKey).Single();
         var anchor = context.AnchorsForUser(principal).First(a => a.Id == anchorId);
 
-        return new OkObjectResult(new
+        return new OkObjectResult(new AnchorDetailResult
         {
             Id = encoder.Encode(anchor.Id),
-            anchor.Prefix,
-            anchor.Description,
+            Prefix = anchor.Prefix,
+            Description = anchor.Description,
             Links = anchor.Links.OrderBy(l => l.Id)
-                .Select(l => new
+                .Select(l => new AnchorLinkResult
                 {
                     Id = encoder.Encode(anchorId, l.Id),
-                    l.ActiveFrom,
-                    l.ActiveUntil,
-                    l.RedirectUrl,
-                    l.Title,
-                    l.LinkType,
+                    ActiveFrom = l.ActiveFrom,
+                    ActiveUntil = l.ActiveUntil,
+                    RedirectUrl = l.RedirectUrl,
+                    Title = l.Title,
+                    LinkType = l.LinkType.ToString(),
                     Language = l.Language.ToString(),
-                    l.MediaType,
-                    l.IsDefault
+                    MediaType = l.MediaType.ToString(),
+                    IsDefault = l.IsDefault
                 })
         });
     }

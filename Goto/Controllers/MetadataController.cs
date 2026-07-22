@@ -12,12 +12,6 @@ namespace Goto.Controllers;
 [AllowAnonymous]
 public sealed class MetadataController
 {
-    [HttpGet("/")]
-    public IActionResult Root()
-    {
-        return new ContentResult() { Content = File.ReadAllText("wwwroot/index.html"), ContentType = "text/html", StatusCode = 200 };
-    }
-
     [HttpGet(".well-known/gs1resolver")]
     [Produces(MediaType.Json)]
     public IActionResult GetMetadataInformation([FromUri] Uri metadataUrl)

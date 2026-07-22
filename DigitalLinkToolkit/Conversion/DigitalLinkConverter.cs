@@ -339,11 +339,5 @@ public sealed class DigitalLinkConverter(OptimizationCodes optimizationCodes, Ap
         return resultBuffer.ToString();
     }
 
-    private static readonly AIComponent QueryStringComponent = new()
-    {
-        Length = 127,
-        Type = Charset.Alpha
-    };
-
     #endregion
 }

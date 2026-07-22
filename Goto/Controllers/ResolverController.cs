@@ -36,7 +36,7 @@ public sealed class ResolverController
 
     [LinkTypeResolverRoute]
     [Produces(MediaType.Json, MediaType.Html)]
-    public IActionResult ResolveLinkTypeAsync(
+    public IActionResult ResolveLinkType(
         [FromUri] DigitalLink digitalLink, 
         [FromQuery] LinkType linkType, 
         [FromHeader] MediaType[] mediaTypes, 
@@ -73,7 +73,7 @@ public sealed class ResolverController
 
     [DefaultLinkResolverRoute]
     [Produces(MediaType.Json, MediaType.Html)]
-    public IActionResult ResolveDefaultLinkAsync(
+    public IActionResult ResolveDefaultLink(
         [FromUri] DigitalLink digitalLink, 
         [FromHeader] MediaType[] mediaTypes, 
         [FromHeader] Language[] languages,

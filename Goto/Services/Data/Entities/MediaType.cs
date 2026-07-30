@@ -14,7 +14,7 @@ public sealed class MediaType
 
     public MediaType(string value)
     {
-        var parts = value.Split('/', 2, StringSplitOptions.TrimEntries | StringSplitOptions.TrimEntries);
+        var parts = value.Split('/', StringSplitOptions.TrimEntries);
 
         if (parts.Length != 2)
         {

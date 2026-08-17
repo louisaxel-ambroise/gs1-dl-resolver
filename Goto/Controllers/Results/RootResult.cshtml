@@ -1,0 +1,10 @@
+@using Goto.Services.Translations
+@model Goto.Controllers.Results.RootResult
+@inject CommonLocalizationService Localizer
+@{
+    Layout = "_Shared";
+    ViewData["Title"] = Localizer["Welcome"];
+}
+
+<h1>@Localizer["Your GOTO resolver is up and running!"]</h1>
+

@@ -19,7 +19,7 @@ public sealed class MetadataController
         return new OkObjectResult(new MetadataResult
         {
             ResolverRoot = string.Concat(metadataUrl.Scheme, "://", metadataUrl.Host),
-            Name = "GOTO",
+            Name = "GOTO v0.1",
             SupportedPrimaryKeys = ["all"],
             LinkTypeDefaultCanBeLinkset = true,
             JsonLdContextLocation = "https://ref.gs1.org/standards/resolver/linkset-context",

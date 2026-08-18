@@ -24,7 +24,7 @@ public static class MetadataControllerTests
             var metadata = Assert.IsInstanceOfType<MetadataResult>(okObjectResult.Value);
 
             Assert.AreEqual("https://test.url", metadata.ResolverRoot);
-            Assert.AreEqual("GOTO", metadata.Name);
+            Assert.AreEqual("GOTO v0.1", metadata.Name);
             Assert.IsTrue(metadata.LinkTypeDefaultCanBeLinkset);
             Assert.AreEqual("GOTO", metadata.Contact.Fn);
             CollectionAssert.AreEquivalent(ExpectedSupportedPrimaryKeys, metadata.SupportedPrimaryKeys);

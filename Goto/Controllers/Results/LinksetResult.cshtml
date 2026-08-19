@@ -60,7 +60,7 @@
         
         @{
             var defaultLinks = anchorDefaultLinks.GroupBy(l => new { l.Href, l.Title, l.Type });
-            var key = anchorDefaultLinks.Count() > 1 ? "gs1:defaultLinkMulti" : "gs1:defaultLink";
+            var key = defaultLinks.Count() > 1 ? "gs1:defaultLinkMulti" : "gs1:defaultLink";
             
             <details>
                 <summary>

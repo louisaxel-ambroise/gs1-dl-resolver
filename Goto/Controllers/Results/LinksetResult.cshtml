@@ -1,16 +1,10 @@
-﻿@using Goto.Services.Translations
+﻿@using System.Globalization
+@using Goto.Services.Translations
 @model Goto.Controllers.Results.LinksetResult
 @inject CommonLocalizationService Localizer
 @{
     Layout = "_Shared";
     ViewData["Title"] = Localizer["Linkset"];
-
-    string GetCountryName(string language)
-    {
-        var culture = System.Globalization.CultureInfo.GetCultureInfoByIetfLanguageTag(language);
-
-        return culture.DisplayName;
-    }
 }
 
 <h1>@Localizer["Linkset for this resource"]</h1>
@@ -47,7 +41,7 @@
                         <dd>
                             @foreach (var lang in link.SelectMany(l => l.Hreflang).Distinct())
                             {
-                                <span class="tag language" title="@lang">@GetCountryName(lang)</span>
+                                <span class="tag language" title="@lang">@CultureInfo.GetCultureInfoByIetfLanguageTag(lang).DisplayName</span>
                             }
                         </dd>
 

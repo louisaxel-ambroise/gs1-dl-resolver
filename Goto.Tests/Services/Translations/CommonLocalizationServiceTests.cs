@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 
-namespace Goto.Tests.Translations;
+namespace Goto.Tests.Services.Translations;
 
 [TestClass]
 public class CommonLocalizationServiceTests

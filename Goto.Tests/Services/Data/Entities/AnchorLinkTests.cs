@@ -1,7 +1,7 @@
 ﻿using Goto.Services.Data.Entities;
 using Goto.Services.Data.Enums;
 
-namespace Goto.Tests.Data.Entities;
+namespace Goto.Tests.Services.Data.Entities;
 
 [TestClass]
 public class AnchorLinkTests

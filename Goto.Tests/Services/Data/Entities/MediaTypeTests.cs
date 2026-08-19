@@ -1,6 +1,6 @@
 ﻿using Goto.Services.Data.Entities;
 
-namespace Goto.Tests.Data.Entities;
+namespace Goto.Tests.Services.Data.Entities;
 
 [TestClass]
 public class MediaTypeTests

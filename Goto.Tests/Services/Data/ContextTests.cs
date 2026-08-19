@@ -1,4 +1,4 @@
-﻿namespace Goto.Tests.Data;
+﻿namespace Goto.Tests.Services.Data;
 
 [TestClass]
 public sealed class ContextTests

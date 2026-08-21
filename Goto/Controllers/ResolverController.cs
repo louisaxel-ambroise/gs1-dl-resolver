@@ -9,12 +9,14 @@ using Microsoft.EntityFrameworkCore;
 using Goto.Services.Data;
 using Goto.Services.Data.Entities;
 using Goto.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Goto.Controllers;
 
 [Controller]
 [TimeTraveler]
 [InsightsTracking]
+[AllowAnonymous]
 public sealed class ResolverController
 {
     [LinksetResolverRoute]

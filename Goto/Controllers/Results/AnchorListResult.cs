@@ -8,6 +8,7 @@ public sealed class AnchorListResult
 public sealed class AnchorResult
 {
     public required string Id { get; set; }
+    public required string CompanyPrefix { get; set; }
     public required string Prefix { get; set; }
     public required string Description { get; set; }
 }

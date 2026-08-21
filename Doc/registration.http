@@ -1,5 +1,5 @@
 @baseUrl=https://localhost:7111
-@apiKey=sk_HxtRNQ1ZgyGBpNuAAKeJpIvQ4SOUlvNL.ugRNEDavpy
+@apiKey=74501e8e4b6bcb7616790ed515c45250
 
 ### List registered anchors
 GET {{baseUrl}}/api/anchors
@@ -12,21 +12,21 @@ POST {{baseUrl}}/api/anchors
 Content-Type: application/json
 X-Api-Key: {{apiKey}}
 {
-  "prefix": "01/05414195535264",
+  "prefix": "01/05414196535263",
   "description": "Product description"
 }
 
 ### Get details of an anchor
-GET {{baseUrl}}/api/anchors/GMfbpDWLzl
+GET {{baseUrl}}/api/anchors/qTFrufVwob
 Content-Type: application/json
 X-Api-Key: {{apiKey}}
 
 ### Register a link for a specific anchor
-POST {{baseUrl}}/api/anchors/GMfbpDWLzl/links
+POST {{baseUrl}}/api/anchors/qTFrufVwob/links
 Content-Type: application/json
 X-Api-Key: {{apiKey}}
 {
-  "linkType": "gs1:homepage",
+  "type": "gs1:homepage",
   "redirectUrl": "https://goto.it.com/en",
   "title": "Company homepage",
   "languages": [ "en" ],

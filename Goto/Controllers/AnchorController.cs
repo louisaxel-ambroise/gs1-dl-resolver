@@ -28,6 +28,7 @@ public sealed class AnchorController(Context context, Clock clock, ClaimsPrincip
             .Select(a => new AnchorResult
             {
                 Id = encoder.Encode(a.Id),
+                CompanyPrefix = a.CompanyPrefix,
                 Prefix = a.Prefix,
                 Description = a.Description
             });

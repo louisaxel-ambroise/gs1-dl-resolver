@@ -26,7 +26,7 @@ public sealed class Language
         return string.IsNullOrEmpty(Region) ? Country : string.Concat(Country, '-', Region);
     }
 
-    internal Match Matches(Language other)
+    public Match Matches(Language other)
     {
         if(other.Country == Country)
         {

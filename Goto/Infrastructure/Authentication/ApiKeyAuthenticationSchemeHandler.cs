@@ -13,7 +13,7 @@ public sealed class ApiKeyAuthenticationSchemeHandler(IOptionsMonitor<ApiKeyAuth
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var apiKey = Context.Request.Headers["x-api-key"];
-        var keyParts = (apiKey.FirstOrDefault() ?? string.Empty).Split('.');
+        var keyParts = apiKey.FirstOrDefault(string.Empty).Split('.');
 
         if (keyParts.Length != 2 || keyParts[0] != Options.ApiKey || !TryExtractCompanyPrefix(keyParts[1], out var gcp))
         {

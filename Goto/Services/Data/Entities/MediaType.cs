@@ -25,7 +25,7 @@ public sealed class MediaType
         SubType = parts[1];
     }
 
-    internal Match Matches(MediaType other)
+    public Match Matches(MediaType other)
     {
         if (other.Type == Type)
         {

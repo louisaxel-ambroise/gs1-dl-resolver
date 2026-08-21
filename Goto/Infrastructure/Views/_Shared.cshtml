@@ -23,7 +23,7 @@
             @RenderBody()
         </div>
         <footer>
-            <p>&copy; @DateTimeOffset.UtcNow.Year Goto.it.com</p>
+            <p>&copy; @DateTimeOffset.UtcNow.Year @Context.Request.Host</p>
             <p><a href="https://goto.it.com/">@localizer["Home"]</a></p>
             <p>
                 @localizer["Theme:"]

@@ -3,16 +3,16 @@ using System.Globalization;
 
 namespace Goto.Services.Data.Entities;
 
-public sealed partial class Language
+public sealed class Language
 {
     public string Country { get; }
     public string? Region { get; }
 
     public Language(string value)
     {
-        var parts = value.Split('-', 2, StringSplitOptions.TrimEntries | StringSplitOptions.TrimEntries);
+        var parts = value.Split('-', StringSplitOptions.TrimEntries | StringSplitOptions.TrimEntries);
 
-        if (parts.Any(p => p.Length is < 2 or > 3 || p.Any(c => !char.IsLetterOrDigit(c))))
+        if (parts.Length > 2 || parts.Any(p => p.Length is < 2 or > 3 || p.Any(c => !char.IsLetterOrDigit(c))))
         {
             throw new InvalidOperationException($"Invalid language: '{value}'. Shall use 2 or 3 letter country and region (optional)");
         }

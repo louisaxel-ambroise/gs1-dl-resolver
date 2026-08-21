@@ -8,12 +8,12 @@ public static class Extensions
     {
         public static DateTimeOffset Min(params DateTimeOffset?[] values)
         {
-            return values.OrderBy(x => x).FirstOrDefault(x => x is not null) ?? DateTimeOffset.UtcNow;
+            return values.OrderBy(x => x).FirstOrDefault(x => x is not null, DateTimeOffset.UtcNow).Value;
         }
 
         public static DateTimeOffset Max(params DateTimeOffset?[] values)
         {
-            return values.OrderByDescending(x => x).FirstOrDefault(x => x is not null) ?? DateTimeOffset.UtcNow;
+            return values.OrderBy(x => x).LastOrDefault(x => x is not null, DateTimeOffset.UtcNow).Value;
         }
     }
 

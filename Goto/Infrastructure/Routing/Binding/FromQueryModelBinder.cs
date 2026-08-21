@@ -14,7 +14,7 @@ internal class FromQueryModelBinder : IModelBinder
         if (bindingContext.ModelType == typeof(LinkType))
         {
             var queryParameter = request.Query["linkType"];
-            var linkType = queryParameter.LastOrDefault() ?? string.Empty;
+            var linkType = queryParameter.LastOrDefault(string.Empty);
 
             bindingContext.Result = ModelBindingResult.Success(new LinkType(linkType));
         }

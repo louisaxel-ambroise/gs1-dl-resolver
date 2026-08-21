@@ -88,8 +88,8 @@ public sealed class ResolverController
             return new NotFoundObjectResult(ErrorResponse.NotFound);
         }
         
-        var bestMatch = anchor.FindBestMatches(languages, mediaTypes);
-        var defaultLink = ResolutionResultLink.Map(bestMatch.Take(1), digitalLink).FirstOrDefault()?.Href ?? digitalLink.BuildLinksetLink();
+        var bestMatch = anchor.FindBestMatches(languages, mediaTypes).Take(1);
+        var defaultLink = ResolutionResultLink.Map(bestMatch, digitalLink).FirstOrDefault()?.Href ?? digitalLink.BuildLinksetLink();
 
         return new RedirectResult(defaultLink, permanent: false, preserveMethod: true) ;
     }

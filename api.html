@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>GOTO - GS1 DigitalLink resolver</title>
+		<meta name="charset" content="utf-8" />
+		<meta name="viewport" content="initial-scale=1" />
+		<meta name="lang" content="en" />
+		<meta name="description" content="Free Open Source GS1 Digital Link Resolver" />
+		<meta name="keywords" content=".NET, GS1, DigitalLink, DPP, Open Source" />
+		<link rel="preload" href="https://fonts.bunny.net/css?family=golos-text:400|golos-text:600" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="https://fonts.bunny.net/css?family=golos-text:400|golos-text:600"></noscript>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+		
+	<body>
+		<header>
+			<nav>
+				<a href="index.html">GOTO.IT.COM</a>
+				<a href="learnmore.html">Learn more</a>
+				<a href="api.html">API</a>
+				<a href="about.html">About</a>
+			</nav>
+			<div class="content">
+				<section class="text">
+					<h1>API reference</h1>
+				</section>
+			</div>
+			<div class="qr" />
+		</header>
+		<article id="description">
+			<p>Discover all the possibilities of the <em class="goto">GOTO</em> APIs</p>
+		</article>
+		<main>
+			<section id="resolution_api">
+				<h1>Resolution API</h1>
+				
+				<p>The resolution API contains the main endpoints used to retrieve the DigitalLink details of the scanned QR codes.</p>
+				
+				<h2>Authorization</h2>
+				<p>These endpoints don't require any authorization as they are called by the customer devices.</p>
+				
+				<h2>Endpoints</h2>
+				<details id="resolve_dl">
+					<summary>GET /{digitalLink}</summary>
+					<div>
+						<p>This is the main endpoint used to resolve Digital Links. The parameter is a catch all that parses the different AIs and resolves the best match based on the configured anchors.</p>
+						
+						<h3>Parameters</h3>
+						<dl>
+							<dt>digitalLink</dt>
+							<dd><span class="tag">PATH</span> <span class="tag">REQUIRED</span> The digital link value to be resolved. It can be either compressed, partially-compressed or decompressed as mentioned in the GS1 DL specification.</dd>
+							
+							<dt>linkType</dt>
+							<dd><span class="tag">QUERY</span> <span class="tag">OPTIONAL</span> The linkType to be resolved. If not specified, the resolver will return the default link(s) configred.</dd>
+						</dl>
+						
+						<h3>Response</h3>
+						<p>Returns the links configured for the best match Anchor configured for this Digital Link.</p>
+						
+						<h3>Headers</h3>
+						<dl>
+							<dt>Accept</dt>
+							<dd>The desired format of the response returned by the resolver. Accepted values are <code>application/json</code>, <code>application/linkset+json</code> and <code>text/html</code></dd>
+			
+							<dt>Accept-Language</dt>
+							<dd>The ordered list of preferred languages for this request. This can influence the response from the resolver based on the configured links</dd>
+											
+							<dt>X-Request-Date</dt>
+							<dd>Specifies the date to be used when resolving the DigitalLink. This can be any datetime in the past or future, shall be specified in ISO 8601 format.</dd>
+							
+							<dt>X-Request-Tracking</dt>
+							<dd>If the value is <code>bypass</code> or <code>notrack</code>, the request will not be included in the insights summaries.</dd>
+						</dl>
+					</div>
+				</details>
+				
+				<details id="metadata">
+					<summary>GET /.well-known/gs1resolver</summary>
+					<div>
+						<p>The well-known endpoint to get the global configuration of the DigitalLink resolver, as per GS1 specification.</p>
+						
+						<h3>Parameters</h3>
+						<p>No parameters for this request</p>
+						
+						<h3>Response</h3>
+						<p>The resolver's configuration.</p>
+						
+						<h3>Headers</h3>
+						<p>No specific header for this request</p>
+					</div>
+				</details>
+			</section>
+			<section id="insights_api">
+				<h1>Insights API</h1>
+				
+				<p>The insights API allows to get the number of scans and the details of the response for any DigitalLink configured in the resolver.</p>
+				
+				<h2>Authorization</h2>
+				<p>These endpoints require an API key specified in the <code>X-Api-Key</code> header.</p>
+				
+				<h2>Endpoints</h2>
+				<details id="list_insights">
+					<summary>GET /api/insights</summary>
+					<div>
+						<p>Get the list of DigitalLinks resolved and the number of times they were resolved.</p>
+						
+						<h3>Parameters</h3>
+						<p>No parameters for this endpoint</p>
+						
+						<h3>Response</h3>
+						<p>Returns the list of DigitalLinks resolved in JSON format. 
+<pre>{
+  "count": 1,
+  "data": 
+  [
+    {
+      "digitalLink": "/01/05414195535264",
+      "scanCount": 1
+    }
+  ]
+}</pre>
+</p>
+						<h3>Headers</h3>
+						<dl>
+							<dt>Accept</dt>
+							<dd>The desired format of the response returned by the resolver. Accepted value is only <code>application/json</code></dd>
+							
+							<dt>X-Api-Key</dt>
+							<dd>The authorization header.</dd>
+						</dl>
+					</div>
+				</details>
+				<details id="insight_details">
+					<summary>GET /api/insights/{DigitalLink}</summary>
+					<div>
+						<p>This is the main endpoint used to resolve Digital Links. The parameter is a catch all that parses the different AIs and resolves the best match based on the configured anchors.</p>
+						
+						<h3>Parameters</h3>
+						<dl>
+							<dt>digitalLink</dt>
+							<dd><span class="tag">PATH</span> <span class="tag">REQUIRED</span> The digital link to get the insights from. It must be the decompressed value containing only primary key and qualifiers.</dd>
+						</dl>
+						
+						<h3>Response</h3>
+						<p>The scans details of the specified DigitalLinks.</p>
+<pre>{
+  "count": 1,
+  "data": 
+  [
+    {
+      "url": "https://id.goto.it.com/01/05414195535264?linkType=gs1:pip",
+      "recordDate": "2026-07-25T11:24:15Z",
+      "requestDate": "2026-07-25T11:24:14Z",
+      "headers":
+      {
+        "acceptLanguage": "fr-BE;q=1, fr-FR; q=0.9, en;q=0.1",
+        "accept" = "text/html"
+      },
+      "statusCode": 307,
+      "linkCount": 1
+    }
+  ]
+}</pre>
+</p>
+						
+						<h3>Headers</h3>
+						<dl>
+							<dt>Accept</dt>
+							<dd>The desired format of the response returned by the resolver. Accepted value is only <code>application/json</code></dd>
+							
+							<dt>X-Api-Key</dt>
+							<dd>The authorization header.</dd>
+						</dl>
+					</div>
+				</details>
+			</section>
+		</main>
+		<footer>
+			<p>Copyright &copy; 2026 Goto.it.com - All rights reserved</p>
+			<p>Contact: <a href="mailto:contact@goto.it.com">contact@goto.it.com</a></p>
+			<p>This website doesn't use any cookie. Enjoy!</p>
+			<p>This page weight less than 256kb. Help keep the web lightweight!</p>
+		</footer>
+	</body>
+	<script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+</html>

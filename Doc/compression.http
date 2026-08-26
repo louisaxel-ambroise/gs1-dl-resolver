@@ -1,9 +1,0 @@
-@baseUrl=https://localhost:7111
-
-### Compress a DigitalLink
-# Provide the DigitalLink anchor, the company prefix and the description of the product/anchor
-POST {{baseUrl}}/api/compression
-Content-Type: application/json
-{
-  "digitalLink": "https://test.com/01/05414195535264/10/5005/21/101214"
-}

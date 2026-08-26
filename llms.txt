@@ -1,0 +1,18 @@
+# GOTO
+
+> GOTO is a free open-source implementation of the GS1 Digital Link specification. It fully implements the specification, including the different compression methods and all the GS1 AIs known to date.
+
+The development stack used for this project is:
+- .NET10
+- SQLite
+- EntityFramework 10
+
+The resolver scores 100% on the official GS1 test suite, making it one of the most complete open source reference for a Digital Link resolver.
+
+## API
+
+- [API reference](https://goto.it.com/api): A quick view of the main API endpoints for this resolver
+
+## Demo
+
+There is a live instance of this repository freely available hosted at the following URL: [https://id.goto.it.com/](https://id.goto.it.com/)

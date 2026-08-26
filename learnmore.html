@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>GOTO - GS1 DigitalLink resolver</title>
+		<meta name="charset" content="utf-8" />
+		<meta name="viewport" content="initial-scale=1" />
+		<meta name="lang" content="en" />
+		<meta name="description" content="Free Open Source GS1 Digital Link Resolver" />
+		<meta name="keywords" content=".NET, GS1, DigitalLink, DPP, Open Source" />
+		<link rel="preload" href="https://fonts.bunny.net/css?family=golos-text:400|golos-text:600" as="style" onload="this.onload=null;this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="https://fonts.bunny.net/css?family=golos-text:400|golos-text:600"></noscript>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+		
+	<body>
+		<header>
+			<nav>
+				<a href="index.html">GOTO.IT.COM</a>
+				<a href="learnmore.html">Learn more</a>
+				<a href="api.html">API</a>
+				<a href="about.html">About</a>
+			</nav>
+			<div class="content">
+				<section class="text">
+					<h1>GS1 Digital Link resolver</h1>
+				</section>
+			</div>
+			<div class="qr" />
+		</header>
+		<article id="description">
+			<p>Turn every product into a smooth digital experience for every customer from a single QR code, and stay ready for tomorrow's regulatory requirements with the <em>GOTO.IT.COM</em> Digital Link resolver.</p>
+			<p>Start personalize your digital products now!</p>
+		</article>
+		<main>
+			<h1>Proactive management</h1>
+			<p>Every link configured for an anchor has two dates properties: <code>activeFrom</code> and <code>activeUntil</code>. These are the dates when it can be returned by the resolver API endpoint.<br />Having these dates stored alongside the link properties makes possible the time-travel API functionality, that allows to reproduce exactly the result that a customer got as a response.</p>
+			<p>Of course, one might not know exactly when a link will become obsolete, or if it will ever need to be disabled at some point (for example the homepage of the company might remain the same forever).<br />For this reason, the <code>activeUntil</code> field is the only value that can be updated on a registered anchor link. Every other field is readonly, which allows to have a full history of the configured values.</p>
+			<p>These fields also allow you to plan exceptional links such as promotions or product recalls. Just set the dates as you want during configuration and the link will only be available between them!</p>
+			
+			<h1>Focused on performance</h1>
+			<p>This project is deliberately very simple, including only a few endpoints and a database with only 3 tables. This is because the focus is made on the performance and the full implementation of the GS1 specification.</p>
+			<p>The only addition to the specification is the insights tracking, but we believe it's a key feature of such a project. It's not expected to add more functionalities however, if your project requires other functionalities, it's up to you to clone the repository and add it or add it to a separate project.</p>
+			
+			<h1>100% human reviewed &amp; open-source</h1>
+			<p>Goto is an open-source project, meaning that there is no hidden features or security issues that might be hidden to you. You're free to have a look at the entire codebase, and update/improve it as you wish.</p>
+			<p>Additionally, this resolver is fully written by a human, there is no AI agent that have access to it. That means the entire codebase is consistent and there is no knowledge debt or hallucinated bugs.</p>
+		</main>
+		<footer>
+			<p>Copyright &copy; 2026 Goto.it.com - All rights reserved</p>
+			<p>Contact: <a href="mailto:contact@goto.it.com">contact@goto.it.com</a></p>
+			<p>This website doesn't use any cookie. Enjoy!</p>
+			<p>This page weight less than 256kb. Help keep the web lightweight!</p>
+		</footer>
+	</body>
+</html>

@@ -13,6 +13,10 @@ The resolver scores 100% on the official GS1 test suite, making it one of the mo
 
 - [API reference](https://goto.it.com/api): A quick view of the main API endpoints for this resolver
 
+## Installation
+
+GOTO is easy to run; simply clone the main branch from the repository and run the command `dotnet run --project Goto`
+
 ## Demo
 
 There is a live instance of this repository freely available hosted at the following URL: [https://id.goto.it.com/](https://id.goto.it.com/)

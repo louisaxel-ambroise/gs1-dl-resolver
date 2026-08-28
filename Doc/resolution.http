@@ -26,12 +26,12 @@ Accept: */*
 X-Request-Tracking: bypass
 
 ### CORS
-OPTIONS {{baseUrl}}/01/05414195535264
+OPTIONS {{baseUrl}}/01/05414196535263
 Origin: https://foo.example
 Access-Control-Request-Method: GET, HEAD, OPTIONS
 
 ### HEAD
-HEAD {{baseUrl}}/01/05414195535264
+HEAD {{baseUrl}}/01/05414196535263
 Accept: */*
 X-Request-Tracking: bypass
 

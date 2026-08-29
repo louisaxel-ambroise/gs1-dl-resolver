@@ -387,4 +387,10 @@
   <data name="UnknownAI" xml:space="preserve">
     <value>Il y a un composant inconnu</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Bienvenue</value>
+  </data>
+  <data name="Your GOTO resolver is up and running!" xml:space="preserve">
+    <value>Votre résolveur GOTO est opérationnel !</value>
+  </data>
 </root>

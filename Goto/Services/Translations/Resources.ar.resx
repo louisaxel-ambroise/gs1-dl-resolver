@@ -387,4 +387,10 @@
   <data name="UnknownAI" xml:space="preserve">
     <value>يوجد AI غير معروف</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>مرحبًا بكم</value>
+  </data>
+  <data name="Your GOTO resolver is up and running!" xml:space="preserve">
+    <value>أصبح مُحلل GOTO الخاص بك جاهزًا ويعمل!</value>
+  </data>
 </root>
